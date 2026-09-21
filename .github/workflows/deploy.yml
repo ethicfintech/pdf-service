@@ -25,5 +25,5 @@ jobs:
             cd /home/ubuntu/pdf-service
             git stash
             git pull origin main
-            sudo docker compose up --build -d
+            sudo docker-compose up --build -d
             echo "✅ Deployed successfully"
