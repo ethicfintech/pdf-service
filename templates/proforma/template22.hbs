@@ -32,7 +32,9 @@
 
   /* ── LEFT COLUMN ── */
   .left-col {
+    flex: 0 0 51%;
     width: 51%;
+    min-width: 0;
   }
 
   /* Bill To heading */
@@ -49,12 +51,19 @@
   }
 
   .addr-en {
+    flex: 0 0 50%;
     width: 50%;
+    min-width: 0;
+    padding-right: 6px;
+    overflow-wrap: break-word;
     font-size: 11px;
   }
 
   .addr-ar {
+    flex: 0 0 50%;
     width: 50%;
+    min-width: 0;
+    overflow-wrap: break-word;
     font-size: 11px;
     text-align: right;
     direction: ltr;
@@ -88,12 +97,15 @@
     color: #000;
   }
   .center-col {
+    flex: 0 0 3%;
     width: 3%;
   }
 
   /* ── RIGHT COLUMN ── */
   .right-col {
+    flex: 0 0 46%;
     width: 46%;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -124,6 +136,7 @@
   .meta-table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
   }
 
   .meta-table td {
@@ -141,6 +154,8 @@
   .meta-table td.m-value {
     color: #000;
     padding-right: 3px;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
   .meta-table td.m-ar {
