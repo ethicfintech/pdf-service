@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>Invoice - MINU000021INV</title>
+<title>INVOICE - {{basicdetails.[0].inv_no}}</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 10px;
+    font-family: ibmplexsansarabic;
+    font-size: 11px;
     color: #000;
     background: #fff;
   }
@@ -18,11 +18,11 @@
     background: #fff;
   }
 
-   /* ══════════════════════════════════════
+   /* ══════════════════════════════════
      TOP SECTION  (two equal halves)
      LEFT  : Bill To address + VAT/CR
      RIGHT : QR code (top) + TAX INVOICE title + meta rows
-  ══════════════════════════════════════ */
+  ══════════════════════════════════ */
   .top-section {
     display: flex;
     align-items: flex-start;
@@ -32,7 +32,9 @@
 
   /* ── LEFT COLUMN ── */
   .left-col {
-    width: 48%;
+    flex: 0 0 51%;
+    width: 51%;
+    min-width: 0;
   }
 
   /* Bill To heading */
@@ -45,15 +47,23 @@
   .addr-en-ar {
     display: flex;
     gap: 0;
+    padding-right: 11px;
   }
 
   .addr-en {
+    flex: 0 0 50%;
     width: 50%;
+    min-width: 0;
+    padding-right: 6px;
+    overflow-wrap: break-word;
     font-size: 11px;
   }
 
   .addr-ar {
+    flex: 0 0 50%;
     width: 50%;
+    min-width: 0;
+    overflow-wrap: break-word;
     font-size: 11px;
     text-align: right;
     direction: ltr;
@@ -67,8 +77,7 @@
     text-align: right;
   }
 
-  /* VAT / CR rows — with top border line separating from address */
-
+  /* VAT / CR rows */
   .vat-cr-row {
     display: flex;
     justify-content: space-between;
@@ -87,18 +96,25 @@
     font-size: 11px;
     color: #000;
   }
+  .center-col {
+    flex: 0 0 3%;
+    width: 3%;
+  }
 
   /* ── RIGHT COLUMN ── */
   .right-col {
-    width: 52%;
+    flex: 0 0 46%;
+    width: 46%;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
   }
 
-  /* QR code sits top-right */
+  /* QR code sits centered above the title */
   .qr-wrap {
-    align-self: flex-end;
+    align-self: center;
+    margin-bottom: 6px;
   }
 
   .qr-wrap img {
@@ -111,16 +127,17 @@
   .invoice-title {
     width: 100%;
     text-align: center;
-    font-size: 15px;
+    font-size: 20px;
     font-weight: bold;
     margin-bottom: 8px;
     direction: rtl;
   }
 
-  /* Meta table — sits in right column */
+  /* Meta table */
   .meta-table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
   }
 
   .meta-table td {
@@ -130,19 +147,18 @@
     white-space: nowrap;
   }
 
-  /* Col 1: English label */
   .meta-table td.m-label {
     font-weight: normal;
     color: #000;
   }
 
-  /* Col 2: Value */
   .meta-table td.m-value {
     color: #000;
     padding-right: 3px;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
-  /* Col 3: Arabic label */
   .meta-table td.m-ar {
     direction: rtl;
     text-align: right;
@@ -163,7 +179,7 @@
     color: #ffffff;
     text-align: center;
     padding: 4px 4px;
-    font-size: 9px;
+    font-size: 10px;
     font-weight: bold;
     border: 1px solid #fff;
     line-height: 1.35;
@@ -171,15 +187,15 @@
 
   .items-table thead th .ar {
     display: block;
-    font-size: 8.5px;
-     font-weight: bold;
+    font-size: 9.5px;
+    font-weight: bold;
     direction: rtl;
   }
 
   .items-table tbody td {
     padding: 4px 5px;
     text-align: center;
-    font-size: 9.5px;
+    font-size: 10.5px;
     vertical-align: middle;
   }
 
@@ -193,7 +209,6 @@
     width: 22px;
   }
 
-
   /* ─── BOTTOM SECTION ─── */
   .bottom-row {
     display: flex;
@@ -206,14 +221,14 @@
   .terms-col {
     width: 48%;
     flex: 1;
-    font-size: 9.5px;
+    font-size: 10.5px;
     line-height: 1.7;
     padding-top: 2px;
   }
 
   .terms-col .terms-heading {
     font-weight: bold;
-    font-size: 9.5px;
+    font-size: 10.5px;
   }
 
   /* ─── TOTALS TABLE ─── */
@@ -224,26 +239,22 @@
   }
 
   .totals-table td {
-    border: 1px solid #black;
+    border: 1px solid #000;
     padding: 2px 4px;
-    font-size: 9.5px;
+    font-size: 10.5px;
     vertical-align: middle;
-    border:1px solid #000;
   }
 
-  /* Col 1: label (en) */
   .totals-table td.t-label {
     text-align: left;
   }
 
-  /* Col 2: label (ar) */
   .totals-table td.t-label-ar {
     direction: rtl;
     text-align: right;
-    font-size: 9px;
+    font-size: 10px;
   }
 
-  /* Col 3: amount */
   .totals-table td.t-amount {
     text-align: right;
   }
@@ -262,19 +273,18 @@
     align-items: center;
     padding: 5px 10px;
     font-weight: bold;
-    font-size: 9.5px;
+    font-size: 10.5px;
   }
 
   .words-header .ar {
     direction: rtl;
-    font-size: 9.5px;
+    font-size: 10.5px;
     font-weight: bold;
-
   }
 
   .words-body {
     padding: 6px 10px;
-    font-size: 9.5px;
+    font-size: 10.5px;
     background: #fff;
   }
 
@@ -283,8 +293,6 @@
 <body>
 <div class="page">
 
-  <!-- ══ TOP: Bill To + QR ══ -->
-  
   <!-- ══ TOP SECTION ══ -->
   <div class="top-section">
 
@@ -304,86 +312,81 @@
       <!-- Row 2: English address lines | Arabic address lines -->
       <div class="addr-en-ar">
         <div class="addr-en">
-          Added 1 - cloud EDITED (Id 161)<br>
-          7340<br>
-          AL OLAYA<br>
-          AL OLAYA DIST<br>
-          Dammam<br>
-          Saudi Arabia
+          {{#if billing_address.[0].name}}{{billing_address.[0].name}}{{/if}}<br>
+           {{joinAddress billing_address.[0] '<br>'}}
+            {{#if billing_address.[0].vat}}<br> VAT NO:{{billing_address.[0].vat}}{{/if}}
+            {{#if customer_details.[0].cr_no}}<br> CR NO:{{customer_details.[0].cr_no}}{{/if}}
         </div>
         <div class="addr-ar">
-          عميل الفواتير التجريبي<br>
-          ٧٣٤٠<br>
-          العليا<br>
-          حي العليا<br>
-          الدمام<br>
-          المملكة العربية السعودية
+          {{#if billing_address_lang2.[0].name}}{{billing_address_lang2.[0].name}}{{/if}}<br>
+          {{joinAddress billing_address_lang2.[0] '<br>'}}
+          {{#if billing_address_lang2.[0].vat}}<br>رقم ضريبة : {{billing_address_lang2.[0].vat}}{{/if}}
+          {{#if customer_details.[0].cr_no_lang2}}<br>رقم السجل : {{customer_details.[0].cr_no_lang2}} {{/if}} 
         </div>
       </div>
 
-      <!-- VAT / CR rows -->
-      <div class="vat-cr-block">
-        <div class="vat-cr-row">
-          <span class="vat-cr-en"><b>VAT Number : 310588313300003</b></span>
-          <span class="vat-cr-ar">ضريبة القيمة المضافة : ٣١٠٥٨٨٣١٣٣٠٠٠٠٣</span>
-        </div>
-        <div class="vat-cr-row">
-          <span class="vat-cr-en"><b>CR Number &nbsp;: 310588313300003</b></span>
-          <span class="vat-cr-ar">رقم السجل التجاري : ٣١٠٥٨٨٣١٣٣٠٠٠٠٣</span>
-        </div>
-      </div>
-
-    </div><!-- /left-col -->
+    </div><!-- /left-col --><div class="center-col"></div>
 
     <!-- RIGHT: QR + Title + Meta -->
     <div class="right-col">
 
       <!-- QR Code -->
-      <div class="qr-wrap" style="text-align: center;">
+      <div class="qr-wrap">
         {{{qrDataUri qrCodeBase64}}}
       </div>
 
       <!-- TAX INVOICE title -->
-      <div class="invoice-title">ضريبية فاتورة &nbsp;&nbsp; TAX INVOICE</div>
+      <div class="invoice-title" style="direction:ltr;"><span>{{#if basicdetails.[0].documentheader}}{{basicdetails.[0].documentheader}}{{else}}TAX INVOICE{{/if}}</span> / <span dir="rtl">{{#if basicdetails.[0].documentheader_lang2}}{{basicdetails.[0].documentheader_lang2}}{{else}}فاتورة ضريبية{{/if}}</span></div>
 
       <!-- Meta rows -->
       <table class="meta-table">
         <tbody>
           <tr>
             <td class="m-label" style="width: 24%;">Invoice Number</td>
-            <td class="m-value" style="width: 49%;">MINU000021INV</td>
+            <td class="m-value" style="width: 49%;">{{basicdetails.[0].inv_no}}</td>
             <td class="m-ar" style="width: 27%;">رقم الفاتورة</td>
           </tr>
           <tr>
             <td class="m-label">Invoice Date</td>
-            <td class="m-value">03-Mar-2026</td>
+            <td class="m-value">{{basicdetails.[0].inv_date}}</td>
             <td class="m-ar">تاريخ الفاتورة</td>
           </tr>
+          {{#ifFlag datasettings "d572"}}
           <tr>
             <td class="m-label">VAT Number</td>
-            <td class="m-value">30008687268326822</td>
+            <td class="m-value">{{branch.[0].vat}}</td>
             <td class="m-ar">ضريبة القيمة المضافة</td>
           </tr>
+          {{/ifFlag}}
           <tr>
             <td class="m-label">Invoice Time</td>
-            <td class="m-value">13:19:00</td>
+            <td class="m-value">{{basicdetails.[0].inv_time}}</td>
             <td class="m-ar">وقت الفاتورة</td>
           </tr>
           <tr>
             <td class="m-label">P O Number</td>
-            <td class="m-value">ord5454</td>
+            <td class="m-value">{{basicdetails.[0].order_no}}</td>
             <td class="m-ar">رقم طلب الشراء</td>
           </tr>
+          {{#ifFlag datasettings "d62"}}
           <tr>
             <td class="m-label">P O Date</td>
-            <td class="m-value">06-Mar-2026</td>
+            <td class="m-value">{{basicdetails.[0].po_date}}</td>
             <td class="m-ar">تاريخ أمر الشراء</td>
           </tr>
+          {{/ifFlag}}
           <tr>
             <td class="m-label">Reference No</td>
-            <td class="m-value">12121</td>
+            <td class="m-value">{{basicdetails.[0].reference_no}}</td>
             <td class="m-ar">رقم المرجع</td>
           </tr>
+          {{#if basicdetails.[0].project_name}}
+          <tr>
+            <td class="m-label">Project Name</td>
+            <td class="m-value">{{basicdetails.[0].project_name}}</td>
+            <td class="m-ar">اسم المشروع</td>
+          </tr>
+          {{/if}}
         </tbody>
       </table>
 
@@ -396,62 +399,108 @@
   <table class="items-table">
     <thead>
       <tr>
-        <th style="width: 5%;">Sl<br><span class="ar">سرق</span></th>
-        <th style="width: 27%;">Item Description<br><span class="ar">وصف السلعة</span></th>
+        <th style="width: 4%;">Sl<br><span class="ar">سرق</span></th>
+        {{#ifFlag datasettings "d191"}}
+        <th style="width: 10%;">Item Code<br><span class="ar">رمز الصنف</span></th>
+        {{/ifFlag}}
+        {{#hasDiscount itemdetails}}
+            {{#hasVat itemdetails}}
+              <th style="width: {{#ifFlag datasettings "d191"}}13{{else}}23{{/ifFlag}}%;">Item Description<br><span class="ar">وصف السلعة</span></th>
+            {{else}}
+              <th style="width: {{#ifFlag datasettings "d191"}}23{{else}}33{{/ifFlag}}%;">Item Description<br><span class="ar">وصف السلعة</span></th>
+            {{/hasVat}}
+        {{else}}
+            {{#hasVat itemdetails}}
+              <th style="width: {{#ifFlag datasettings "d191"}}23{{else}}33{{/ifFlag}}%;">Item Description<br><span class="ar">وصف السلعة</span></th>
+            {{else}}
+              <th style="width: {{#ifFlag datasettings "d191"}}34{{else}}44{{/ifFlag}}%;">Item Description<br><span class="ar">وصف السلعة</span></th>
+            {{/hasVat}}
+        {{/hasDiscount}}
         <th style="width: 8%;">Qty<br><span class="ar">كمية</span></th>
-        <th style="width: 8%;">UOM<br><span class="ar">كمية</span></th>
-        <th style="width: 12%;">Unit Rate<br><span class="ar">معدل الوحدة</span></th>
+        <th style="width: 7%;">UOM<br><span class="ar">وحدة</span></th>
+        <th style="width: 11%;">Unit Rate<br><span class="ar">معدل الوحدة</span></th>
+        {{#hasDiscount itemdetails}}
+        <th style="width: 10%;">Discount<br><span class="ar">تخفيض</span></th>
+        {{/hasDiscount}}
         <th style="width: 12%;">Total<br><span class="ar">المجموع</span></th>
-        <th style="width: 14%;">Tax(15%)<br><span class="ar">قيمة الضريبة</span></th>
+        {{#hasVat itemdetails}}
+        <th style="width: 11%;">{{tax_label_in_item}}<br><span class="ar">قيمة الضريبة</span></th>
+        {{/hasVat}}
+
         <th style="width: 14%;">Grand Total<br><span class="ar">المجموع الإجمالي</span></th>
       </tr>
     </thead>
     <tbody>
+      {{#each itemdetails}}
       <tr>
-        <td class="sl">1</td>
-        <td class="desc">Bolt x<br>lang2 second itemBolt xkklio</td>
-        <td style="text-align: center;">12</td>
-        <td style="text-align: center;">KGS</td>
-        <td style="text-align: right;">30.00</td>
-        <td style="text-align: right;">360.00</td>
-        <td style="text-align: right;">54.00</td>
-        <td style="text-align: right;">414.00</td>
+        <td class="sl">{{addOne @index}}</td>
+        {{#ifFlag ../datasettings "d191"}}
+        <td style="text-align: center; overflow-wrap: anywhere;">{{item_code}}</td>
+        {{/ifFlag}}
+        <td class="desc">{{item_name}}{{#if name_lang2}}<div style="direction:rtl;text-align:left;font-size:10px;color:#393838;">{{name_lang2}}</div>{{/if}}{{#if description}}<div style="direction:rtl;text-align:left;font-size:10px;color:#393838;">{{description}}</div>{{/if}}</td>
+        <td style="text-align: center;">{{formatAmount quantity ../bcdp}}</td>
+        <td style="text-align: center;">{{unit}}</td>
+        <td style="text-align: right;">{{formatAmount price ../bcdp}}</td>
+        {{#hasDiscount ../itemdetails}}
+        <td style="text-align: right;">{{formatAmount disc_amt ../bcdp}}</td>
+        {{/hasDiscount}}
+        <td style="text-align: right;">{{formatAmount taxable ../bcdp}}</td>
+        {{#hasVat ../itemdetails}}
+        <td style="text-align: right;">{{formatAmount vat_amt ../bcdp}}</td>
+        {{/hasVat}}
+        <td style="text-align: right;">{{formatAmount amount ../bcdp}}</td>
       </tr>
-      
+      {{/each}}
     </tbody>
   </table>
 
   <!-- ══ BOTTOM: Terms + Totals ══ -->
   <div class="bottom-row">
-
     <div class="terms-col">
+        {{#if basicdetails.[0].terms_and_condition}}
       <div class="terms-heading">Terms and Conditions :</div>
-      <div>1 - test terms and condition</div>
+      <div>{{nl2br basicdetails.[0].terms_and_condition}}</div>
+      {{/if}}
     </div>
 
     <table class="totals-table">
       <tr>
         <td class="t-label" style="width:30.33%;">Subtotal</td>
         <td class="t-label-ar" style="width: 27%;">المجموع الفرعي</td>
-        <td class="t-amount" style="width: 39.67;">8,760.00</td>
+        <td class="t-amount" style="width: 39.67%;">{{formatAmount (divide basicdetails.[0].subtotal ccrate) bcdp}}</td>
       </tr>
+      {{#if_gt basicdetails.[0].discount 0}}
       <tr>
         <td class="t-label">Discount</td>
         <td class="t-label-ar">تخفيض</td>
-        <td class="t-amount">111.50</td>
+        <td class="t-amount">{{formatAmount (divide basicdetails.[0].discount ccrate) bcdp}}</td>
       </tr>
+      {{/if_gt}}
+      {{#if_gt basicdetails.[0].vatamt 0}}
       <tr>
-        <td class="t-label">VAT(15%)</td>
+        <td class="t-label">{{tax_label_in_item}}</td>
         <td class="t-label-ar">ضريبة القيمة المضافة</td>
-        <td class="t-amount">1,232.42</td>
+        <td class="t-amount">{{formatAmount (divide basicdetails.[0].vatamt ccrate) bcdp}}</td>
+      </tr>
+      {{/if_gt}}
+      <tr>
+        <td class="t-label">Total Amount in {{basicdetails.[0].currency_isocode}}</td>
+        <td class="t-label-ar">المبلغ الإجمالي</td>
+        <td class="t-amount">{{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
+      </tr>
+      {{#if_gt basicdetails.[0].received 0}}
+      <tr>
+        <td class="t-label">Paid</td>
+        <td class="t-label-ar">مدفوع</td>
+        <td class="t-amount">{{formatAmount (divide basicdetails.[0].received ccrate) bcdp}}</td>
       </tr>
       <tr>
-        <td class="t-label">Total Amount</td>
-        <td class="t-label-ar">المبلغ الإجمالي</td>
-        <td class="t-amount">9,448.00</td>
+        <td class="t-label">Balance Due</td>
+        <td class="t-label-ar">الرصيد المستحق</td>
+        <td class="t-amount">{{formatAmount (divide basicdetails.[0].balance ccrate) bcdp}}</td>
       </tr>
+      {{/if_gt}}
     </table>
-
   </div>
 
   <!-- ══ AMOUNT IN WORDS ══ -->
@@ -460,10 +509,41 @@
       <span>Total Amount in Words</span>
       <span class="ar">المبلغ الإجمالي بالكلمات</span>
     </div>
-    <div class="words-body">
-      UAE Dirham Nine Thousand Four Hundred Forty-Eight
+    <div class="words-body" style="display:flex;justify-content:space-between;align-items:center;">
+      <span>{{bcamountinwords}}</span>
+      <span class="ar">{{bcamountinwordsar}}</span>
     </div>
   </div>
+
+  <!-- ══ BANK DETAILS / SIGNATURE / SEAL ══ -->
+  {{#ifFlag datasettings "d17"}}
+  <div class="bottom-row">
+
+    <div class="terms-col">
+      <div class="terms-heading">Bank Account Details</div>
+      <table style="border-collapse:collapse;width:100%;font-size:10.5px;">
+        <tr><td style="width:15%;">Bank Name</td><td style="5%">:</td><td style="width:80%;">{{bankdetails.name}}</td></tr>
+        <tr><td>Account Name</td><td style="5%">:</td><td>{{bankdetails.acc_name}}</td></tr>
+        <tr><td>Account Number</td><td style="5%">:</td><td>{{bankdetails.acc_no}}</td></tr>
+        <tr><td>IBAN No</td><td style="5%">:</td><td>{{bankdetails.iban_no}}</td></tr>
+        {{#if bankdetails.swift_no}}
+        <tr><td>SWIFT No</td><td style="width:5%;">:</td><td>{{bankdetails.swift_no}}</td></tr>
+        {{/if}}
+        <tr><td>Branch Name</td><td style="5%">:</td><td>{{bankdetails.branch_name}}</td></tr>
+      </table>
+    </div>
+{{!-- 
+    <div style="display:flex;align-items:center;gap:20px;flex-shrink:0;">
+      {{#ifFlag datasettings "d977"}}
+      {{#if Signature}}<img src="{{Signature}}" alt="Signature" style="max-height:70px;max-width:100px;" onerror="this.style.display='none'"/>{{/if}}
+      {{/ifFlag}}
+      {{#ifFlag datasettings "d794"}}
+      {{#if Seal}}<img src="{{Seal}}" alt="Seal" style="max-height:70px;max-width:100px;" onerror="this.style.display='none'"/>{{/if}}
+      {{/ifFlag}}
+    </div> --}}
+
+  </div>
+  {{/ifFlag}}
 
 </div>
 </body>
