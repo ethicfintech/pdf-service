@@ -403,25 +403,14 @@
         {{#ifFlag datasettings "d191"}}
         <th style="width: 10%;">Item Code<br><span class="ar">رمز الصنف</span></th>
         {{/ifFlag}}
-        {{#hasDiscount itemdetails}}
-            {{#hasVat itemdetails}}
-              <th style="width: {{#ifFlag datasettings "d191"}}13{{else}}23{{/ifFlag}}%;">Item Description<br><span class="ar">وصف السلعة</span></th>
-            {{else}}
-              <th style="width: {{#ifFlag datasettings "d191"}}23{{else}}33{{/ifFlag}}%;">Item Description<br><span class="ar">وصف السلعة</span></th>
-            {{/hasVat}}
+        {{#hasVat itemdetails}}
+          <th style="width: {{#ifFlag datasettings "d191"}}23{{else}}33{{/ifFlag}}%;">Item Description<br><span class="ar">وصف السلعة</span></th>
         {{else}}
-            {{#hasVat itemdetails}}
-              <th style="width: {{#ifFlag datasettings "d191"}}23{{else}}33{{/ifFlag}}%;">Item Description<br><span class="ar">وصف السلعة</span></th>
-            {{else}}
-              <th style="width: {{#ifFlag datasettings "d191"}}34{{else}}44{{/ifFlag}}%;">Item Description<br><span class="ar">وصف السلعة</span></th>
-            {{/hasVat}}
-        {{/hasDiscount}}
+          <th style="width: {{#ifFlag datasettings "d191"}}34{{else}}44{{/ifFlag}}%;">Item Description<br><span class="ar">وصف السلعة</span></th>
+        {{/hasVat}}
         <th style="width: 8%;">Qty<br><span class="ar">كمية</span></th>
         <th style="width: 7%;">UOM<br><span class="ar">وحدة</span></th>
         <th style="width: 11%;">Unit Rate<br><span class="ar">معدل الوحدة</span></th>
-        {{#hasDiscount itemdetails}}
-        <th style="width: 10%;">Discount<br><span class="ar">تخفيض</span></th>
-        {{/hasDiscount}}
         <th style="width: 12%;">Total<br><span class="ar">المجموع</span></th>
         {{#hasVat itemdetails}}
         <th style="width: 11%;">{{tax_label_in_item}}<br><span class="ar">قيمة الضريبة</span></th>
@@ -441,9 +430,6 @@
         <td style="text-align: center;">{{formatAmount quantity ../bcdp}}</td>
         <td style="text-align: center;">{{unit}}</td>
         <td style="text-align: right;">{{formatAmount price ../bcdp}}</td>
-        {{#hasDiscount ../itemdetails}}
-        <td style="text-align: right;">{{formatAmount disc_amt ../bcdp}}</td>
-        {{/hasDiscount}}
         <td style="text-align: right;">{{formatAmount taxable ../bcdp}}</td>
         {{#hasVat ../itemdetails}}
         <td style="text-align: right;">{{formatAmount vat_amt ../bcdp}}</td>
@@ -488,7 +474,7 @@
         <td class="t-label-ar">المبلغ الإجمالي</td>
         <td class="t-amount">{{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
       </tr>
-      {{#if_gt basicdetails.[0].received 0}}
+      {{!-- {{#if_gt basicdetails.[0].received 0}}
       <tr>
         <td class="t-label">Paid</td>
         <td class="t-label-ar">مدفوع</td>
@@ -499,7 +485,7 @@
         <td class="t-label-ar">الرصيد المستحق</td>
         <td class="t-amount">{{formatAmount (divide basicdetails.[0].balance ccrate) bcdp}}</td>
       </tr>
-      {{/if_gt}}
+      {{/if_gt}} --}}
     </table>
   </div>
 
