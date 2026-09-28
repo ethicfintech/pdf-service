@@ -74,6 +74,10 @@
     font-weight: bold;
   }
   .subj-row { margin-top: 8px; margin-bottom: 8px; }
+  .attn-table { margin: 8px 0 6px; }
+  .attn-table td { line-height: 1.55; }
+  .attn-name { font-weight: bold; }
+  .attn-email { color: #0000ee; text-decoration: none; }
 
   /* ── Items table ──────────────────────────── */
   .items-table {
@@ -102,7 +106,7 @@
 
   /* ── Special Note box ──────────────────────── */
   .note-block {
-    border: 1px solid #999;
+    border: 1px solid #000000;
     padding: 8px 10px;
     margin-top: 12px;
     font-size: 11px;
@@ -196,7 +200,18 @@
     </tr>
   </table>
 
-  <div class="attn-row">Attn:{{#if basicdetails.[0].attention}} {{basicdetails.[0].attention}}{{/if}}</div>
+  <table class="addr-table attn-table">
+    <tr>
+      <td class="lbl-col">Attn:</td>
+      <td>
+        {{#with basicdetails.[0]}}
+        <div class="attn-name">{{#if contactname}}{{contactname}}{{else}}{{#if custprofilecontactname}}{{custprofilecontactname}}{{else}}{{attention}}{{/if}}{{/if}}</div>
+        {{#if contactno}}<div>{{contactno}}</div>{{else}}{{#if custprofilecontactnumber}}<div>{{custprofilecontactnumber}}</div>{{/if}}{{/if}}
+        {{#if contactemail}}<div><a class="attn-email" href="mailto:{{contactemail}}">{{contactemail}}</a></div>{{else}}{{#if custprofilecontactemail}}<div><a class="attn-email" href="mailto:{{custprofilecontactemail}}">{{custprofilecontactemail}}</a></div>{{/if}}{{/if}}
+        {{/with}}
+      </td>
+    </tr>
+  </table>
 
   <div class="subj-row">Subject:{{#if basicdetails.[0].subj}} {{basicdetails.[0].subj}}{{/if}}</div>
 
@@ -204,12 +219,12 @@
   <table class="items-table">
     <colgroup>
       <col style="width:4%">
-      <col style="width:26%">
+      <col style="width:28%">
       <col style="width:9%">
       <col style="width:8%">
       <col style="width:12%">
       <col style="width:13%">
-      <col style="width:15%">
+      <col style="width:13%">
       <col style="width:12%">
     </colgroup>
     <thead>
@@ -238,7 +253,7 @@
         <td class="right">{{formatAmount price ../bcdp}}</td>
         <td class="right">{{#if mobilization}}{{formatAmount mobilization ../bcdp}}{{else}}0{{/if}}</td>
         <td class="right">{{#if demobilization}}{{formatAmount demobilization ../bcdp}}{{else}}0{{/if}}</td>
-        <td class="left">{{#if remark}}{{remark}}{{else}}DELIVERY{{/if}}</td>
+        <td class="left">{{#if remark}}{{remark}}{{/if}}</td>
       </tr>
       {{/each}}
     </tbody>
