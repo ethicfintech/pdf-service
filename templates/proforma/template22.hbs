@@ -506,8 +506,8 @@
         <tr><td>Account Name</td><td style="5%">:</td><td>{{bankdetails.acc_name}}</td></tr>
         <tr><td>Account Number</td><td style="5%">:</td><td>{{bankdetails.acc_no}}</td></tr>
         <tr><td>IBAN No</td><td style="5%">:</td><td>{{bankdetails.iban_no}}</td></tr>
-        {{#if basicdetails.[0].swift_no}}
-        <tr><td>SWIFT No</td><td style="5%">:</td><td>{{bankdetails.swift_no}}</td></tr>
+        {{#if bankdetails.swift_no}}
+        <tr><td>SWIFT No</td><td style="width:5%;">:</td><td>{{bankdetails.swift_no}}</td></tr>
         {{/if}}
         <tr><td>Branch Name</td><td style="5%">:</td><td>{{bankdetails.branch_name}}</td></tr>
       </table>
