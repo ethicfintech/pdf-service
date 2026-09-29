@@ -787,7 +787,27 @@ class TemplateService {
           `${templateName}.hbs`,
         );
         console.log(`Loading report template: ${templatePath}`);
-        const source = await fs.readFile(templatePath, "utf-8");
+        let source;
+        try {
+          source = await fs.readFile(templatePath, "utf-8");
+        } catch (error) {
+          if (
+            error.code !== "ENOENT" ||
+            !/^(equipment|manpower)_timesheet_report\d+$/.test(templateName)
+          ) {
+            throw error;
+          }
+
+          const timesheetTemplatePath = path.join(
+            __dirname,
+            "..",
+            "templates",
+            "timesheet",
+            `${templateName}.hbs`,
+          );
+          console.log(`Loading timesheet template: ${timesheetTemplatePath}`);
+          source = await fs.readFile(timesheetTemplatePath, "utf-8");
+        }
         this.compiledTemplates.set(cacheKey, Handlebars.compile(source));
       }
 
