@@ -2,12 +2,12 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Credit Note</title>
+<title>Credit Note - {{basicdetails.[0].inv_no}}</title>
 
 <style>
 
 body{
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: ibmplexsansarabic;
     font-size:12px;
     color:#333;
     margin:0;
@@ -30,7 +30,7 @@ table{
 }
 
 .credit-note-title{
-    font-size:28px;
+    font-size:20px;
     font-weight:bold;
     text-align:center;
     color:#2c3e50;
@@ -62,13 +62,13 @@ table{
 .item-table th{
     background:#2c3e50;
     color:#fff;
-    padding:8px;
+    padding:5px;
     border:1px solid #ddd;
     text-align:center;
 }
 
 .item-table td{
-    padding:8px;
+    padding:3px 4px;
     border:1px solid #ddd;
 }
 
@@ -130,45 +130,65 @@ table{
     </table>
 
     <table class="info-table">
-        <tr>    
-            <td width="50%">
+        <tr>
+            <td width="60%">
                 <table>
+                    <colgroup>
+                        <col style="width: 24%;">
+                        <col style="width: 5%;">
+                        <col style="width: 71%;">
+                    </colgroup>
                     <tr>
                         <td><strong>Customer Code</strong></td>
-                        <td>: CUST001</td>
+                        <td><strong>:</strong></td>
+                        <td> {{customer_details.[0].profile_code}}</td>
                     </tr>
                     <tr>
                         <td><strong>Customer Name</strong></td>
-                        <td>: ABC Traders</td>
+                        <td><strong>:</strong></td>
+                        <td> {{#if billing_address.[0].name}}{{billing_address.[0].name}}{{else}}{{basicdetails.[0].customer_name}}{{/if}}</td>
                     </tr>
                     <tr>
-                        <td><strong>GSTIN</strong></td>
-                        <td>: 32AAAAA0000A1Z5</td>
+                        <td><strong>GST Number</strong></td>
+                        <td><strong>:</strong></td>
+                        <td> {{#if billing_address.[0].vat}}{{billing_address.[0].vat}}{{else if billing_address.[0].gstin}}{{billing_address.[0].gstin}}{{else}}{{customer_details.[0].VAT_number}}{{/if}}</td>
                     </tr>
                     <tr>
                         <td><strong>Address</strong></td>
-                        <td>: Calicut, Kerala</td>
+                        <td><strong>:</strong></td>
+                        <td> {{joinAddress billing_address.[0] ', '}}</td>
                     </tr>
                 </table>
             </td>
-            <td width="50%">
+            <td width="40">
                 <table>
+                    <colgroup>
+                        <col style="width: 35%;">
+                        <col style="width: 5%;">
+                        <col style="width: 60%;">
+                    </colgroup>
                     <tr>
                         <td><strong>Credit Note No</strong></td>
-                        <td>: CN01002</td>
+                        <td><strong>:</strong></td>
+                        <td> {{basicdetails.[0].inv_no}}</td>
                     </tr>
                     <tr>
                         <td><strong>Date</strong></td>
-                        <td>: 27-05-2026</td>
+                        <td><strong>:</strong></td>
+                        <td> {{basicdetails.[0].inv_date}}</td>
                     </tr>
                     <tr>
                         <td><strong>Invoice No</strong></td>
-                        <td>: INV10025</td>
+                        <td><strong>:</strong></td>
+                        <td> {{basicdetails.[0].against_inv_no}}</td>
                     </tr>
+                    {{#if basicdetails.[0].against_inv_date}}
                     <tr>
                         <td><strong>Invoice Date</strong></td>
-                        <td>: 25-05-2026</td>
+                        <td><strong>:</strong></td>
+                        <td> {{basicdetails.[0].against_inv_date}}</td>
                     </tr>
+                    {{/if}}
                 </table>
             </td>
         </tr>
@@ -177,76 +197,77 @@ table{
     <table class="item-table">
         <thead>
             <tr>
-                <th width="5%">#</th>
-                <th width="10%">HSN</th>
-                <th width="30%">Description</th>
+                <th width="4%">#</th>
+                <th width="48">Description</th>
+                <th width="7%">Unit</th>
                 <th width="8%">Qty</th>
-                <th width="10%">Rate</th>
-                <th width="8%">Disc</th>
-                <th width="8%">Tax%</th>
+                <th width="11%">Rate</th>
+                <th width="10%">Disc</th>
                 <th width="12%">Amount</th>
             </tr>
         </thead>
         <tbody>
+            {{#each itemdetails}}
             <tr>
-                <td align="center">1</td>
-                <td align="center">8544</td>
-                <td>Cable Assembly</td>
-                <td align="center">2</td>
-                <td align="right">500.00</td>
-                <td align="right">0.00</td>
-                <td align="right">18%</td>
-                <td align="right">1000.00</td>
+                <td align="center">{{addOne @index}}</td>
+                <td>{{item_name}}{{#if name_lang2}}<div>{{name_lang2}}</div>{{/if}}{{#if description}}<div>{{{nl2br description}}}</div>{{/if}}</td>
+                <td align="center">{{unit}}</td>
+                <td align="center">{{quantity}}</td>
+                <td align="right">{{formatAmount (divide price ../ccrate) ../bcdp}}</td>
+                <td align="right">{{formatAmount (divide disc_amt ../ccrate) ../bcdp}}</td>
+                <td align="right">{{formatAmount (divide amount ../ccrate) ../bcdp}}</td>
             </tr>
-            <tr>
-                <td align="center">2</td>
-                <td align="center">8544</td>
-                <td>Connector</td>
-                <td align="center">1</td>
-                <td align="right">250.00</td>
-                <td align="right">0.00</td>
-                <td align="right">18%</td>
-                <td align="right">250.00</td>
-            </tr>
+            {{/each}}
             <tr>
                 <td colspan="6" class="text-right">Sub Total</td>
-                <td colspan="2" class="text-right">1,250.00</td>
+                <td colspan="2" class="text-right">{{formatAmount (divide basicdetails.[0].subtotal ccrate) bcdp}}</td>
             </tr>
             <tr>
                 <td colspan="6" class="text-right">Discount</td>
-                <td colspan="2" class="text-right">0.00</td>
+                <td colspan="2" class="text-right">{{#if (gt basicdetails.[0].dld 0)}}{{formatAmount (divide basicdetails.[0].dld ccrate) bcdp}}{{else}}{{formatAmount (divide basicdetails.[0].discount ccrate) bcdp}}{{/if}}</td>
             </tr>
+            {{#if (gt basicdetails.[0].igst 0)}}
+            <tr>
+                <td colspan="6" class="text-right">IGST</td>
+                <td colspan="2" class="text-right">{{formatAmount (divide basicdetails.[0].igst ccrate) bcdp}}</td>
+            </tr>
+            {{else if (or (gt basicdetails.[0].cgst 0) (gt basicdetails.[0].sgst 0))}}
             <tr>
                 <td colspan="6" class="text-right">CGST</td>
-                <td colspan="2" class="text-right">112.50</td>
+                <td colspan="2" class="text-right">{{formatAmount (divide basicdetails.[0].cgst ccrate) bcdp}}</td>
             </tr>
             <tr>
                 <td colspan="6" class="text-right">SGST</td>
-                <td colspan="2" class="text-right">112.50</td>
+                <td colspan="2" class="text-right">{{formatAmount (divide basicdetails.[0].sgst ccrate) bcdp}}</td>
             </tr>
+            {{/if}}
             <tr class="total-row">
                 <td colspan="6" class="text-right">Grand Total</td>
-                <td colspan="2" class="text-right">1,475.00</td>
+                <td colspan="2" class="text-right">{{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
             </tr>
         </tbody>
-    </table>    
+    </table>
 
     <div class="amount-words">
-        <strong>Amount in Words :</strong><br>One Thousand Four Hundred Seventy Five Rupees Only
+        <strong>Amount in Words :</strong><br>{{bcamountinwords}}
     </div>
 
     <div style="margin-top:5px;">
         <strong>Terms & Conditions</strong>
-        <ul>
-            <li>Credit note issued against the referenced invoice.</li>
-            <li>Subject to company policies.</li>
-            <li>This is a computer generated document.</li>
-        </ul>
+        {{#if basicdetails.[0].terms_and_condition}}
+        <div>{{{nl2br basicdetails.[0].terms_and_condition}}}</div>
+        {{else if invterms}}
+        <div>{{{nl2br invterms}}}</div>
+        {{/if}}
     </div>
 
     <div class="footer">
         <div class="signature">
-            <div class="signature-line">Authorized Signatory</div>
+            <!-- 60px signing space (was the line's margin-top); signature image sits on the line -->
+            <div style="height:60px; display:flex; align-items:flex-end; justify-content:center;">
+                {{#if Signature}}<img src="{{Signature}}" alt="" style="max-height:{{default datasettings.d458 '80'}}px; max-width:{{default datasettings.d458 '180'}}px;" onerror="this.style.display='none'"/>{{/if}}
+            </div>
+            <div class="signature-line" style="margin-top:0;">Authorized Signatory</div>
         </div>
     </div>
 </body>

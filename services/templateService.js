@@ -696,6 +696,16 @@ class TemplateService {
 
   // ── DATA PREPARATION ──────────────────────────────────────
   prepareTemplateData(data) {
+    // Credit notes send basicdetails as a single object rather than a
+    // one-element array; normalise so every template can use basicdetails.[0]
+    if (
+      data.basicdetails &&
+      typeof data.basicdetails === "object" &&
+      !Array.isArray(data.basicdetails)
+    ) {
+      data.basicdetails = [data.basicdetails];
+    }
+
     const basic = (data.basicdetails && data.basicdetails[0]) || {};
 
     const iso = (basic.isocode || "SAR").toUpperCase().trim();

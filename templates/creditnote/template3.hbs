@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Credit Note - {{basicdetails.[0].inv_no}}</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Open Sans', Arial, sans-serif;
+    font-size: 10px;
+    color: #000;
+    background: #fff;
+    margin: 0 10mm;
+  }
+  table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+
+  .title {
+    text-align: center;
+    color: #ff0000;
+    font-size: 16px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #333;
+  }
+
+  /* ── issued-to | document details ── */
+  .head { margin: 18px 0 20px; }
+  .head td { vertical-align: top; padding: 0; }
+  .issued div { line-height: 1.7; }
+  .issued .lbl { margin-bottom: 1px; }
+  .meta td { padding: 1px 0 4px; line-height: 1.55; }
+  .rule { border-top: 1px solid #333; margin-bottom: 18px; }
+
+  /* ── items ── */
+  .items th, .items td { border: 1px solid #000; padding: 3px 5px; font-size: 10px; vertical-align: top; }
+  .items th { font-weight: normal; text-align: center; }
+  .items td.c { text-align: center; }
+  .items td.r { text-align: right; }
+  .items td.l { text-align: left; }
+  .items tr { page-break-inside: avoid; }
+  .items .tot-lbl { text-align: right; color: #ff0000; }
+  .red { color: #ff0000; }
+
+  .words { color: #ff0000; margin: 10px 5px 0; }
+  .closing { margin-top: 28px; line-height: 2.2; }
+</style>
+</head>
+<body>
+
+  <div class="title">CREDIT NOTE</div>
+
+  <!-- ISSUED TO | DETAILS -->
+  <table class="head">
+    <colgroup><col style="width:49%"><col style="width:51%"></colgroup>
+    <tr>
+      <td class="issued">
+        <div class="lbl">ISSUED TO :</div>
+        <div>{{#if billing_address.[0].name}}{{billing_address.[0].name}}{{else}}{{basicdetails.[0].customer_name}}{{/if}}</div>
+        {{#if (or billing_address.[0].address_line1 billing_address.[0].address_line2)}}
+        <div>{{billing_address.[0].address_line1}}{{#if billing_address.[0].address_line2}} {{billing_address.[0].address_line2}}{{/if}}</div>
+        {{/if}}
+        {{#if (or billing_address.[0].address_line3 (or billing_address.[0].address_line4 (or billing_address.[0].address_line5 billing_address.[0].address_code)))}}
+        <div>{{billing_address.[0].address_line3}} {{billing_address.[0].address_line4}} {{billing_address.[0].address_line5}} {{billing_address.[0].address_code}}</div>
+        {{/if}}
+      </td>
+      <td>
+        <table class="meta">
+          <colgroup><col style="width:26%"><col style="width:3%"><col style="width:71%"></colgroup>
+          <tr><td>CREDIT NOTE NO</td><td>:</td><td>{{basicdetails.[0].inv_no}}</td></tr>
+          <tr><td>GSTIN</td><td>:</td><td>{{#if branch.[0].vat}}{{branch.[0].vat}}{{else}}{{compprof.gstin}}{{/if}}</td></tr>
+          <tr><td>PO REFERENCE</td><td>:</td><td>{{basicdetails.[0].reference_no}}</td></tr>
+          <tr><td>DATE</td><td>:</td><td>{{basicdetails.[0].inv_date}}</td></tr>
+          <tr><td>VESSEL NAME</td><td>:</td><td>{{basicdetails.[0].vessel_name}}</td></tr>
+          <tr><td>PERSON</td><td>:</td><td>{{basicdetails.[0].contact_name}}</td></tr>
+          <tr><td>CONTACT</td><td>:</td><td>{{customer_details.[0].contact_no1}}</td></tr>
+          <tr><td>EMAIL</td><td>:</td><td>{{customer_details.[0].email}}</td></tr>
+          <tr><td>DELIVERY PORT</td><td>:</td><td>{{basicdetails.[0].port_of_delivery}}</td></tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <div class="rule"></div>
+
+  <!-- ITEMS -->
+  <table class="items">
+    <colgroup>
+      <col style="width:7%">
+      <col style="width:38%">
+      <col style="width:10%">
+      <col style="width:12%">
+      <col style="width:10%">
+      <col style="width:10%">
+      <col style="width:13%">
+    </colgroup>
+    <thead>
+      <tr>
+        <th>S NO.</th>
+        <th>DESCRIPTION</th>
+        <th>QTY</th>
+        <th>UNIT PRICE</th>
+        <th>PRICE</th>
+        <th>GST (%)</th>
+        <th>TOTAL PRICE</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each itemdetails}}
+      <tr>
+        <td class="c">{{addOne @index}}</td>
+        <td class="l">{{item_name}}{{#if name_lang2}}<div>{{name_lang2}}</div>{{/if}}{{#if description}}<div>{{{nl2br description}}}</div>{{/if}}</td>
+        <td class="c">{{quantity}}</td>
+        <td class="r">{{formatAmount (divide price ../ccrate) ../bcdp}}</td>
+        <td class="r">{{formatAmount (divide taxable ../ccrate) ../bcdp}}</td>
+        <td class="c">{{vat_perc}}</td>
+        <td class="r">{{formatAmount (divide amount ../ccrate) ../bcdp}}</td>
+      </tr>
+      {{/each}}
+      <tr><td></td><td colspan="5" class="tot-lbl">TOTAL PRICE IN {{basicdetails.[0].currency_isocode}}</td><td class="r">{{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td></tr>
+    </tbody>
+  </table>
+
+  <div class="words">TOTAL PRICE IN WORDS: {{upper bcamountinwords}}</div>
+
+  <div class="closing">
+    <div>Should you require any additional information, please do not hesitate to contact our Invoicing team. Thank you for the valuable business and look forward to work with you again!</div>
+    <div>Sincerely Yours,.</div>
+  </div>
+
+</body>
+</html>
