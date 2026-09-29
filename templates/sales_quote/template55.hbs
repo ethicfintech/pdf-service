@@ -218,12 +218,12 @@
   <!-- Items Table -->
   <table class="items-table">
     <colgroup>
-      <col style="width:4%">
+      <col style="width:3%">
       <col style="width:28%">
       <col style="width:8%">
       <col style="width:8%">
       <col style="width:12%">
-      <col style="width:12%">
+      <col style="width:13%">
       <col style="width:15%">
       <col style="width:12%">
     </colgroup>
@@ -248,7 +248,7 @@
           {{#if name_lang2}}<div>{{name_lang2}}</div>{{/if}}
           {{#if description}}<div>{{description}}</div>{{/if}}
         </td>
-        <td class="right">{{formatAmount quantity 0}}</td>
+        <td class="center">{{formatAmount quantity 0}}</td>
         <td class="center">{{unit}}</td>
         <td class="right">{{formatAmount price ../bcdp}}</td>
         <td class="right">{{#if mobilization}}{{formatAmount mobilization ../bcdp}}{{else}}0{{/if}}</td>
