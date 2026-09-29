@@ -34,6 +34,11 @@ async function startServer() {
       console.log('\nServer is ready to accept requests!\n');
     });
 
+    server.on('error', (error) => {
+      console.error('Failed to start server:', error);
+      process.exitCode = 1;
+    });
+
     // Graceful shutdown
     const gracefulShutdown = async (signal) => {
       console.log(`\n${signal} received. Starting graceful shutdown...`);

@@ -79,6 +79,98 @@ class TimesheetController {
     return totals;
   }
 
+  transformTimesheetReportData(timesheet, kind) {
+    const months = [];
+    const codeKey = kind === 'equipment' ? 'equipment_code' : 'employee_code';
+    const nameKey = kind === 'equipment' ? 'make_model' : 'employee_name';
+    const personKey = kind === 'equipment' ? 'operator_driver' : 'position';
+
+    const sumHours = (detail) =>
+      parseFloat(detail.day_total_hours) || parseFloat(detail.normal_hours) || 0;
+
+    if (Array.isArray(timesheet.report_data) && timesheet.report_data.length > 0) {
+      timesheet.report_data.forEach((monthBlock) => {
+        const days = (monthBlock.month_days || []).map((day) => ({
+          date: day.date, day: day.day, day_name: day.day_name, is_weekend: day.is_weekend,
+        }));
+
+        let monthTotalHours = 0;
+        let monthTotalAmount = 0;
+
+        const rows = (monthBlock.timesheets || []).map((entry) => {
+          const header = entry.header || {};
+          const day_hours = {};
+          (entry.details || []).forEach((detail) => {
+            day_hours[detail.work_date] = (day_hours[detail.work_date] || 0) + sumHours(detail);
+          });
+
+          const totalHours = parseFloat(header.total_hours) || 0;
+          const totalAmount = parseFloat(header.total_amount) || 0;
+          monthTotalHours += totalHours;
+          monthTotalAmount += totalAmount;
+
+          return {
+            timesheet_number: header.timesheet_number || '',
+            code: header[codeKey] || '',
+            name: header[nameKey] || '',
+            person: header[personKey] || '',
+            project_name: header.project_name || '',
+            status: header.status || 'draft',
+            day_hours,
+            total_normal_hours: header.total_normal_hours || 0,
+            total_overtime_hours: header.total_overtime_hours || 0,
+            total_hours: header.total_hours || 0,
+            hourly_rate: header.hourly_rate || 0,
+            overtime_rate: header.overtime_rate || 0,
+            total_amount: header.total_amount || 0,
+          };
+        });
+
+        months.push({
+          month_name: monthBlock.month_name,
+          days,
+          rows,
+          total_hours: monthTotalHours,
+          total_amount: monthTotalAmount,
+        });
+      });
+    } else if (Array.isArray(timesheet.details) && timesheet.details.length > 0) {
+      const header = timesheet.timesheet || {};
+      const days = (timesheet.month_days || []).map((day) => ({
+        date: day.date, day: day.day, day_name: day.day_name, is_weekend: day.is_weekend,
+      }));
+
+      const day_hours = {};
+      timesheet.details.forEach((detail) => {
+        day_hours[detail.work_date] = (day_hours[detail.work_date] || 0) + sumHours(detail);
+      });
+
+      months.push({
+        month_name: (header.month && header.year) ? `${header.month}/${header.year}` : '',
+        days,
+        rows: [{
+          timesheet_number: header.timesheet_number || '',
+          code: header[codeKey] || (timesheet.details[0] && timesheet.details[0][codeKey]) || '',
+          name: header[nameKey] || '',
+          person: header[personKey] || '',
+          project_name: header.name || '',
+          status: header.status || 'draft',
+          day_hours,
+          total_normal_hours: header.total_normal_hours || 0,
+          total_overtime_hours: header.total_overtime_hours || 0,
+          total_hours: header.total_hours || 0,
+          hourly_rate: header.hourly_rate || 0,
+          overtime_rate: header.overtime_rate || 0,
+          total_amount: header.total_amount || 0,
+        }],
+        total_hours: parseFloat(header.total_hours) || 0,
+        total_amount: parseFloat(header.total_amount) || 0,
+      });
+    }
+
+    return months;
+  }
+
   // ── GET /api/timesheet/test ──────────────────────────────────
   async test(req, res) {
     res.json({
@@ -178,6 +270,19 @@ class TimesheetController {
       // Inject resolved meta so templates can use {{report_title}}, {{report_type_label}}
       timesheet.report_title = reportTitle;
       timesheet.report_type_label = reportTypeInfo.label;
+
+      if (timesheet.report_type === 20 || timesheet.report_type === 21) {
+        const kind = timesheet.report_type === 21 ? 'equipment' : 'manpower';
+        timesheet.months = this.transformTimesheetReportData(timesheet, kind);
+        timesheet.grand_total_hours = timesheet.months.reduce((sum, month) => sum + (month.total_hours || 0), 0);
+        timesheet.grand_total_amount = timesheet.months.reduce((sum, month) => sum + (month.total_amount || 0), 0);
+
+        if (kind === 'equipment') {
+          timesheet.total_equipment = timesheet.months.reduce((sum, month) => sum + month.rows.length, 0);
+        } else {
+          timesheet.total_employees = timesheet.months.reduce((sum, month) => sum + month.rows.length, 0);
+        }
+      }
 
       // ── Transform equipment data if needed ────────────────
       if (timesheet.report_type === 21) {
