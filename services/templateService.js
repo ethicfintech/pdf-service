@@ -216,10 +216,20 @@ let fontFaceCss = "";
   }
 }
 
+// "The Coastal" script font (Thank You text). Only embedded into pages that
+// reference `font-family: thecoastal`, so other PDFs don't carry the extra weight.
+const coastalB64 = loadFontBase64("TheCoastal.ttf");
+const coastalFaceCss = coastalB64
+  ? `@font-face{font-family:'thecoastal';font-style:normal;font-weight:400;` +
+    `src:url(data:font/ttf;base64,${coastalB64}) format('truetype');}`
+  : "";
+
 // Inject the @font-face CSS into a rendered HTML string's <head>.
 function injectFonts(html) {
-  if (!fontFaceCss) return html;
-  const style = `<style>${fontFaceCss}</style>`;
+  const css =
+    fontFaceCss + (coastalFaceCss && html.includes("thecoastal") ? coastalFaceCss : "");
+  if (!css) return html;
+  const style = `<style>${css}</style>`;
   if (html.includes("</head>")) return html.replace("</head>", `${style}</head>`);
   return style + html;
 }
@@ -323,6 +333,10 @@ class TemplateService {
     // ── Comparison helpers ─────────────────────────────────
     Handlebars.registerHelper("eq", (a, b) => a === b);
     Handlebars.registerHelper("neq", (a, b) => a !== b);
+    // true when any argument is non-blank, e.g. {{#if (or name vat)}}
+    Handlebars.registerHelper("or", (...args) =>
+      args.slice(0, -1).some((v) => v !== undefined && v !== null && String(v).trim() !== ""),
+    );
     Handlebars.registerHelper(
       "gt",
       (a, b) =>
@@ -731,6 +745,11 @@ class TemplateService {
       countryIso === "AED"
         ? "VAT (5%)"
         : `VAT (${rate}%)`;
+
+
+    data.tax_label_in_total_section = countryIso === "AED" ? "Total TAX" : "Total VAT";
+
+    data.tax_label_ar_in_total_section = countryIso === "AED" ? "قيمة الضريبة" : "ضريبة القيمة المضافة";
 
     data.ccrate =
       parseFloat(String(data.ccrate || basic.ccrate || 1).replace(/,/g, "")) ||
