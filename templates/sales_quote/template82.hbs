@@ -438,11 +438,9 @@
       </tr>
     </table>
     {{#ifFlag datasettings "d292"}}
-    {{#if Seal}}
     <div class="payment-seal">
      <img src="{{Seal}}" alt="Seal" style="max-height:{{default datasettings.d458 '40'}}px; max-width:{{default datasettings.d458 '60'}}px;" onerror="this.style.display='none'"/>
     </div>
-    {{/if}}
     {{/ifFlag}}
   </div>
 
