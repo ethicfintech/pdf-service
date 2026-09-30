@@ -219,7 +219,7 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -10%);
+    transform: translate(-50%, 70%);
   }
 
   .payment-seal img {
@@ -262,30 +262,29 @@
           <td>
         <div class="bill-to-heading">Bill To</div>
         <div class="bill-to-name">{{billing_address.[0].name}}</div>
-        {{#if billing_address.[0].address_line1}}<div class="bill-to-line">{{billing_address.[0].address_line1}}</div>{{/if}}
+        {{!-- {{#if billing_address.[0].address_line1}}<div class="bill-to-line">{{billing_address.[0].address_line1}}</div>{{/if}}
         {{#if billing_address.[0].address_line2}}<div class="bill-to-line">{{billing_address.[0].address_line2}}</div>{{/if}}
         {{#if billing_address.[0].address_line3}}
         <div class="bill-to-line">{{billing_address.[0].address_line3}}{{#if billing_address.[0].address_line4}}, {{billing_address.[0].address_line4}}{{/if}}</div>
         {{else}}
         {{#if billing_address.[0].address_line4}}<div class="bill-to-line">{{billing_address.[0].address_line4}}</div>{{/if}}
         {{/if}}
-        {{#if billing_address.[0].address_line5}}<div class="bill-to-line">{{billing_address.[0].address_line5}}</div>{{/if}}
-        <div class="bill-to-vat">{{tax_label}}: {{billing_address.[0].vat}}</div>
-        {{#ifFlag datasettings "d844"}}{{#if customer_details.[0].cr_no}}<div class="bill-to-cr">C R Number: {{customer_details.[0].cr_no}}</div>{{/if}}{{/ifFlag}}
-        {{#if basicdetails.[0].contactname}}<div class="bill-to-cr">Contact: {{basicdetails.[0].contactname}}</div>{{/if}}
-        {{!-- {{#if basicdetails.[0].contactname}}<div class="bill-to-cr">Contact: {{basicdetails.[0].contactname}}</div>{{/if}} --}}
+        {{#if billing_address.[0].address_line5}}<div class="bill-to-line">{{billing_address.[0].address_line5}}</div>{{/if}} --}}
+        {{#if customer_details.[0].gstin}}<div class="bill-to-vat">GSTIN: {{billing_address.[0].gstin}}</div>
+        else<div class="bill-to-vat">{{tax_label}}: {{billing_address.[0].vat}}{{/if}}
+        {{#if customer_details.[0].cr_no}}<div class="bill-to-cr">C R Number: {{customer_details.[0].cr_no}}</div>{{/if}}
           </td>
           {{#with billing_address_lang2.[0]}}
           {{#if (or name vat address_line1)}}
           <td class="bill-to-ar">
             {{#if name}}<div class="bill-to-heading">تمت محاسبته عل</div>{{/if}}
             {{#if name}}<div class="bill-to-name">{{name}}</div>{{/if}}
-            {{#if address_line1}}<div class="bill-to-line">{{address_line1}}</div>{{/if}}
+            {{!-- {{#if address_line1}}<div class="bill-to-line">{{address_line1}}</div>{{/if}}
             {{#if address_line2}}<div class="bill-to-line">{{address_line2}}</div>{{/if}}
             {{#if address_line3}}<div class="bill-to-line">{{address_line3}}{{#if address_line4}}، {{address_line4}}{{/if}}</div>{{else}}{{#if address_line4}}<div class="bill-to-line">{{address_line4}}</div>{{/if}}{{/if}}
-            {{#if address_line5}}<div class="bill-to-line">{{address_line5}}</div>{{/if}}
-            {{#ifFlag datasettings "d841"}}{{#if vat}}<div class="bill-to-vat">الرقم الضريبي : {{vat}}</div>{{/if}}{{/ifFlag}}
-            {{#ifFlag datasettings "d842"}}{{#if @root.customer_details.[0].cr_no_lang2}}<div class="bill-to-cr">رقم السجل التجاري : {{@root.customer_details.[0].cr_no_lang2}}</div>{{/if}}{{/ifFlag}}
+            {{#if address_line5}}<div class="bill-to-line">{{address_line5}}</div>{{/if}} --}}
+            {{#if vat}}<div class="bill-to-vat">الرقم الضريبي : {{vat}}</div>{{/if}}
+            {{#if @root.customer_details.[0].cr_no_lang2}}<div class="bill-to-cr">رقم السجل التجاري : {{@root.customer_details.[0].cr_no_lang2}}</div>{{/if}}
           </td>
           {{/if}}
           {{/with}}
@@ -329,9 +328,9 @@
   <!-- ══ ITEMS ══ -->
   <table class="items-table">
     <colgroup>
-      <col style="width:4.5%">
+      <col style="width:3.5%">
       {{!-- Description width: 37% base, -11% when the Discount column shows, -8% when the Unit column (AED) shows --}}
-      <col style="width:{{#if (eq @root.basicdetails.[0].base_country_isocode "AED")}}{{#hasDiscount itemdetails}}18{{else}}29{{/hasDiscount}}{{else}}{{#hasDiscount itemdetails}}26{{else}}37{{/hasDiscount}}{{/if}}%">
+      <col style="width:{{#if (eq @root.basicdetails.[0].base_country_isocode "AED")}}{{#hasDiscount itemdetails}}19{{else}}30{{/hasDiscount}}{{else}}{{#hasDiscount itemdetails}}27{{else}}38{{/hasDiscount}}{{/if}}%">
       {{#if (eq @root.basicdetails.[0].base_country_isocode "AED")}}<col style="width:8%">{{/if}}
       <col style="width:11%">
       <col style="width:11%">
@@ -386,13 +385,11 @@
           </tr>
         {{/each}}
       {{else}}
-            {{!-- {{#if_gt (add basicdetails.[0].discount basicdetails.[0].dld) 0}} --}}
             <tr>
               <td class="t-label">Total Discount</td>
               <td class="t-ar">إجمالي الخصم</td>
               <td class="t-amount">{{formatAmount (divide (add basicdetails.[0].discount basicdetails.[0].dld) ccrate) bcdp}}</td>
             </tr>
-            {{!-- {{/if_gt}} --}}
       {{/if}}
     <tr>
       <td class="t-label">{{tax_label_in_total_section}}</td>
@@ -451,11 +448,11 @@
         <td class="p-ar">آيبان</td>
       </tr>
     </table>
-    {{#ifFlag datasettings "d249"}}
+    {{!-- {{#ifFlag datasettings "d249"}} --}}
     <div class="payment-seal">
      <img src="{{Seal}}" alt="Seal" style="max-height:{{default datasettings.d458 '40'}}px; max-width:{{default datasettings.d458 '60'}}px;" onerror="this.style.display='none'"/>
     </div>
-    {{/ifFlag}}
+    {{!-- {{/ifFlag}} --}}
   </div>
 
   <!-- ══ AUTHORIZED SIGNATORY ══ -->
