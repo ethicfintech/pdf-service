@@ -267,18 +267,19 @@
         {{/if}}
         {{#if billing_address.[0].address_line5}}<div class="bill-to-line">{{billing_address.[0].address_line5}}</div>{{/if}}
         <div class="bill-to-vat">{{tax_label}}: {{billing_address.[0].vat}}</div>
-        <div class="bill-to-cr">C R Number: {{customer_details.[0].cr_no}}</div>
+        {{#if customer_details.[0].cr_no}}<div class="bill-to-cr">C R Number: {{customer_details.[0].cr_no}}</div>{{/if}}
+        {{#if basicdetails.[0].contactname}}<div class="bill-to-cr">Contact: {{basicdetails.[0].contactname}}</div>{{/if}}
           </td>
           {{#with billing_address_lang2.[0]}}
           {{#if (or name vat address_line1)}}
           <td class="bill-to-ar">
-            <div class="bill-to-heading">تمت محاسبته عل</div>
+            {{#if name}}<div class="bill-to-heading">تمت محاسبته عل</div>{{/if}}
             {{#if name}}<div class="bill-to-name">{{name}}</div>{{/if}}
             {{#if address_line1}}<div class="bill-to-line">{{address_line1}}</div>{{/if}}
             {{#if address_line2}}<div class="bill-to-line">{{address_line2}}</div>{{/if}}
             {{#if address_line3}}<div class="bill-to-line">{{address_line3}}{{#if address_line4}}، {{address_line4}}{{/if}}</div>{{else}}{{#if address_line4}}<div class="bill-to-line">{{address_line4}}</div>{{/if}}{{/if}}
             {{#if address_line5}}<div class="bill-to-line">{{address_line5}}</div>{{/if}}
-            {{#if vat}}<div class="bill-to-vat">الرقم الضريبي : {{vat}}</div>{{/if}}
+            {{#ifFlag datasettings "d841"}}{{#if vat}}<div class="bill-to-vat">الرقم الضريبي : {{vat}}</div>{{/if}}{{/ifFlag}}
             {{#if @root.customer_details.[0].cr_no_lang2}}<div class="bill-to-cr">رقم السجل التجاري : {{@root.customer_details.[0].cr_no_lang2}}</div>{{/if}}
           </td>
           {{/if}}
