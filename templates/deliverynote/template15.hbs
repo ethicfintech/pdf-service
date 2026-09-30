@@ -74,7 +74,8 @@
     .divider { border: none; border-top: 1px solid #bfbfbf; margin-bottom: 14px; }
     .sign-labels td { border: none; padding: 0; text-align: center; font-weight: 700; vertical-align: bottom; }
     .sign-labels .sig { font-weight: 400; }
-    .sign-labels .sig img { display: block; margin: 0 auto; }
+    .sign-labels .sig img { display: block; margin: 0 auto 4px; }
+    .sign-labels .sig-label { font-weight: 700; }
     .sign-box { border: 1px solid #000; height: 30px; margin-top: 8px; }
   </style>
 </head>
@@ -117,14 +118,18 @@
             <td class="lbl">Contact Number</td>
             <td class="val">{{customer_details.[0].contact_no1}}</td>
           </tr>
+          {{#if basicdetails.[0].contactname}}
           <tr>
             <td class="lbl">Contact Name</td>
             <td class="val">{{basicdetails.[0].contactname}}</td>
           </tr>
+          {{#if basicdetails.[0].contactno}}
           <tr>
             <td class="lbl">Contact No</td>
             <td class="val">{{basicdetails.[0].contactno}}</td>
           </tr>
+          {{/if}}
+          {{/if}}
         </table>
       </td>
       <td></td>
@@ -257,14 +262,15 @@
         <col style="width:40%">
       </colgroup>
       <tr>
-        <td>DELIVERED BY</td>
         <td class="sig">
           {{#ifFlag datasettings "d679"}}
           <img src="{{Signature}}" alt="Signature"
                style="max-height:{{default datasettings.d459 '40'}}px; max-width:{{default datasettings.d459 '60'}}px;"
                onerror="this.style.display='none'" />
           {{/ifFlag}}
+          <div class="sig-label">DELIVERED BY</div>
         </td>
+        <td></td>
         <td>RECEIVED BY</td>
       </tr>
     </table>
