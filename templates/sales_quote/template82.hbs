@@ -269,6 +269,7 @@
         <div class="bill-to-vat">{{tax_label}}: {{billing_address.[0].vat}}</div>
         {{#if customer_details.[0].cr_no}}<div class="bill-to-cr">C R Number: {{customer_details.[0].cr_no}}</div>{{/if}}
         {{#if basicdetails.[0].contactname}}<div class="bill-to-cr">Contact: {{basicdetails.[0].contactname}}</div>{{/if}}
+        {{!-- {{#if basicdetails.[0].contactname}}<div class="bill-to-cr">Contact: {{basicdetails.[0].contactname}}</div>{{/if}} --}}
           </td>
           {{#with billing_address_lang2.[0]}}
           {{#if (or name vat address_line1)}}
