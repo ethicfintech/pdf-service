@@ -46,7 +46,7 @@ body {
 }
 .info-value { font-size: 10.5px; font-weight: 600; }
 
-.employee-sheet { margin-bottom: 14px; page-break-inside: avoid; }
+.employee-sheet { margin-bottom: 14px; page-break-inside: avoid; break-inside: avoid; }
 .employee-meta { width: 100%; border-collapse: collapse; table-layout: fixed; margin-bottom: 6px; }
 .employee-meta td { padding: 3px 6px; vertical-align: middle; font-size: 8.5px; }
 .employee-meta .meta-label { width: 12%; color: #0b5a69; font-weight: 700; }
@@ -67,8 +67,9 @@ body {
 .details-table th:last-child, .details-table td:last-child { width: 20%; }
 .details-table tbody tr:nth-child(even) { background: #fafcfc; }
 
-.month-section { margin-bottom: 20px; page-break-inside: avoid; }
+.month-section { margin-bottom: 20px; }
 .month-title {
+    page-break-after: avoid; break-after: avoid;
     font-size: 13px; font-weight: 700; color: #fff;
     background: #0b5a69; padding: 6px 10px; border-radius: 4px 4px 0 0;
 }
