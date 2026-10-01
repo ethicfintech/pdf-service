@@ -61,7 +61,7 @@ body {
 }
 .info-value { font-size: 10px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-.employee-sheet { margin-bottom: 14px; page-break-inside: avoid; }
+.employee-sheet { margin-bottom: 14px; page-break-inside: avoid; break-inside: avoid; }
 .employee-meta { width: 100%; border-collapse: collapse; table-layout: fixed; margin-bottom: 6px; }
 .employee-meta td { padding: 3px 6px; vertical-align: middle; font-size: 8.5px; }
 .employee-meta .meta-label { width: 12%; color: var(--brand); font-weight: 700; }
@@ -76,8 +76,9 @@ body {
 .metric-value { display: block; color: var(--brand-dark); font-size: 10px; font-weight: 700; margin-top: 2px; }
 .metric.amount .metric-value { color: #704600; }
 
-.month-section { margin-bottom: 16px; page-break-inside: avoid; }
+.month-section { margin-bottom: 16px; }
 .month-title {
+    page-break-after: avoid; break-after: avoid;
     font-size: 11px; font-weight: 700; color: #fff;
     background: var(--brand); padding: 6px 9px; border-radius: 3px 3px 0 0;
     letter-spacing: 0.2px;
