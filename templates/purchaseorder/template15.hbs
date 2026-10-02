@@ -232,7 +232,8 @@
         {{bcamountinwords}}<br>
         VAT Amount in words : {{vatamountinwords}}
       </td>
-      <td class="totlbl">Sub Total ({{basicdetails.[0].base_country_isocode}})</td>
+      <td class="totlbl">Sub Total ({{basicdetails.[0].isocode}})</td>
+      {{!-- <td class="totlbl">Sub Total ({{basicdetails.[0].isocode}})</td> --}}
       <td class="totval">{{formatAmount (divide basicdetails.[0].subtotal ccrate) bcdp}}</td>
     </tr>
     <tr>
@@ -266,7 +267,7 @@
       <td>{{basicdetails.[0].delivery_terms}}</td>
       <td>{{basicdetails.[0].lead_time}}</td>
       <td>{{basicdetails.[0].payment_terms}}</td>
-      <td>{{basicdetails.[0].base_country_isocode}}</td>
+      <td>{{basicdetails.[0].isocode}}</td>
     </tr>
   </table>
 
