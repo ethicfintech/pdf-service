@@ -367,6 +367,8 @@
                     <tr><td class="i_lbl">Invoice Date</td><td class="i_sep">:</td><td>{{basicdetails.[0].inv_date}}</td></tr>
                     <tr><td class="i_lbl">Due Date</td><td class="i_sep">:</td><td>{{basicdetails.[0].due_date}}</td></tr>
                     <tr><td class="i_lbl">PO / Ref No.</td><td class="i_sep">:</td><td>{{default basicdetails.[0].order_no basicdetails.[0].reference_no}}</td></tr>
+                    {{#if branch.[0].name}}<tr><td class="i_lbl">Company</td><td class="i_sep">:</td><td>{{branch.[0].name}}</td></tr>{{/if}}
+                    {{#if branch.[0].vat}}<tr><td class="i_lbl">{{tax_label}}</td><td class="i_sep">:</td><td>{{branch.[0].vat}}</td></tr>{{/if}}
                 </table>
             </td>
             <td class="sep_col2"><div class="sep_line2"></div></td>
