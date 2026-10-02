@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Quotation - {{basicdetails.[0].inv_no}}</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #1f3556;
+    --navy-soft: #eaf0f7;
+    --line: #d9e1ea;
+    --label: #4a5568;
+    --muted: #8a94a3;
+  }
+
+  body {
+    font-family: ibmplexsansarabic;
+    font-size: 9px;
+    color: #1a202c;
+    background: #fff;
+    margin: 0 8mm;
+  }
+
+  .page { width: 100%; padding-top: 4px; }
+
+  table { border-collapse: collapse; }
+
+  .ico {
+    width: 10px; height: 10px;
+    vertical-align: -2px;
+    fill: none; stroke: var(--navy); stroke-width: 2;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  .ico.solid { fill: var(--navy); stroke: none; }
+
+  /* ── Top: company contact | quotation box ── */
+  .top { width: 100%; table-layout: fixed; margin-bottom: 12px; }
+  .top > tbody > tr > td { vertical-align: top; padding: 0; }
+
+  .co-line { margin-bottom: 5px; color: #2d3748; }
+  .co-line .ico { margin-right: 7px; }
+
+  .qbox { width: 100%; border: 1px solid var(--line); }
+  .qbox td { padding: 5px 8px; border-bottom: 1px solid var(--line); }
+  .qbox tr:last-child td { border-bottom: none; }
+  .qbox .q-lbl { background: #f3f6fa; color: var(--label); width: 45%; }
+  .qbox .q-sep { width: 6%; text-align: center; background: #f3f6fa; }
+  .qbox .q-val { font-weight: bold; font-size: 10px; }
+
+  /* ── Cards ── */
+  .row2 { width: 100%; table-layout: fixed; margin-bottom: 12px; }
+  .row2 > tbody > tr > td { vertical-align: top; padding: 0; }
+  .row2 > tbody > tr > td.gap { width: 2.5%; }
+
+  .card { border: 1px solid var(--line); }
+  .card-h {
+    background: var(--navy-soft);
+    color: var(--navy);
+    font-weight: bold;
+    font-size: 9.5px;
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  .card-h .ico { margin-right: 8px; width: 11px; height: 11px; }
+  .card-b { padding: 8px 10px; }
+
+  .kv { width: 100%; table-layout: fixed; }
+  .kv td { padding: 2.5px 0; vertical-align: top; }
+  .kv .k { width: 34%; color: var(--label); }
+  .kv .s { width: 5%; }
+  .kv .v { color: #1a202c; }
+  .kv .v.b { font-weight: bold; }
+  .kv .sub { color: var(--muted); font-size: 7.5px; }
+  .kv-split { border-top: 1px solid var(--line); margin: 6px 0; }
+
+  /* ── Items ── */
+  .items { width: 100%; table-layout: fixed; margin-bottom: 12px; border: 1px solid var(--line); }
+  .items th {
+    background: var(--navy);
+    color: #fff;
+    font-weight: bold;
+    font-size: 7.5px;
+    padding: 6px 3px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 1.25;
+  }
+  .items td {
+    padding: 7px 4px;
+    font-size: 8px;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--line);
+    text-align: center;
+  }
+  .items tbody tr:last-child td { border-bottom: none; }
+  .items .l { text-align: left; }
+  .items .r { text-align: right; }
+  .items .b { font-weight: bold; }
+
+  /* ── Summary ── */
+  /* full card width so the Grand Total band runs edge to edge */
+  .sum { width: calc(100% + 20px); margin: 0 -10px; }
+  .sum td { padding: 4px 10px; }
+  .sum .amt { text-align: right; }
+  .sum .gt td {
+    background: var(--navy-soft);
+    color: var(--navy);
+    font-weight: bold;
+    font-size: 11px;
+    padding: 7px 10px;
+  }
+  .sum-words { border-top: 1px solid var(--line); margin: 6px -10px -8px; padding: 7px 10px 8px; }
+  .sum-words .w-lbl { color: var(--label); margin-bottom: 3px; }
+  .sum-words .w-val { font-weight: bold; }
+
+  .notes { line-height: 1.6; min-height: 60px; }
+
+  .terms { line-height: 1.75; }
+
+  /* ── Info strip ── */
+  .strip { width: 100%; table-layout: fixed; border: 1px solid var(--line); margin-bottom: 18px; }
+  .strip td { padding: 9px 10px; vertical-align: top; border-left: 1px solid var(--line); }
+  .strip td:first-child { border-left: none; }
+  .strip .st-ico { width: 24px; vertical-align: top; }
+  .strip .st-ico .ico { width: 15px; height: 15px; }
+  .strip .st-t { color: var(--navy); font-weight: bold; margin-bottom: 3px; }
+  .strip .st-d { color: #2d3748; line-height: 1.5; }
+  .strip .inner { width: 100%; }
+  .strip .inner td { border: none; padding: 0; }
+
+  /* ── Footer ── */
+  .foot { width: 100%; table-layout: fixed; }
+  .foot td { vertical-align: bottom; padding: 0; line-height: 1.6; }
+  .sign { text-align: center; }
+  .sign-line { border-top: 1px solid #4a5568; width: 150px; margin: 0 0 3px auto; }
+  .sign-t { width: 150px; margin-left: auto; text-align: center; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  {{#with basicdetails.[0]}}
+
+  <!-- ══ TOP: company contact | quotation box ══ -->
+  <table class="top">
+    <colgroup><col style="width:60%"><col style="width:6%"><col style="width:34%"></colgroup>
+    <tr>
+      <td>
+        <div class="co-line"><svg class="ico" viewBox="0 0 24 24"><path d="M12 22s7-6.1 7-12a7 7 0 1 0-14 0c0 5.9 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>{{{joinAddress @root.branch.[0] ', '}}}</div>
+        {{#if @root.compprof.phone}}<div class="co-line"><svg class="ico" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>{{@root.compprof.phone}}</div>{{/if}}
+        {{#if @root.compprof.email}}<div class="co-line"><svg class="ico" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 6 10 7 10-7"/></svg>{{@root.compprof.email}}</div>{{/if}}
+        {{#if @root.compprof.website}}<div class="co-line"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>{{@root.compprof.website}}</div>{{/if}}
+      </td>
+      <td></td>
+      <td>
+        <table class="qbox">
+          <tr><td class="q-lbl">Quotation No</td><td class="q-sep">:</td><td class="q-val">{{inv_no}}</td></tr>
+          <tr><td class="q-lbl">Quotation Date</td><td class="q-sep">:</td><td class="q-val">{{inv_date}}</td></tr>
+          <tr><td class="q-lbl">Due Date</td><td class="q-sep">:</td><td class="q-val">{{due_date}}</td></tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <!-- ══ Bill To | Quotation Details ══ -->
+  <table class="row2">
+    <colgroup><col style="width:48.75%"><col style="width:2.5%"><col style="width:48.75%"></colgroup>
+    <tr>
+      <td>
+        <div class="card">
+          <div class="card-h"><svg class="ico solid" viewBox="0 0 24 24"><circle cx="12" cy="7" r="5"/><path d="M2 22a10 9 0 0 1 20 0z"/></svg>Bill To / Customer</div>
+          <div class="card-b">
+            <table class="kv">
+              <tr><td class="k">Customer Name</td><td class="s">:</td><td class="v b">{{@root.billing_address.[0].name}}</td></tr>
+              <tr><td class="k">Customer Code</td><td class="s">:</td><td class="v">{{@root.customer_details.[0].profile_code}}</td></tr>
+              <tr><td class="k">Address</td><td class="s">:</td><td class="v">{{{joinAddress @root.billing_address.[0] ', '}}}</td></tr>
+            </table>
+            <div class="kv-split"></div>
+            <table class="kv">
+              <tr><td class="k">Attention</td><td class="s">:</td><td class="v">{{attention}}</td></tr>
+              <tr><td class="k">Contact Name</td><td class="s">:</td><td class="v">{{#if contactname}}{{contactname}}{{else}}{{custprofilecontactname}}{{/if}}</td></tr>
+              <tr><td class="k">Contact No</td><td class="s">:</td><td class="v">{{#if contactno}}{{contactno}}{{else}}{{custprofilecontactnumber}}{{/if}}</td></tr>
+            </table>
+          </div>
+        </div>
+      </td>
+      <td class="gap"></td>
+      <td>
+        <div class="card">
+          <div class="card-h"><svg class="ico solid" viewBox="0 0 24 24"><path d="M5 2h10l5 5v15H5z"/><path d="M8 12h8M8 16h8M8 8h4" stroke="#fff" stroke-width="2"/></svg>Quotation Details</div>
+          <div class="card-b">
+            <table class="kv">
+              <tr><td class="k">Order No</td><td class="s">:</td><td class="v">{{order_no}}</td></tr>
+              <tr><td class="k">RFQ</td><td class="s">:</td><td class="v">{{rfq}}</td></tr>
+              <tr><td class="k">Employee Name</td><td class="s">:</td><td class="v">{{employeename}}<div class="sub">({{#if employeedesignation}}{{employeedesignation}}{{else}}Salesperson{{/if}})</div></td></tr>
+            </table>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <!-- ══ ITEMS ══ -->
+  <table class="items">
+    <colgroup>
+      <col style="width:3.5%"><col style="width:8%"><col style="width:11%"><col style="width:13%">
+      <col style="width:4.5%"><col style="width:5%"><col style="width:8.5%">
+      <col style="width:5%"><col style="width:7%"><col style="width:5%"><col style="width:7%"><col style="width:5%"><col style="width:7%">
+      <col style="width:10.5%">
+    </colgroup>
+    <thead>
+      <tr>
+        <th>#</th><th>HSN</th><th>Product / Service</th><th>Description</th><th>Qty</th><th>Unit</th><th>Price</th>
+        <th>IGST<br>%</th><th>IGST<br>Amount</th><th>CGST<br>%</th><th>CGST<br>Amount</th><th>SGST<br>%</th><th>SGST<br>Amount</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each @root.itemdetails}}
+      <tr>
+        <td>{{addOne @index}}</td>
+        <td>{{#if hsn}}{{hsn}}{{else}}{{hscode}}{{/if}}</td>
+        <td class="l b">{{item_name}}</td>
+        <td class="l">{{nl2br description}}</td>
+        <td>{{quantity}}</td>
+        <td>{{unit}}</td>
+        <td class="r">{{formatAmount price @root.bcdp}}</td>
+        <td>{{default igst_perc 0}}%</td>
+        <td class="r">{{formatAmount igst_amt @root.bcdp}}</td>
+        <td>{{default cgst_perc 0}}%</td>
+        <td class="r">{{formatAmount cgst_amt @root.bcdp}}</td>
+        <td>{{default sgst_perc 0}}%</td>
+        <td class="r">{{formatAmount sgst_amt @root.bcdp}}</td>
+        <td class="r b">{{formatAmount amount @root.bcdp}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <!-- ══ Notes | Summary ══ -->
+  <table class="row2">
+    <colgroup><col style="width:48.75%"><col style="width:2.5%"><col style="width:48.75%"></colgroup>
+    <tr>
+      <td>
+        <div class="card">
+          <div class="card-h"><svg class="ico solid" viewBox="0 0 24 24"><path d="M5 2h10l5 5v15H5z"/><path d="M8 12h8M8 16h8M8 8h4" stroke="#fff" stroke-width="2"/></svg>Notes / Additional Information</div>
+          <div class="card-b notes">
+            {{#if remark}}{{nl2br remark}}{{else}}Thank you for your enquiry. We are pleased to submit our quotation for your kind consideration.{{/if}}
+          </div>
+        </div>
+      </td>
+      <td class="gap"></td>
+      <td>
+        <div class="card">
+          <div class="card-h"><svg class="ico solid" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 11h2M14 11h2M8 15h2M14 15h2M8 19h2M14 19h2" stroke="#fff" stroke-width="2"/></svg>Summary</div>
+          <div class="card-b">
+            <table class="sum">
+              <tr><td>Subtotal</td><td class="amt">{{{currencySymbol isocode}}} {{formatAmount subtotal @root.bcdp}}</td></tr>
+              <tr><td>Discount (if any)</td><td class="amt">(-) {{{currencySymbol isocode}}} {{formatAmount (divide (add discount dld) @root.ccrate) @root.bcdp}}</td></tr>
+              <tr><td>Taxable Amount</td><td class="amt">{{{currencySymbol isocode}}} {{formatAmount (subtract subtotal (divide (add discount dld) @root.ccrate)) @root.bcdp}}</td></tr>
+              <tr><td>CGST ({{default @root.itemdetails.[0].cgst_perc 0}}%)</td><td class="amt">{{{currencySymbol isocode}}} {{formatAmount (divide cgst @root.ccrate) @root.bcdp}}</td></tr>
+              <tr><td>SGST ({{default @root.itemdetails.[0].sgst_perc 0}}%)</td><td class="amt">{{{currencySymbol isocode}}} {{formatAmount (divide sgst @root.ccrate) @root.bcdp}}</td></tr>
+              <tr><td>IGST ({{default @root.itemdetails.[0].igst_perc 0}}%)</td><td class="amt">{{{currencySymbol isocode}}} {{formatAmount (divide igst @root.ccrate) @root.bcdp}}</td></tr>
+              <tr class="gt"><td>Grand Total</td><td class="amt">{{{currencySymbol isocode}}} {{formatAmount (divide grand_total @root.ccrate) @root.bcdp}}</td></tr>
+            </table>
+            <div class="sum-words">
+              <div class="w-lbl">Amount in Words</div>
+              <div class="w-val">{{@root.bcamountinwords}}</div>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <!-- ══ Bank | Terms ══ -->
+  <table class="row2">
+    <colgroup><col style="width:48.75%"><col style="width:2.5%"><col style="width:48.75%"></colgroup>
+    <tr>
+      <td>
+        <div class="card">
+          <div class="card-h"><svg class="ico solid" viewBox="0 0 24 24"><path d="M12 2 2 7v2h20V7z"/><path d="M4 11h3v7H4zM10.5 11h3v7h-3zM17 11h3v7h-3zM2 20h20v2H2z"/></svg>Payment / Bank Details</div>
+          <div class="card-b">
+            <table class="kv">
+              <tr><td class="k">Bank Name</td><td class="s">:</td><td class="v">{{@root.bankdetails.name}}</td></tr>
+              <tr><td class="k">Account Name</td><td class="s">:</td><td class="v">{{@root.bankdetails.acc_name}}</td></tr>
+              <tr><td class="k">Account No</td><td class="s">:</td><td class="v">{{@root.bankdetails.acc_no}}</td></tr>
+              <tr><td class="k">{{#if (eq isocode "INR")}}IFSC Code{{else}}IBAN{{/if}}</td><td class="s">:</td><td class="v">{{@root.bankdetails.iban_no}}</td></tr>
+              <tr><td class="k">Branch</td><td class="s">:</td><td class="v">{{@root.bankdetails.branch_name}}</td></tr>
+            </table>
+          </div>
+        </div>
+      </td>
+      <td class="gap"></td>
+      <td>
+        <div class="card">
+          <div class="card-h"><svg class="ico solid" viewBox="0 0 24 24"><path d="M6 3h12a1 1 0 0 1 1 1v17a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M8 9h8M8 13h8M8 17h5" stroke="#fff" stroke-width="2"/></svg>Terms &amp; Conditions</div>
+          <div class="card-b terms">
+            {{#if terms_and_condition}}{{nl2br terms_and_condition}}{{else}}{{nl2br @root.invterms}}{{/if}}
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <!-- ══ Info strip ══ -->
+  <table class="strip">
+    <tr>
+      <td>
+        <table class="inner"><tr>
+          <td class="st-ico"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></td>
+          <td><div class="st-t">Validity</div><div class="st-d">This quotation is valid until<br>{{#if validity}}{{validity}}{{else}}{{due_date}}{{/if}}</div></td>
+        </tr></table>
+      </td>
+      <td>
+        <table class="inner"><tr>
+          <td class="st-ico"><svg class="ico solid" viewBox="0 0 24 24"><path d="M1 5h14v11H1zM15 9h4l4 4v3h-8z"/><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="18" r="2.2"/></svg></td>
+          <td><div class="st-t">Delivery Terms</div><div class="st-d">{{#if lead_time}}{{lead_time}}{{else}}As per agreement{{/if}}</div></td>
+        </tr></table>
+      </td>
+      <td>
+        <table class="inner"><tr>
+          <td class="st-ico"><svg class="ico solid" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 9h20" stroke="#fff" stroke-width="2"/></svg></td>
+          <td><div class="st-t">Payment Terms</div><div class="st-d">{{#if payment_terms}}{{payment_terms}}{{else}}As per agreement{{/if}}</div></td>
+        </tr></table>
+      </td>
+      <td>
+        <table class="inner"><tr>
+          <td class="st-ico"><svg class="ico solid" viewBox="0 0 24 24"><path d="M19.4 13a7.6 7.6 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.7 7.7 0 0 0-1.7-1L15 3h-4l-.4 2.7a7.7 7.7 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.6 7.6 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1c.5.4 1.1.7 1.7 1L11 21h4l.4-2.7c.6-.3 1.2-.6 1.7-1l2.5 1 2-3.5zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg></td>
+          <td><div class="st-t">Other Terms</div><div class="st-d">As applicable</div></td>
+        </tr></table>
+      </td>
+    </tr>
+  </table>
+
+  <!-- ══ Footer ══ -->
+  <table class="foot">
+    <colgroup><col style="width:60%"><col style="width:40%"></colgroup>
+    <tr>
+      <td>If you have any questions about this quotation, please contact us.<br>We look forward to your valued order.</td>
+      <td>
+        <div class="sign-line"></div>
+        <div class="sign-t">Authorized Signatory</div>
+        <div class="sign-t">For {{@root.branch.[0].name}}</div>
+      </td>
+    </tr>
+  </table>
+
+  {{/with}}
+
+</div>
+</body>
+</html>
