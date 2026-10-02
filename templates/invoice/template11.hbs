@@ -350,6 +350,7 @@
         max-width: 80px;
         float: right;
     }
+    .addr_parts span + span::before { content: ", "; }
 </style>
 </head>
 <body>
@@ -397,7 +398,10 @@
                     {{#if billing_address.[0].address_code}}
                     <div class="line">P.O. Box: {{billing_address.[0].address_code}}</div>
                     {{/if}}
-                    <div class="line">{{billing_address.[0].address_line1}}{{#if billing_address.[0].address_line2}}, {{billing_address.[0].address_line2}}{{/if}}{{#if billing_address.[0].address_line3}}, {{billing_address.[0].address_line3}}{{/if}}{{#if billing_address.[0].address_line4}}, {{billing_address.[0].address_line4}}{{/if}}{{#if billing_address.[0].address_line5}}, {{billing_address.[0].address_line5}}{{/if}}</div>
+                    {{!-- Address lines without address_code (already shown as P.O. Box above).
+                          joinAddress always appends address_code, so the lines are listed here;
+                          CSS puts ", " between the parts that exist. --}}
+                    <div class="line addr_parts">{{#with billing_address.[0]}}{{#if address_line1}}<span>{{address_line1}}</span>{{/if}}{{#if address_line2}}<span>{{address_line2}}</span>{{/if}}{{#if address_line3}}<span>{{address_line3}}</span>{{/if}}{{#if address_line4}}<span>{{address_line4}}</span>{{/if}}{{#if address_line5}}<span>{{address_line5}}</span>{{/if}}{{/with}}</div>
                     <table class="info_tbl">
                         {{#if billing_address.[0].vat}}
                         <tr><td class="i_lbl">VAT No.</td><td class="i_sep">:</td><td>{{billing_address.[0].vat}}</td></tr>
@@ -524,7 +528,7 @@
                 <table class="sign_wrap">
                     <tr>
                         <td>
-                            <div class="sign_for">For {{compprof.name}}</div>
+                            <div class="sign_for" style="width: 60%;">For {{compprof.name}}</div>
                             {{#ifFlag datasettings "d165"}}
                             <img class="sigimg" src="{{Signature}}" alt="Signature" onerror="this.style.display='none'"/>
                             {{/ifFlag}}
