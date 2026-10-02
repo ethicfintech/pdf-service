@@ -230,7 +230,7 @@
     <tr>
       <td class="wordscell" rowspan="5">
         {{bcamountinwords}}<br>
-        VAT Amount in words : {{vatamountinwords}}
+        {{#if vatamountinwords}}VAT Amount in words : {{vatamountinwords}}{{/if}}
       </td>
       <td class="totlbl">Sub Total ({{basicdetails.[0].isocode}})</td>
       {{!-- <td class="totlbl">Sub Total ({{basicdetails.[0].isocode}})</td> --}}
