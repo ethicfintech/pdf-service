@@ -29,8 +29,8 @@
     .kv .c { width: 4%; color: #000; }
 
     /* items */
-    .items td, .items th { border: 1px solid #000000; padding: 5px 6px; font-size: 10px; vertical-align: middle; }
-    .items th { font-weight: 100; text-align: center; }
+    .items td { border: 1px solid #000000; padding: 5px 6px; font-size: 9px; vertical-align: middle; }
+    .items th { font-weight: 100; text-align: center;font-size: 10px; vertical-align: middle; border: 1px solid #000000; padding: 5px 6px; }
     .items td.num { text-align: center; }
     .items td.rt { text-align: right; }
     .items .tot td { color: red; font-weight: 700; }
@@ -60,13 +60,13 @@
       <td style="padding-top:8px;">
         <table class="kv">
           <tr><td class="k">PO NO</td><td class="c">:</td><td>{{basicdetails.[0].inv_no}}</td></tr>
-          <tr><td class="k">ENQUIRY REFERENCE</td><td class="c">:</td><td></td></tr>
+          <tr><td class="k">ENQUIRY REFERENCE</td><td class="c">:</td><td>{{basicdetails.[0].enq_reference}}</td></tr>
           <tr><td class="k">VESSEL NAME</td><td class="c">:</td><td>{{basicdetails.[0].vessel_name}}</td></tr>
           <tr><td class="k">DATE</td><td class="c">:</td><td>{{basicdetails.[0].inv_date}}</td></tr>
           <tr><td class="k">PERSON</td><td class="c">:</td><td>{{basicdetails.[0].contactname}}</td></tr>
           <tr><td class="k">CONTACT</td><td class="c">:</td><td>{{basicdetails.[0].contactno}}</td></tr>
-          <tr><td class="k">EMAIL</td><td class="c">:</td><td></td></tr>
-          <tr><td class="k">DELIVERY PORT</td><td class="c">:</td><td>{{basicdetails.[0].delivery_port}}</td></tr>
+          <tr><td class="k">EMAIL</td><td class="c">:</td><td>{{basicdetails.[0].contactemail}}</td></tr>
+          <tr><td class="k">DELIVERY PORT</td><td class="c">:</td><td>{{basicdetails.[0].port_of_delivery}}</td></tr>
         </table>
       </td>
     </tr>
@@ -79,18 +79,18 @@
   <!-- ITEMS -->
   <table class="items mt">
     <colgroup>
-      <col style="width:6%">
-      <col style="width:36%">
-      <col style="width:9%">
-      <col style="width:9%">
+      <col style="width:4%">
+      <col style="width:42%">
+      <col style="width:8%">
+      <col style="width:7%">
       <col style="width:10%">
-      <col style="width:9%">
+      <col style="width:8%">
       <col style="width:10%">
       <col style="width:11%">
     </colgroup>
     <thead>
       <tr>
-        <th>S NO.</th>
+        <th>NO</th>
         <th>DESCRIPTION</th>
         <th>QTY</th>
         <th>UNIT</th>
@@ -122,12 +122,13 @@
         <td class="tval">{{formatAmount (sumProperty itemdetails 'disc_amt') bcdp}}</td>
       </tr>
       <tr class="tot">
-        <td colspan="7" class="tlbl">TOTAL PRICE IN {{basicdetails.[0].base_country_isocode}}</td>
+        <td colspan="7" class="tlbl">TOTAL PRICE IN {{basicdetails.[0].doc_country_isocode}}</td>
         <td class="tval">{{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
       </tr>
-      {{#if (eq basicdetails.[0].doc_country_isocode "AED")}}
+      {{!-- Show the base-currency total only when the document is in a different currency --}}
+      {{#if (neq basicdetails.[0].doc_country_isocode basicdetails.[0].base_country_isocode)}}
       <tr class="tot">
-        <td colspan="7" class="tlbl">TOTAL PRICE IN {{basicdetails.[0].doc_country_isocode}}</td>
+        <td colspan="7" class="tlbl">TOTAL PRICE IN {{basicdetails.[0].base_country_isocode}}</td>
         <td class="tval">{{formatAmount basicdetails.[0].grand_total bcdp}}</td>
       </tr>
       {{/if}}
@@ -150,7 +151,7 @@
     <div>TRN : {{branch.[0].vat}}</div>
     <table class="kv" style="width:40%;margin-top:4px;">
       <tr><td class="k" style="width:20%;color:#000;">Attn</td><td class="c" style="color:#000;">:</td><td>{{basicdetails.[0].contactname}}</td></tr>
-      <tr><td class="k" style="width:20%;color:#000;">EMAIL</td><td class="c" style="color:#000;">:</td><td></td></tr>
+      <tr><td class="k" style="width:20%;color:#000;">EMAIL</td><td class="c" style="color:#000;">:</td><td>{{basicdetails.[0].contactemail}}</td></tr>
     </table>
   </div>
 
