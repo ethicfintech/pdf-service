@@ -393,7 +393,7 @@
             <colgroup><col style="width:45%"><col style="width:5%"><col style="width:50%"></colgroup>
             <tr>
                 <td class="bt_col">
-                    <span class="badge">SELLER INFORMATION :</span>
+                    <span class="badge">SELLER :</span>
                     <div class="cname" style="padding-top: 10px;">{{branch.[0].name}}</div>
                     {{#if branch.[0].address_code}}
                     <div class="line">P.O. Box: {{branch.[0].address_code}}</div>
@@ -406,18 +406,18 @@
                         {{#if branch.[0].cr_no}}
                         <tr><td class="i_lbl">CR No.</td><td class="i_sep">:</td><td>{{branch.[0].cr_no}}</td></tr>
                         {{/if}}
-                        {{#if compprof.email}}
+                        {{!-- {{#if compprof.email}}
                         <tr><td class="i_lbl">Email</td><td class="i_sep">:</td><td>{{compprof.email}}</td></tr>
                         {{/if}}
                         {{#if compprof.phone}}
                         <tr><td class="i_lbl">Tel</td><td class="i_sep">:</td><td>{{compprof.phone}}</td></tr>
-                        {{/if}}
+                        {{/if}} --}}
                     </table>
                 </td>
                 <td class="sep_col"><div class="sep_line"></div></td>
                 <td class="ship_col">
                     <div class="ship_inner">
-                        <span class="badge">BUYER INFORMATION :</span>
+                        <span class="badge">BUYER :</span>
                         <div class="cname" style="padding-top: 10px;">{{billing_address.[0].name}}</div>
                         {{#if billing_address.[0].address_code}}
                         <div class="line">P.O. Box: {{billing_address.[0].address_code}}</div>
@@ -430,12 +430,12 @@
                             {{#if customer_details.[0].cr_no}}
                             <tr><td class="i_lbl">CR No.</td><td class="i_sep">:</td><td>{{customer_details.[0].cr_no}}</td></tr>
                             {{/if}}
-                            {{#if customer_details.[0].email}}
+                            {{!-- {{#if customer_details.[0].email}}
                             <tr><td class="i_lbl">Email</td><td class="i_sep">:</td><td>{{customer_details.[0].email}}</td></tr>
                             {{/if}}
                             {{#if customer_details.[0].contact_no1}}
                             <tr><td class="i_lbl">Tel</td><td class="i_sep">:</td><td>{{customer_details.[0].contact_no1}}</td></tr>
-                            {{/if}}
+                            {{/if}} --}}
                         </table>
                     </div>
                 </td>
