@@ -399,20 +399,20 @@
                     <div class="line">P.O. Box: {{branch.[0].address_code}}</div>
                     {{/if}}
                     <div class="line addr_parts">{{#with branch.[0]}}{{#if address_line1}}<span>{{address_line1}}</span>{{/if}}{{#if address_line2}}<span>{{address_line2}}</span>{{/if}}{{#if address_line3}}<span>{{address_line3}}</span>{{/if}}{{#if address_line4}}<span>{{address_line4}}</span>{{/if}}{{#if address_line5}}<span>{{address_line5}}</span>{{/if}}{{/with}}</div>
-                    <table class="info_tbl">
+                    {{!-- <table class="info_tbl">
                         {{#if branch.[0].vat}}
                         <tr><td class="i_lbl">VAT No.</td><td class="i_sep">:</td><td>{{branch.[0].vat}}</td></tr>
                         {{/if}}
                         {{#if branch.[0].cr_no}}
                         <tr><td class="i_lbl">CR No.</td><td class="i_sep">:</td><td>{{branch.[0].cr_no}}</td></tr>
-                        {{/if}}
+                        {{/if}} --}}
                         {{!-- {{#if compprof.email}}
                         <tr><td class="i_lbl">Email</td><td class="i_sep">:</td><td>{{compprof.email}}</td></tr>
                         {{/if}}
                         {{#if compprof.phone}}
                         <tr><td class="i_lbl">Tel</td><td class="i_sep">:</td><td>{{compprof.phone}}</td></tr>
                         {{/if}} --}}
-                    </table>
+                    {{!-- </table> --}}
                 </td>
                 <td class="sep_col"><div class="sep_line"></div></td>
                 <td class="ship_col">
