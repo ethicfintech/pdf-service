@@ -537,7 +537,7 @@
                         <td>
                             <div class="sign_for" style="width: 60%;">For {{compprof.name}}</div>
                             {{#ifFlag datasettings "d165"}}
-                            <img class="sigimg" src="{{Signature}}" alt="Signature" onerror="this.style.display='none'"/>
+                            <img src="{{Seal}}" class="sigimg" alt="Signature" style="text-align:center;max-height:{{ datasettings.d459 }}px; max-width:{{ datasettings.d459}}px;" onerror="this.style.display='none'"/>
                             {{/ifFlag}}
                             <div class="sign_line"></div>
                             {{#if basicdetails.[0].salesman_name}}
