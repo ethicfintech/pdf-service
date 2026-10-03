@@ -387,45 +387,54 @@
         </tr>
     </table>
 
-    {{!-- ── Bill To / Ship To ─────────────────────────── --}}
+    {{!-- ── Seller Information / Buyer Information ─────── --}}
     <div class="bt_ship_wrap">
         <table class="bt_ship">
             <colgroup><col style="width:45%"><col style="width:5%"><col style="width:50%"></colgroup>
             <tr>
                 <td class="bt_col">
-                    <span class="badge">BILL TO :</span>
-                    <div class="cname" style="padding-top: 10px;">{{billing_address.[0].name}}</div>
-                    {{#if billing_address.[0].address_code}}
-                    <div class="line">P.O. Box: {{billing_address.[0].address_code}}</div>
+                    <span class="badge">SELLER INFORMATION :</span>
+                    <div class="cname" style="padding-top: 10px;">{{branch.[0].name}}</div>
+                    {{#if branch.[0].address_code}}
+                    <div class="line">P.O. Box: {{branch.[0].address_code}}</div>
                     {{/if}}
-                    {{!-- Address lines without address_code (already shown as P.O. Box above).
-                          joinAddress always appends address_code, so the lines are listed here;
-                          CSS puts ", " between the parts that exist. --}}
-                    <div class="line addr_parts">{{#with billing_address.[0]}}{{#if address_line1}}<span>{{address_line1}}</span>{{/if}}{{#if address_line2}}<span>{{address_line2}}</span>{{/if}}{{#if address_line3}}<span>{{address_line3}}</span>{{/if}}{{#if address_line4}}<span>{{address_line4}}</span>{{/if}}{{#if address_line5}}<span>{{address_line5}}</span>{{/if}}{{/with}}</div>
+                    <div class="line addr_parts">{{#with branch.[0]}}{{#if address_line1}}<span>{{address_line1}}</span>{{/if}}{{#if address_line2}}<span>{{address_line2}}</span>{{/if}}{{#if address_line3}}<span>{{address_line3}}</span>{{/if}}{{#if address_line4}}<span>{{address_line4}}</span>{{/if}}{{#if address_line5}}<span>{{address_line5}}</span>{{/if}}{{/with}}</div>
                     <table class="info_tbl">
-                        {{#if billing_address.[0].vat}}
-                        <tr><td class="i_lbl">VAT No.</td><td class="i_sep">:</td><td>{{billing_address.[0].vat}}</td></tr>
+                        {{#if branch.[0].vat}}
+                        <tr><td class="i_lbl">VAT No.</td><td class="i_sep">:</td><td>{{branch.[0].vat}}</td></tr>
                         {{/if}}
-                        {{#if customer_details.[0].email}}
-                        <tr><td class="i_lbl">Email</td><td class="i_sep">:</td><td>{{customer_details.[0].email}}</td></tr>
+                        {{#if branch.[0].cr_no}}
+                        <tr><td class="i_lbl">CR No.</td><td class="i_sep">:</td><td>{{branch.[0].cr_no}}</td></tr>
                         {{/if}}
-                        {{#if customer_details.[0].contact_no1}}
-                        <tr><td class="i_lbl">Tel</td><td class="i_sep">:</td><td>{{customer_details.[0].contact_no1}}</td></tr>
+                        {{#if compprof.email}}
+                        <tr><td class="i_lbl">Email</td><td class="i_sep">:</td><td>{{compprof.email}}</td></tr>
+                        {{/if}}
+                        {{#if compprof.phone}}
+                        <tr><td class="i_lbl">Tel</td><td class="i_sep">:</td><td>{{compprof.phone}}</td></tr>
                         {{/if}}
                     </table>
                 </td>
                 <td class="sep_col"><div class="sep_line"></div></td>
                 <td class="ship_col">
                     <div class="ship_inner">
-                        <span class="badge">SHIP TO :</span>
-                        <div class="cname">{{shipping_address.[0].name}}</div>
-                        <div class="line">{{joinAddress shipping_address.[0] ', '}}</div>
+                        <span class="badge">BUYER INFORMATION :</span>
+                        <div class="cname" style="padding-top: 10px;">{{billing_address.[0].name}}</div>
+                        {{#if billing_address.[0].address_code}}
+                        <div class="line">P.O. Box: {{billing_address.[0].address_code}}</div>
+                        {{/if}}
+                        <div class="line addr_parts">{{#with billing_address.[0]}}{{#if address_line1}}<span>{{address_line1}}</span>{{/if}}{{#if address_line2}}<span>{{address_line2}}</span>{{/if}}{{#if address_line3}}<span>{{address_line3}}</span>{{/if}}{{#if address_line4}}<span>{{address_line4}}</span>{{/if}}{{#if address_line5}}<span>{{address_line5}}</span>{{/if}}{{/with}}</div>
                         <table class="info_tbl">
-                            {{#if basicdetails.[0].invoice_contactname}}
-                            <tr><td class="i_lbl">Contact Person</td><td class="i_sep">:</td><td>{{basicdetails.[0].invoice_contactname}}</td></tr>
+                            {{#if billing_address.[0].vat}}
+                            <tr><td class="i_lbl">VAT No.</td><td class="i_sep">:</td><td>{{billing_address.[0].vat}}</td></tr>
                             {{/if}}
-                            {{#if basicdetails.[0].invoice_contactno}}
-                            <tr><td class="i_lbl">Tel</td><td class="i_sep">:</td><td>{{basicdetails.[0].invoice_contactno}}</td></tr>
+                            {{#if customer_details.[0].cr_no}}
+                            <tr><td class="i_lbl">CR No.</td><td class="i_sep">:</td><td>{{customer_details.[0].cr_no}}</td></tr>
+                            {{/if}}
+                            {{#if customer_details.[0].email}}
+                            <tr><td class="i_lbl">Email</td><td class="i_sep">:</td><td>{{customer_details.[0].email}}</td></tr>
+                            {{/if}}
+                            {{#if customer_details.[0].contact_no1}}
+                            <tr><td class="i_lbl">Tel</td><td class="i_sep">:</td><td>{{customer_details.[0].contact_no1}}</td></tr>
                             {{/if}}
                         </table>
                     </div>
