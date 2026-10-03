@@ -234,6 +234,10 @@ function injectFonts(html) {
   return style + html;
 }
 
+// TEMPLATE_CACHE=false (e.g. in a local .env) re-reads .hbs files on every
+// request, so template edits show without restarting the service.
+const TEMPLATE_CACHE = process.env.TEMPLATE_CACHE !== "false";
+
 class TemplateService {
   constructor() {
     this.compiledTemplates = new Map();
@@ -582,6 +586,20 @@ class TemplateService {
       }
     });
 
+    // Splits multi-line terms into [{ num, text }] so templates can render a
+    // numbered list with a hanging indent. "1. Foo" → { num: "1.", text: "Foo" };
+    // lines without a leading number get num "".
+    Handlebars.registerHelper("termLines", function (text) {
+      return String(text || "")
+        .split(/\r\n|\n|\r/)
+        .map((l) => l.trim())
+        .filter(Boolean)
+        .map((l) => {
+          const m = l.match(/^(\d+[.)])\s*(.*)$/);
+          return m ? { num: m[1], text: m[2] } : { num: "", text: l };
+        });
+    });
+
     Handlebars.registerHelper("hasVat", function (items, options) {
       const hasVat = (items || []).some((i) => parseFloat(i.vat_amt) > 0);
 
@@ -766,7 +784,7 @@ class TemplateService {
       const templateData = this.prepareTemplateData(data);
 
       const cacheKey = `${docTypeFolder}/${templateName}`;
-      if (!this.compiledTemplates.has(cacheKey)) {
+      if (!TEMPLATE_CACHE || !this.compiledTemplates.has(cacheKey)) {
         const templatePath = path.join(
           __dirname,
           "..",
@@ -808,7 +826,7 @@ class TemplateService {
     try {
       const cacheKey = `reports/${templateName}`;
 
-      if (!this.compiledTemplates.has(cacheKey)) {
+      if (!TEMPLATE_CACHE || !this.compiledTemplates.has(cacheKey)) {
         const templatePath = path.join(
           __dirname,
           "..",
@@ -898,7 +916,7 @@ class TemplateService {
     try {
       const cacheKey = `timesheet/${templateName}`;
 
-      if (!this.compiledTemplates.has(cacheKey)) {
+      if (!TEMPLATE_CACHE || !this.compiledTemplates.has(cacheKey)) {
         const templatePath = path.join(
           __dirname,
           "..",
