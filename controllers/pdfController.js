@@ -417,7 +417,7 @@ class PdfController {
       const ds = pdfRequest.datasettings || {};
       const withUnit = (v, fallback) => {
         if (v === undefined || v === null || v === "") return fallback;
-        return /^[d.]+$/.test(String(v)) ? `${v}px` : String(v);
+        return /^[\d.]+$/.test(String(v)) ? `${v}px` : String(v);
       };
 
       const docMargin = (() => {
