@@ -621,7 +621,7 @@
           <tr>
               <td class="lbl">Discount</td>
               <td class="arl">الخصم</td>
-              <td class="val">{{formatAmount (divide basicdetails.[0].subtotal ccrate) bcdp}}</td>
+              <td class="val">{{formatAmount (divide (add basicdetails.[0].discount basicdetails.[0].dld) ccrate) bcdp}}</td>
           </tr>
           <tr>
             <td class="lbl">After Discount</td>
