@@ -443,6 +443,32 @@
             font-weight: bold;
         }
 
+        /* LOGISTICS DETAILS SECTION */
+        .logistics-section {
+            display: flex;
+            gap: 8px;
+            margin: 10px 0;
+            page-break-inside: avoid;
+        }
+
+        .logistics-box {
+            flex: 1;
+            border: 1px solid #999;
+            padding: 6px 8px;
+            background: #fafafa;
+        }
+
+        .logistics-title {
+            font-weight: bold;
+            font-size: 8pt;
+            margin-bottom: 6px;
+        }
+
+        .logistics-details {
+            font-size: 7pt;
+            line-height: 1.6;
+        }
+
         @media print {
             body {
                 -webkit-print-color-adjust: exact;
@@ -571,6 +597,32 @@
                 </div>
             </div>
         </div>
+
+        <!-- Logistics Details Section -->
+        {{#if MyInvoisDocument.details}}
+        <div class="logistics-section">
+            <div class="logistics-box">
+                <div class="logistics-title">REFERENCE DETAILS</div>
+                <div class="logistics-details">
+                    {{#if MyInvoisDocument.details.po_no}}<strong>PO No:</strong> {{MyInvoisDocument.details.po_no}}<br>{{/if}}
+                    {{#if MyInvoisDocument.details.port_name}}<strong>Port Name:</strong> {{MyInvoisDocument.details.port_name}}<br>{{/if}}
+                    {{#if MyInvoisDocument.details.payment_term}}<strong>Payment Term:</strong> {{MyInvoisDocument.details.payment_term}}<br>{{/if}}
+                    {{#if MyInvoisDocument.details.attn}}<strong>ATTN:</strong> {{MyInvoisDocument.details.attn}}<br>{{/if}}
+                    {{#if MyInvoisDocument.details.phone_no}}<strong>Phone No:</strong> {{MyInvoisDocument.details.phone_no}}{{/if}}
+                </div>
+            </div>
+            <div class="logistics-box">
+                <div class="logistics-title">VESSEL DETAILS</div>
+                <div class="logistics-details">
+                    {{#if MyInvoisDocument.details.vessel_name}}<strong>Vessel Name:</strong> {{MyInvoisDocument.details.vessel_name}}<br>{{/if}}
+                    {{#if MyInvoisDocument.details.voy_no}}<strong>Voy No:</strong> {{MyInvoisDocument.details.voy_no}}<br>{{/if}}
+                    {{#if MyInvoisDocument.details.vessel_activity}}<strong>Activity:</strong> {{MyInvoisDocument.details.vessel_activity}}<br>{{/if}}
+                    {{#if MyInvoisDocument.details.vessel_arrived}}<strong>Arrived:</strong> {{MyInvoisDocument.details.vessel_arrived}}<br>{{/if}}
+                    {{#if MyInvoisDocument.details.vessel_sailed}}<strong>Sailed:</strong> {{MyInvoisDocument.details.vessel_sailed}}{{/if}}
+                </div>
+            </div>
+        </div>
+        {{/if}}
 
         <!-- Line Items Section -->
         <div class="table-section">
