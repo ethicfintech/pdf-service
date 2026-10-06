@@ -1,0 +1,855 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PROFORMA INVOICE - {{basicdetails.[0].inv_no}}</title>
+    <style>
+      /* ─── RESET & BASE ─── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+        font-size: 10.5px;
+        line-height: 1.4;
+        margin: 0mm 4mm;
+      }
+
+      /* ─── COLOUR PALETTE ─── */
+      :root {
+        --blue: #1a56db;
+        --blue-dark: #1245b0;
+        --blue-light: #dde9ff;
+        --blue-pale: #f0f5ff;
+        --row-alt: #f5f8ff;
+        --border: #c8d4ee;
+        --text: #1a1a1a;
+        --white: #ffffff;
+      }
+
+      /* ─── INVOICE TITLE ─── */
+      .invoice-title {
+        text-align: center;
+        font-size: 17px;
+        font-weight: 800;
+        color: #0080ff;
+        letter-spacing: 0.5px;
+        padding: 7px 0 5px;
+      }
+      .title-line {
+        border: 0; /* Remove default border */
+        border-top: 1px solid #00008b; /* Set line color */
+        margin: 5px 0 10px 0;
+      }
+
+      /* ─── INVOICE NO BAR ─── */
+      .invoice-no-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #93142d;
+        padding: 5px 6px;
+        margin-bottom: 5px;
+        font-size: 10.5px;
+        font-weight: 600;
+      }
+
+      .invoice-no-bar .ar {
+        direction: rtl;
+      }
+
+      /* ─── SECTION HEADER ─── */
+      .section-header {
+        margin-top: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #0080ff;
+        font-weight: 700;
+        font-size: 10px;
+        padding: 4px 6px;
+        border-top: 1px dashed #bfbfbf;
+        border-left: 1px dashed #bfbfbf;
+        border-right: 1px dashed #bfbfbf;
+        border-bottom: none;
+      }
+
+      .section-header .ar {
+        direction: rtl;
+      }
+
+      /* ─── DETAILS TABLE ─────────────────────────────────────────
+     8-column structure matching the PDF exactly:
+     [EN Label 1] [EN Value 1] [EN Label 2] [EN Value 2]
+     [AR Value 2] [AR Label 2] [AR Value 1] [AR Label 1]
+
+     For simple rows (Name, Street) cols 2–4 and 5–7 are
+     each spanned with colspan=3 to fill the same width.
+  ─────────────────────────────────────────────────────────── */
+      .details-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 5px;
+        font-size: 10px;
+        table-layout: fixed;
+      }
+
+      .details-table td {
+        border: 1px dashed #bfbfbf;
+        padding: 3px 6px;
+        vertical-align: middle;
+        overflow: hidden;
+      }
+
+      /* Column widths — 8 cols */
+      .details-table col.c1 {
+        width: 11%;
+      } /* EN label 1      */
+      .details-table col.c2 {
+        width: 13%;
+      } /* EN value 1      */
+      .details-table col.c3 {
+        width: 8%;
+      } /* EN label 2      */
+      .details-table col.c4 {
+        width: 13%;
+      } /* EN value 2      */
+      .details-table col.c5 {
+        width: 13%;
+      } /* AR value 2      */
+      .details-table col.c6 {
+        width: 8%;
+      } /* AR label 2      */
+      .details-table col.c7 {
+        width: 13%;
+      } /* AR value 1      */
+      .details-table col.c8 {
+        width: 11%;
+      } /* AR label 1      */
+
+      /* Label cells — bold */
+      .details-table .lbl {
+        font-weight: 700;
+        background-color: #e8ecef;
+        color: #333;
+        white-space: nowrap;
+                font-size:9px;
+      }
+      .details-table .lbl-ar {
+        background-color: #e8ecef;
+        font-weight: 700;
+        color: #333;
+        text-align: right;
+        direction: rtl;
+        white-space: nowrap;
+        font-size:9px;
+      }
+
+      /* Value cells */
+      .details-table .val-ar {
+        text-align: right;
+        direction: rtl;
+        font-size:8px;
+      }
+
+      /* ─── META TABLE (dates) ─── */
+      .meta-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 5px;
+        font-size: 9.5px;
+      }
+
+      .meta-table th {
+        background: #e8ecef;
+        font-weight: bold;
+        text-align: center;
+        padding: 4px 3px;
+        border: 1px solid #bfbfbf;
+        font-weight: 700;
+        line-height: 1.45;
+        direction: rtl;
+      }
+
+      .meta-table th .en {
+        display: block;
+        direction: ltr;
+        font-weight: 600;
+        font-size: 9px;
+      }
+
+      .meta-table td {
+        text-align: center;
+        padding: 4px 3px;
+        border: 1px solid #bfbfbf;
+        font-size: 10px;
+      }
+
+      /* ─── ITEMS TABLE ─── */
+      .items-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 6px;
+        font-size: 9px;
+      }
+
+      .items-table th {
+        background: #e8ecef;
+        text-align: center;
+        padding: 4px 3px;
+        border: 1px solid #bfbfbf;
+        line-height: 1.4;
+        vertical-align: middle;
+      }
+
+      .items-table th .ar {
+        display: block;
+        direction: rtl;
+        font-size: 9px;
+      }
+      .items-table th .en {
+        display: block;
+        direction: ltr;
+        font-size: 8.5px;
+      }
+
+      .items-table td {
+        text-align: center;
+        padding: 4px 4px;
+        border: 1px solid #bfbfbf;
+        vertical-align: middle;
+      }
+      .items-table .desc-cell {
+        text-align: right;
+        direction: rtl;
+        padding: 4px 6px;
+        font-size: 9px;
+        line-height: 1.5;
+      }
+
+      .items-table .desc-cell .sub {
+        font-size: 8.5px;
+        color: #555;
+        direction: ltr;
+        text-align: left;
+      }
+
+      /* ─── TOTALS ─── */
+      /* ─── TOTALS ─── */
+      .totals-section {
+        margin-bottom: 6px;
+      }
+
+      .totals-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 9px;
+        font-weight: bold;
+      }
+
+      .totals-table td {
+        padding: 3.5px 7px;
+        border: 1px solid #bfbfbf;
+        vertical-align: middle;
+      }
+
+      .totals-table .lbl-en {
+        width: 18%;
+      }
+      .totals-table .val {
+        width: 20%;
+        text-align: center;
+        font-weight: 600;
+        background: #e8ecef;
+      }
+      .totals-table .lbl-ar {
+        width: 28%;
+        text-align: right;
+        direction: rtl;
+      }
+
+      /* Amount in Words cell */
+      .amount-words-cell {
+        width: 34%;
+        padding: 0 !important;
+        border-left: none !important;
+        vertical-align: top;
+      }
+
+      .amount-words {
+        height: 100%;
+        padding: 8px 6px;
+        font-size: 9.5px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        line-height: 1.5;
+        box-sizing: border-box;
+      }
+
+      .amount-words .words-label {
+        font-size: 9.5px;
+        font-weight: bold;
+      }
+      .amount-words .words-en {
+        font-size: 9px;
+      }
+      .amount-words .words-ar {
+        font-size: 9px;
+        direction: rtl;
+      }
+
+      /* ─── PAGE 2 – BANK TABLE ─── */
+      /* ─────────────────────────────────────────────
+   BANK / SIGNATURE TABLE
+   ───────────────────────────────────────────── */
+
+      .bank-outer-table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+        font-size: 10px;
+        border: 1px solid #bfbfbf;
+      }
+
+      .bank-outer-table th {
+        background: #e8ecef;
+        text-align: center;
+        padding: 5px 6px;
+        border: 1px solid #bfbfbf;
+        font-weight: 700;
+        font-size: 10.5px;
+      }
+
+      .bank-outer-table td {
+        vertical-align: top;
+        padding: 0;
+      }
+
+      /* ───────── BANK DETAILS COLUMN ───────── */
+
+      .bank-cell {
+        width: 42%;
+        padding: 0 !important;
+      }
+
+      .bank-inner-table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+        font-size: 9px;
+      }
+
+      .bank-inner-table tr td {
+        border: 1px solid #bfbfbf;
+        padding: 6px 6px;
+        vertical-align: top;
+      }
+
+      .bank-inner-table .bk-lbl {
+        width: 40%;
+        font-weight: 700;
+        white-space: normal;
+        line-height: 1.35;
+      }
+
+      .bank-inner-table .bk-val {
+        width: 60%;
+        direction: ltr;
+        text-align: left;
+        line-height: 1.35;
+      }
+
+      /* ───────── SIGNATURE COLUMNS ───────── */
+
+      .sig-cell {
+        width: 20%;
+        text-align: center;
+        vertical-align: middle !important;
+        padding: 6px !important;
+      }
+
+      .sig-area {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .stamp-circle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .stamp-circle img {
+        object-fit: contain;
+      }
+
+      .sig-label {
+        font-size: 8.5px;
+        color: #000;
+        text-align: center;
+        line-height: 1.45;
+      }
+
+      /* ───────── QR COLUMN ───────── */
+
+      .qr-cell {
+        width: 120px;
+        text-align: center;
+        vertical-align: middle !important;
+        padding: 6px !important;
+      }
+
+      .qr-placeholder {
+        width: 110px;
+        height: 110px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        overflow: hidden;
+        background: transparent;
+        border: none;
+      }
+
+      .qr-placeholder::before {
+        display: none;
+      }
+
+      .qr-placeholder img {
+        width: 100%;
+        height: auto;
+        max-width: 110px;
+        max-height: 110px;
+      }
+
+      .qr-placeholder span {
+        position: relative;
+        z-index: 1;
+        font-size: 7.5px;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- ══════════════════════════════════════════════
+     PAGE 1  –  MAIN INVOICE
+═══════════════════════════════════════════════ -->
+    <div class="page">
+
+      <div class="invoice-title">
+        PROFORMA INVOICE&nbsp; / &nbsp; الفاتورة الأولية
+      </div>
+      <hr class="title-line" />
+      <!-- INVOICE NO BAR -->
+      <div class="invoice-no-bar">
+        <span><strong>Invoice No :</strong> &nbsp; {{basicdetails.[0].inv_no}}</span>
+        <span class="ar"><strong>رقم الفاتورة : </strong>&nbsp; {{#if basicdetails.[0].inv_no_arabic}}{{basicdetails.[0].inv_no_arabic}}{{else}}{{basicdetails.[0].inv_no}}{{/if}}
+        </span>
+      </div>
+
+      <div class="section-header">
+        <span>■ Our Details:</span>
+        <span class="ar">■ تفاصيل شركتنا  :</span>
+      </div>
+      <table class="details-table">
+        <colgroup>
+          <col class="c1" /><col class="c2" /><col class="c3" /><col
+            class="c4"
+          />
+          <col class="c5" /><col class="c6" /><col class="c7" /><col
+            class="c8"
+          />
+        </colgroup>
+        <tbody>
+          <!-- Name — simple row (colspan for middle) -->
+          <tr>
+            <td class="lbl">Name:</td>
+            <td colspan="3"><b>{{branch.[0].name}}</b></td>
+            <td colspan="3" class="val-ar"><b>{{branch_lang2.[0].name}}</b></td>
+            <td class="lbl-ar">الاسم:</td>
+          </tr>
+          <!-- Street Name — simple row -->
+          <tr>
+            <td class="lbl">Street Name:</td>
+            <td colspan="3">{{branch.[0].address_line2}}</td>
+            <td colspan="3" class="val-ar">{{branch_lang2.[0].address_line2}}</td>
+            <td class="lbl-ar">اسم الشارع :</td>
+          </tr>
+          <!-- Building No + City — compound row (all 8 cols) -->
+          <tr>
+            <td class="lbl">Building No:</td>
+            <td style="font-size: font-size:8.5px;">{{branch.[0].address_line1}}</td>
+            <td class="lbl">City:</td>
+            <td style="font-size: font-size:8.5px;">{{branch.[0].address_line4}}</td>
+            <td class="val-ar" style="font-size:8.5px">{{branch_lang2.[0].address_line4}}</td>
+            <td class="lbl-ar">مدينة :</td>
+            <td class="val-ar" style="font-size:8.5px">{{branch_lang2.[0].address_line1}}</td>
+            <td class="lbl-ar">رقم المبنى :</td>
+          </tr>
+          <!-- Addl. No + District -->
+          <tr>
+            <td class="lbl">Addl. No:</td>
+            <td style="font-size: font-size:8.5px;">{{branch.[0].additional_no}}</td>
+            <td class="lbl">District:</td>
+            <td style="font-size: font-size:8.5px;">{{branch.[0].address_line3}}</td>
+            <td class="val-ar" style="font-size:8.5px">{{branch_lang2.[0].address_line3}}</td>
+            <td class="lbl-ar">الحي :</td>
+            <td class="val-ar" style="font-size:8.5px">{{branch_lang2.[0].additional_no}}</td>
+            <td class="lbl-ar">رقم إضافي :</td>
+          </tr>
+          <!-- Postal Code + Country -->
+          <tr>
+            <td class="lbl">Postal Code:</td>
+            <td style="font-size: font-size:8.5px;">{{branch.[0].address_code}}</td>
+            <td class="lbl">Country:</td>
+            <td style="font-size: font-size:8.5px;">{{branch.[0].address_line5}}</td>
+            <td class="val-ar" style="font-size:8.5px">{{branch_lang2.[0].address_line5}}</td>
+            <td class="lbl-ar">البلد :</td>
+            <td class="val-ar" style="font-size:8.5px">{{branch_lang2.[0].address_code}}</td>
+            <td class="lbl-ar">رمز بريدي :</td>
+          </tr>
+          <!-- VAT Number + CR No -->
+          <tr>
+            <td class="lbl" style="font-size:9px">VAT Number:</td>
+            <td style="font-size:8.5px"><b>{{branch.[0].vat}}</b></td>
+            <td class="lbl" style="font-size:9px">CR No:</td>
+            <td style="font-size:8.5px">{{branch.[0].cr_no}}</td>
+            <td class="val-ar" style="font-size:8.5px">{{branch_lang2.[0].cr_no}}</td>
+            <td class="lbl-ar" style="font-size:9px">السجل التجاري :</td>
+            <td class="val-ar" style="font-size:8.5px">{{branch_lang2.[0].vat}}</td>
+            <td class="lbl-ar" style="font-size:9px">رقم ضريبة :</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- ══ CLIENT DETAILS ══ -->
+      <div class="section-header">
+        <span>■ Client Details:</span>
+        <span class="ar">■ تفاصيل شركة العميل  :</span>
+      </div>
+      <table class="details-table">
+        <colgroup>
+          <col class="c1" /><col class="c2" /><col class="c3" /><col
+            class="c4"
+          />
+          <col class="c5" /><col class="c6" /><col class="c7" /><col
+            class="c8"
+          />
+        </colgroup>
+        <tbody>
+          <!-- Name -->
+          <tr>
+            <td class="lbl">Name:</td>
+            <td colspan="3"><b>{{billing_address.[0].name}}</b></td>
+            <td colspan="3" class="val-ar"><b>{{billing_address_lang2.[0].name}}</b></td>
+            <td class="lbl-ar">الاسم :</td>
+          </tr>
+          <!-- Street Name -->
+          <tr>
+            <td class="lbl">Street Name:</td>
+            <td colspan="3">{{billing_address.[0].address_line2}}</td>
+            <td colspan="3" class="val-ar">{{billing_address_lang2.[0].address_line2}}</td>
+            <td class="lbl-ar">اسم الشارع :</td>
+          </tr>
+          <!-- Building No + City -->
+          <tr>
+            <td class="lbl">Building No:</td>
+            <td style="font-size:8.5px">{{billing_address.[0].address_line1}}</td>
+            <td class="lbl">City:</td>
+            <td style="font-size:8.5px">{{billing_address.[0].address_line4}}</td>
+            <td class="val-ar" style="font-size:8.5px">{{billing_address_lang2.[0].address_line4}}</td>
+            <td class="lbl-ar">مدينة :</td>
+            <td class="val-ar" style="font-size:8.5px">{{billing_address_lang2.[0].address_line1}}</td>
+            <td class="lbl-ar">رقم المبنى :</td>
+          </tr>
+          <!-- Addl. No + District -->
+          <tr>
+            <td class="lbl">Addl. No:</td>
+            <td style="font-size:8.5px">{{customer_details.[0].additional_no}}</td>
+            <td class="lbl">District:</td>
+            <td style="font-size:8.5px">{{billing_address.[0].address_line3}}</td>
+            <td class="val-ar" style="font-size:8.5px">{{billing_address_lang2.[0].address_line3}}</td>
+            <td class="lbl-ar">الحي :</td>
+            <td class="val-ar" style="font-size:8.5px">{{customer_details.[0].additional_no_lang2}}</td>
+            <td class="lbl-ar">رقم إضافي :</td>
+          </tr>
+          <!-- Postal Code + Country -->
+          <tr>
+            <td class="lbl">Postal Code:</td>
+            <td style="font-size:8.5px">{{billing_address.[0].address_code}}</td>
+            <td class="lbl">Country:</td>
+            <td style="font-size:8.5px">{{billing_address.[0].address_line5}}</td>
+            <td class="val-ar" style="font-size:8.5px">{{billing_address_lang2.[0].address_line5}}</td>
+            <td class="lbl-ar">البلد :</td>
+            <td class="val-ar" style="font-size:8.5px">{{billing_address_lang2.[0].address_code}}</td>
+            <td class="lbl-ar">رمز بريدي :</td>
+          </tr>
+          <!-- VAT Number + CR No -->
+          <tr>
+            <td class="lbl" style="font-size:9px;font-weight:bold;">VAT Number:</td>
+            <td style="font-size:8.5px"><b>{{billing_address.[0].vat}}</b></td>
+            <td class="lbl" style="font-size:9px">CR No:</td>
+            <td style="font-size:8.5px">{{customer_details.[0].cr_no}}</td>
+            <td class="val-ar" style="font-size:8.5px">{{customer_details.[0].cr_no_lang2}}</td>
+            <td class="lbl-ar" style="font-size:9px">السجل التجاري :</td>
+            <td class="val-ar" style="font-size:8.5px"><b>{{billing_address_lang2.[0].vat}}</b></td>
+            <td class="lbl-ar" style="font-size:9px">رقم ضريبة :</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- ══ META / DATES ROW ══ -->
+      <table class="meta-table">
+        <thead>
+          <tr>
+            <th>تاريخ الفاتورة<span class="en">Invoice Date</span></th>
+            <th>تاريخ التسليم<span class="en">Supply Date</span></th>
+            <th>رقم أمر الشراء<span class="en">Contract / PO No</span></th>
+            <th>تاريخ الاستحقاق<span class="en">Due Date</span></th>
+            <th>فترة الفاتورة<span class="en">Invoice Period</span></th>
+            <th>رقم المرجع<span class="en">Project / Reference No</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{basicdetails.[0].inv_date}}</td>
+            <td>{{basicdetails.[0].sup_date}}</td>
+            <td>{{basicdetails.[0].order_no}}</td>
+            <td>{{basicdetails.[0].due_date}}</td>
+            <td>{{basicdetails.[0].inv_from}} - {{basicdetails.[0].inv_to}}</td>
+            <td>{{basicdetails.[0].reference_no}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- ══ LINE ITEMS TABLE ══ -->
+      <table class="items-table">
+        <thead>
+          <tr>
+            <th style="width:12%">
+              <span class="ar">إالجمالى</span>
+              <span class="en">Total Incl.VAT ({{basicdetails.[0].currency_isocode}})</span>
+            </th>
+            <th style="width:11%">
+              <span class="ar"> مبلغ ضريبة</span>
+              <span class="en">VAT Amount ({{basicdetails.[0].currency_isocode}})</span>
+            </th>
+            <th style="width:5%">
+              <span class="ar">ضريبة</span>
+              <span class="en">VAT%</span>
+            </th>
+            <th style="width:13%">
+              <span class="ar">السعرالإجمالى غير ضريبة</span>
+              <span class="en">Total Excl. VAT ({{basicdetails.[0].currency_isocode}})</span>
+            </th>
+            <th style="width:10%">
+              <span class="ar">سعر الوحدة</span>
+              <span class="en">Unit Rate ({{basicdetails.[0].currency_isocode}})</span>
+            </th>
+            <th style="width:7%">
+              <span class="ar">الكمية</span>
+              <span class="en">Qty</span>
+            </th>
+            <th style="width:7%">
+              <span class="ar">وحدة</span>
+              <span class="en">Unit</span>
+            </th>
+            <th style="width:24%">
+              <span class="ar">الوصف</span>
+              <span class="en">Nature of Goods / Services</span>
+            </th>
+            <th style="width:8%">
+              <span class="ar">الرمز(المخزون)</span>
+              <span class="en">Code (SKU)</span>
+            </th>
+            <th style="width:3%">
+              <span class="ar">م</span>
+              <span class="en">#</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each itemdetails}}
+          <tr>
+            <td>{{formatAmount amount ../bcdp}}</td>
+            <td>{{formatAmount vat_amt ../bcdp}}</td>
+            <td>{{vat_perc}}%</td>
+            <td>{{formatAmount taxable ../bcdp}}</td>
+            <td>{{formatAmount price ../bcdp}}</td>
+            <td>{{formatAmount quantity ../bcdp}}</td>
+            <td>{{unit}}</td>
+            <td class="desc-cell">
+              {{item_name}}
+              {{#if name_lang2}}<br /><span class="sub">{{name_lang2}}</span>{{/if}}
+              {{#if description}}<br /><span style="font-size:8px;color:#666;">{{description}}</span>{{/if}}
+            </td>
+            <td>{{item_code}}</td>
+            <td>{{addOne @index}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      <!-- ══ TOTALS ══ -->
+      <div class="totals-section">
+        <table class="totals-table">
+          <tr>
+            <td class="lbl-en">SubTotal ({{basicdetails.[0].currency_isocode}})</td>
+            <td class="val">{{formatAmount basicdetails.[0].subtotal bcdp}}</td>
+            <td class="lbl-ar">المجموع الفرعي ({{#if (eq basicdetails.[0].currency_isocode "SAR")}}ريال سعودى{{else}}{{basicdetails.[0].currency_isocode}}{{/if}})</td>
+
+            <!-- Amount in words with dynamic rowspan -->
+            <td class="amount-words-cell" rowspan="7">
+              <div class="amount-words">
+                <span class="words-label">Amount in words :</span>
+                <span class="words-en">{{bcamountinwords}}</span>
+                <span class="words-ar">{{bcamountinwordsar}}</span>
+              </div>
+            </td>
+          </tr>
+
+            {{!-- ZATCA Discount Details --}}
+            {{#if zatcadiscount}}
+                {{#each zatcadiscount}}
+                <tr>
+                    <!-- English Reason -->
+                    <td class="lbl-en">{{reason_name}}</td>
+
+                    <!-- Discount Amount -->
+                    <td class="val">{{formatAmount (divide dld ../ccrate) ../bcdp}}</td>
+
+                    <!-- Arabic Reason -->
+                    <td class="lbl-ar">{{reason_name_lang2}}</td>
+                </tr>
+                {{/each}}
+            <tr>
+                <td class="lbl-en">Total After Discount ({{basicdetails.[0].currency_isocode}})</td>
+                <td class="val">{{formatAmount (subtract basicdetails.[0].subtotal (divide zatcadiscount.[0].dld ccrate)) bcdp}}</td>
+                <td class="lbl-ar">المبلغ بعد الخصم ({{#if (eq basicdetails.[0].currency_isocode "SAR")}}ريال سعودى{{else}}{{basicdetails.[0].currency_isocode}}{{/if}})</td>
+            </tr>
+            {{else}}
+            <tr>
+                <td class="lbl-en">Total Discount ({{basicdetails.[0].currency_isocode}})</td>
+                <td class="val">{{formatAmount (divide basicdetails.[0].discount ccrate) bcdp}}</td>
+                <td class="lbl-ar">إجمالي الخصم ({{#if (eq basicdetails.[0].currency_isocode "SAR")}}ريال سعودى{{else}}{{basicdetails.[0].currency_isocode}}{{/if}})</td>
+            </tr>
+            <tr>
+                <td class="lbl-en">Total After Discount ({{basicdetails.[0].currency_isocode}})</td>
+                <td class="val">{{formatAmount (subtract basicdetails.[0].subtotal (divide basicdetails.[0].discount ccrate)) bcdp}}</td>
+                <td class="lbl-ar">المبلغ بعد الخصم ({{#if (eq basicdetails.[0].currency_isocode "SAR")}}ريال سعودى{{else}}{{basicdetails.[0].currency_isocode}}{{/if}})</td>
+            </tr>
+            {{/if}}
+
+          <tr>
+            <td class="lbl-en">VAT Amount ({{basicdetails.[0].currency_isocode}})</td>
+            <td class="val">{{formatAmount (divide basicdetails.[0].vatamt ccrate) bcdp}}</td>
+            <td class="lbl-ar">ضريبة القيمة المضافة ({{#if (eq basicdetails.[0].currency_isocode "SAR")}}ريال سعودى{{else}}{{basicdetails.[0].currency_isocode}}{{/if}})</td>
+          </tr>
+
+          <tr>
+            <td class="lbl-en">Amount Incl.VAT ({{basicdetails.[0].currency_isocode}})</td>
+            <td class="val">{{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
+            <td class="lbl-ar">المبلغ ضريبة القيمة المضافة ({{#if (eq basicdetails.[0].currency_isocode "SAR")}}ريال سعودى{{else}}{{basicdetails.[0].currency_isocode}}{{/if}})</td>
+          </tr>
+
+          {{#if (eq datasettings.d282 "1")}}
+            <tr>
+              <td class="lbl-en">Balance Due ({{basicdetails.[0].currency_isocode}})</td>
+              <td class="val"></td>
+              <td class="lbl-ar">الإجمالي المبلغ المستحق ({{#if (eq basicdetails.[0].currency_isocode "SAR")}}ريال سعودى{{else}}{{basicdetails.[0].currency_isocode}}{{/if}})</td>
+            </tr>
+          {{/if}}
+
+          {{#if (eq datasettings.d291 "1")}}
+            <tr>
+              <td class="lbl-en">Balance Due ({{basicdetails.[0].currency_isocode}})</td>
+              <td class="val"></td>
+              <td class="lbl-ar">الإجمالي المبلغ المستحق ({{#if (eq basicdetails.[0].currency_isocode "SAR")}}ريال سعودى{{else}}{{basicdetails.[0].currency_isocode}}{{/if}})</td>
+            </tr>
+          {{/if}}
+        </table>
+      </div>
+      <!-- BANK / SIGNATURE TABLE -->
+      <!-- BANK / SIGNATURE TABLE -->
+      <table class="bank-outer-table">
+        <thead>
+          <tr>
+            <th style="width: 50%;">Bank Details&nbsp;/&nbsp;التفاصيل المصرفية</th>
+            <th style="width: 25%;">Prepared By&nbsp;/&nbsp;معد الفاتورة</th>
+            <th style="width: 25%;">Received By&nbsp;/&nbsp;فاتورة مستلم</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <!-- BANK DETAILS -->
+            <td class="bank-cell">
+              <table class="bank-inner-table">
+                <tr>
+                  <td class="bk-lbl" style="border: 1px solid #bfbfbf;border-left:none;">ACCOUNT NAME / اسم الحساب</td>
+                  <td class="bk-val" style="border: 1px solid #bfbfbf;">{{bankdetails.acc_name}}</td>
+                </tr>
+                <tr>
+                  <td class="bk-lbl" style="border: 1px solid #bfbfbf;border-left:none;">BANK / بنك</td>
+                  <td class="bk-val" style="border: 1px solid #bfbfbf;">{{bankdetails.name}}</td>
+                </tr>
+                <tr>
+                  <td class="bk-lbl" style="border: 1px solid #bfbfbf;border-left:none;">ACCOUNT / الحساب</td>
+                  <td class="bk-val" style="border: 1px solid #bfbfbf;">{{bankdetails.acc_no}}</td>
+                </tr>
+                <tr>
+                  <td class="bk-lbl" style="border: 1px solid #bfbfbf;border-left:none;">IBAN / آيبان</td>
+                  <td class="bk-val" style="font-size:8.5px;border: 1px solid #bfbfbf;">{{bankdetails.iban_no}}</td>
+                </tr>
+                <tr>
+                  <td class="bk-lbl" style="border: 1px solid #bfbfbf;border-left:none;">SWIFT / سويفت</td>
+                  <td class="bk-val" style="border: 1px solid #bfbfbf;">{{bankdetails.swift_no}}</td>
+                </tr>
+                <tr>
+                  <td class="bk-lbl" style="border: 1px solid #bfbfbf;border-left:none;">BRANCH</td>
+                  <td class="bk-val" style="border: 1px solid #bfbfbf;">{{bankdetails.branch_name}}</td>
+                </tr>
+              </table>
+            </td>
+
+            <!-- PREPARED BY -->
+            <td class="sig-cell" style="border: 1px solid #bfbfbf;">
+              <div class="sig-area">
+                <div class="stamp-circle">
+                  <img class="seal-img" src="{{Seal}}" alt="Seal" style="max-height:{{default datasettings.d459 '120'}}px; max-width:{{default datasettings.d459 '180'}}px;" onerror="this.style.display='none'"/>
+                </div>
+                <div class="sig-label">
+                  Signature with Stamp<br />
+                  التوقيع مع الختم
+                </div>
+              </div>
+            </td>
+
+            <!-- RECEIVED BY -->
+            <td class="sig-cell" style="border: 1px solid #bfbfbf;">
+              <div class="sig-area">
+                <div style="height:90px; width:90px;"></div>
+                <div class="sig-label">
+                  Signature with Stamp<br />
+                  التوقيع مع الختم
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+  </body>
+</html>
