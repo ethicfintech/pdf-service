@@ -329,9 +329,9 @@
   <table class="items-table">
     <colgroup>
       <col style="width:3.5%">
-      {{!-- Description width: 37% base, -11% when the Discount column shows, -8% when the Unit column (AED) shows --}}
-      <col style="width:{{#if (eq @root.basicdetails.[0].base_country_isocode "AED")}}{{#hasDiscount itemdetails}}19{{else}}30{{/hasDiscount}}{{else}}{{#hasDiscount itemdetails}}27{{else}}38{{/hasDiscount}}{{/if}}%">
-      {{#if (eq @root.basicdetails.[0].base_country_isocode "AED")}}<col style="width:8%">{{/if}}
+      {{!-- Description width: 30%, or 19% when the Discount column (11%) shows; all columns total 100% --}}
+      <col style="width:{{#hasDiscount itemdetails}}19{{else}}30{{/hasDiscount}}%">
+      <col style="width:8%">
       <col style="width:11%">
       <col style="width:11%">
       <col style="width:11%">
@@ -343,7 +343,7 @@
       <tr>
         <th>#</th>
         <th>Item Description</th>
-        {{#if (eq @root.basicdetails.[0].base_country_isocode "AED")}}<th>Unit</th>{{/if}}
+        <th>Unit</th>
         <th>Qty</th>
         <th>Price</th>
         <th>Item Total</th>
@@ -357,7 +357,7 @@
       <tr>
         <td class="center">{{addOne @index}}</td>
         <td class="left">{{item_name}}{{#if name_lang2}}<div style="font-size:10px;color:#444;">{{nl2br name_lang2}}</div>{{/if}}{{#if description}}<div style="font-size:10px;color:#444;">{{nl2br description}}</div>{{/if}}</td>
-        {{#if (eq @root.basicdetails.[0].base_country_isocode "AED")}}<td class="center">{{unit}}</td>{{/if}}
+        <td class="center">{{unit}}</td>
         <td class="center">{{quantity}}</td>
         <td class="right">{{formatAmount price ../bcdp}}</td>
         <td class="right">{{formatAmount taxable ../bcdp}}</td>
