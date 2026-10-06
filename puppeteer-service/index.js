@@ -16,6 +16,19 @@ let isLaunching     = false;
 const MAX_REQUESTS_BEFORE_RECYCLE = 8;
 const MAX_IDLE_MS = 3 * 60 * 1000;
 
+async function closeBrowser(browser) {
+  if (!browser) return;
+  try { await browser.close(); } catch (_) {}
+  // Force-kill by PID if the process is still alive after close()
+  try {
+    const proc = browser.process();
+    if (proc && proc.pid) {
+      process.kill(proc.pid, 'SIGKILL');
+      console.log(`Force-killed chromium pid ${proc.pid}`);
+    }
+  } catch (_) {}
+}
+
 // ── Chrome args ────────────────────────────────────────────
 const CHROME_ARGS = [
   '--no-sandbox',
@@ -71,7 +84,7 @@ async function getBrowser() {
   const idleMs = Date.now() - lastRequestTime;
   if (cachedBrowser && lastRequestTime > 0 && idleMs > MAX_IDLE_MS) {
     console.log(`Idle ${Math.round(idleMs / 1000)}s — relaunching`);
-    try { await cachedBrowser.close(); } catch (_) {}
+    await closeBrowser(cachedBrowser);
     cachedBrowser = null;
     requestCount  = 0;
   }
@@ -83,7 +96,7 @@ async function getBrowser() {
       return cachedBrowser;
     } catch (e) {
       console.log('Health check failed:', e.message);
-      try { await cachedBrowser.close(); } catch (_) {}
+      await closeBrowser(cachedBrowser);
       cachedBrowser = null;
       requestCount  = 0;
     }
@@ -111,7 +124,7 @@ app.post('/generate', async (req, res) => {
     console.log(`Request #${requestCount} of ${MAX_REQUESTS_BEFORE_RECYCLE}`);
 
     if (requestCount >= MAX_REQUESTS_BEFORE_RECYCLE) {
-      try { if (cachedBrowser) await cachedBrowser.close(); } catch (_) {}
+      await closeBrowser(cachedBrowser);
       cachedBrowser   = null;
       requestCount    = 0;
       lastRequestTime = 0;
@@ -192,11 +205,14 @@ app.post('/generate', async (req, res) => {
       error.message.includes('Protocol error')        ||
       error.message.includes('Timed out')             ||
       error.message.includes('context was destroyed') ||
-      error.message.includes('health-check')
+      error.message.includes('health-check')          ||
+      error.message.includes('EAGAIN')                ||
+      error.message.includes('Failed to launch')
     );
 
     if (browserDead) {
       console.log('Browser dead — relaunching on next request');
+      await closeBrowser(cachedBrowser);
       cachedBrowser   = null;
       requestCount    = 0;
       lastRequestTime = 0;
