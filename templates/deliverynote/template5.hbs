@@ -8,7 +8,7 @@
 
     body {
       font-family: ibmplexsansarabic;
-      font-size: 12px;
+      font-size: 10px;
       color: #000;
       background: #fff;
       margin: 0 5mm;
@@ -22,7 +22,7 @@
       text-align: center;
       font-size: 20px;
       font-weight: 400;
-      padding: 8px 0 11px;
+      padding: 4px 0 11px;
     }
     .title .en { color: #b72031; }
     .title .ar { color: #606261; direction: rtl; unicode-bidi: isolate; }
@@ -32,8 +32,7 @@
 
     .info td {
       border: 1px solid #bfbfbf;
-      padding: 1px 6px;
-      line-height: 21.2px;
+      padding: 4px 6px;
       vertical-align: top;
       word-wrap: break-word;
     }
@@ -43,19 +42,18 @@
     .items { margin-top: 11px; }
     .items th {
       border: 1px solid #bfbfbf;
-      padding: 1.5px 4px;
+      padding: 4px 5px;
       font-weight: 400;
       text-align: center;
       vertical-align: middle;
-      line-height: 14px;
+
     }
-    .items th .ar { display: block; direction: rtl; unicode-bidi: isolate; line-height: 15.6px; }
-    .items th .en { display: block; line-height: 12.4px; }
+    .items th .ar { display: block; direction: rtl; unicode-bidi: isolate; }
+    .items th .en { display: block;}
     .items td {
       border: 1px solid #bfbfbf;
-      padding: 5px 5px;
+      padding: 4px 5px;
       vertical-align: middle;
-      line-height: 12px;
     }
     /* no rule between item rows — only the last row closes the table */
     .items tbody td { border-top: none; border-bottom: none; }
@@ -100,9 +98,9 @@
             <td>Customer Name</td>
             <td>
               {{billing_address.[0].name}}<br>
-              {{joinAddress billing_address.[0] '<br>'}}<br>
-              VAT: {{billing_address.[0].vat}}<br>
-              CR NO: {{customer_details.[0].cr_no}}
+              {{joinAddress billing_address.[0] '<br>'}}
+              {{#if billing_address.[0].vat}}<br>VAT: {{billing_address.[0].vat}}{{/if}}
+              {{#if customer_details.[0].cr_no}}<br>CR NO: {{customer_details.[0].cr_no}}{{/if}}
             </td>
           </tr>
           <tr>
