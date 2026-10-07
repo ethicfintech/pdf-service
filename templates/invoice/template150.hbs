@@ -263,14 +263,13 @@
     {{!-- ── Date / reference strip ────────────────────── --}}
     <table class="sec dates">
         <colgroup>
-            <col style="width:10%"><col style="width:10%"><col style="width:15%">
-            <col style="width:14%">
+            <col style="width:10%"><col style="width:20%">
+            <col style="width:19%">
             {{!-- PO Date column only when po_date is set; its 15% goes to PO No / Reference otherwise --}}
             {{#if basicdetails.[0].po_date}}<col style="width:17%"><col style="width:15%"><col style="width:19%">{{else}}<col style="width:24%"><col style="width:27%">{{/if}}
         </colgroup>
         <tr>
             <th><span class="arab">تاريخ الفاتورة</span>Invoice Date</th>
-            <th><span class="arab">نوع الفاتورة</span>Invoice Type</th>
             <th><span class="arab">فترة الفاتورة</span>Invoice Period</th>
             <th><span class="arab">تاريخ الاستحقاق</span>Invoice Due</th>
             <th><span class="arab">رقم عقد/أمر الشراء</span>Contract / PO No</th>
@@ -280,7 +279,6 @@
         {{#with basicdetails.[0]}}
         <tr>
             <td>{{inv_date}}</td>
-            <td>Complete</td>
             <td>{{#if inv_from}}{{inv_from}} - {{inv_to}}{{/if}}</td>
             <td>{{due_date}}</td>
             <td>{{order_no}}</td>
