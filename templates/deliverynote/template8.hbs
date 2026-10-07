@@ -39,7 +39,7 @@
     .info .val-c { text-align: center; }
 
     /* ── Items ─────────────────────────────────────────── */
-    .items { margin-top: 9px; height: 641px; }
+    .items { margin-top: 9px; }   /* height follows the number of items */
     .items th {
       border: 1px solid #bfbfbf;
       padding: 1.5px 4px;
@@ -59,13 +59,9 @@
     /* no rule between item rows — the column rules run to the foot of the grid */
     .items tbody td { border-top: none; border-bottom: none; }
     .items .sn  { text-align: center; }
-    .items .qty { text-align: right; padding-right: 9px; }
-    .items .uom { text-align: right; padding-right: 9px; }
+    .items .qty { text-align: center; padding-right: 9px; }
+    .items .uom { text-align: center; padding-right: 9px; }
     .items .desc-ar { direction: rtl; unicode-bidi: isolate; }
-    /* empty row that runs the grid down to the foot of the page */
-    .items tbody tr { height: 1px; }          /* shrink to content ... */
-    .items tr.filler { height: auto; }        /* ... so the filler takes the slack */
-    .items tr.filler td { border-bottom: none; }
 
     /* ── Foot ──────────────────────────────────────────── */
     .foot td {
@@ -127,7 +123,7 @@
           </tr>
           <tr>
             <td>Reference No</td>
-            <td class="val-c">{{basicdetails.[0].reference}}</td>
+            <td class="val-c">{{basicdetails.[0].reference_no}}</td>
           </tr>
           <tr>
             <td>PO No</td>
@@ -158,14 +154,11 @@
       {{#each itemdetails}}
       <tr>
         <td class="sn">{{addOne @index}}</td>
-        <td>{{item_name}}{{#if name_lang2}}<span class="desc-ar">{{name_lang2}}</span>{{/if}}</td>
+        <td>{{item_name}}{{#if name_lang2}}<span class="desc-ar">{{name_lang2}}</span>{{/if}}{{#if description}}<span class="desc-ar">{{description}}</span>{{/if}}</td>
         <td class="qty">{{quantity}}</td>
         <td class="uom">{{unit}}</td>
       </tr>
       {{/each}}
-      <tr class="filler">
-        <td></td><td></td><td></td><td></td>
-      </tr>
     </tbody>
   </table>
 
