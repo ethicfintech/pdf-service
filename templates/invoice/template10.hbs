@@ -143,6 +143,20 @@ td,th{
                     <td class="center" style="border: 1px solid #bcbcbc;border-bottom:none;border-top:none;border-left:none;border-right:none;">:</td>
                     <td style="border: 1px solid #bcbcbc;border-left:none;border-bottom:none;border-top:none;">{{customer_details.[0].VAT_number}}</td>
                 </tr>
+                {{#if basicdetails.[0].invoice_contactname}}
+                <tr>
+                    <td style="border: 1px solid #bcbcbc;border-right:none;border-bottom:none;border-top:none;">Contact Name</td>
+                    <td class="center" style="border: 1px solid #bcbcbc;border-bottom:none;border-top:none;border-left:none;border-right:none;">:</td>
+                    <td style="border: 1px solid #bcbcbc;border-left:none;border-bottom:none;border-top:none;">{{basicdetails.[0].invoice_contactname}}</td>
+                </tr>
+                {{/if}}
+                {{#if basicdetails.[0].invoice_contactno}}
+                <tr>
+                    <td style="border: 1px solid #bcbcbc;border-right:none;border-bottom:none;border-top:none;">Contact Number</td>
+                    <td class="center" style="border: 1px solid #bcbcbc;border-bottom:none;border-top:none;border-left:none;border-right:none;">:</td>
+                    <td style="border: 1px solid #bcbcbc;border-left:none;border-bottom:none;border-top:none;">{{basicdetails.[0].invoice_contactno}}</td>
+                </tr>
+                {{/if}}
                 <tr>
                     <td style="border: 1px solid #bcbcbc;border-right:none;border-top:none;">CR Number</td>
                     <td class="center" style="border: 1px solid #bcbcbc;border-top:none;border-left:none;border-right:none;">:</td>
