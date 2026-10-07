@@ -264,8 +264,9 @@
     <table class="sec dates">
         <colgroup>
             <col style="width:10%"><col style="width:10%"><col style="width:15%">
-            <col style="width:14%"><col style="width:17%"><col style="width:15%">
-            <col style="width:19%">
+            <col style="width:14%">
+            {{!-- PO Date column only when po_date is set; its 15% goes to PO No / Reference otherwise --}}
+            {{#if basicdetails.[0].po_date}}<col style="width:17%"><col style="width:15%"><col style="width:19%">{{else}}<col style="width:24%"><col style="width:27%">{{/if}}
         </colgroup>
         <tr>
             <th><span class="arab">تاريخ الفاتورة</span>Invoice Date</th>
@@ -273,8 +274,8 @@
             <th><span class="arab">فترة الفاتورة</span>Invoice Period</th>
             <th><span class="arab">تاريخ الاستحقاق</span>Invoice Due</th>
             <th><span class="arab">رقم عقد/أمر الشراء</span>Contract / PO No</th>
-            <th><span class="arab">تاريخ عقد/أمر الشراء</span>Contract/ PO Date</th>
-            <th><span class="arab">رقم المرجع أخر</span>Other Reference No</th>
+            {{#if basicdetails.[0].po_date}}<th><span class="arab">تاريخ عقد/أمر الشراء</span>Contract/ PO Date</th>{{/if}}
+            <th><span class="arab">رقم المرجع أخر</span>Project Reference No</th>
         </tr>
         {{#with basicdetails.[0]}}
         <tr>
@@ -283,7 +284,7 @@
             <td>{{#if inv_from}}{{inv_from}} - {{inv_to}}{{/if}}</td>
             <td>{{due_date}}</td>
             <td>{{order_no}}</td>
-            <td>{{po_date}}</td>
+            {{#if po_date}}<td>{{po_date}}</td>{{/if}}
             <td>{{reference_no}}</td>
         </tr>
         {{/with}}
