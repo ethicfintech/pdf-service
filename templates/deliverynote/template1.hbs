@@ -178,13 +178,13 @@
         <tr>
           <td class="lt">{{addOne @index}}</td>
           <td class="lt">{{item_name}}</td>
-          <td class="rt">{{#ifFlag datasettings "d40"}} {{formatAmount price ../bcdp}}{{/if}}</td>
-          <td class="ct">{{#ifFlag datasettings "d42"}} {{quantity}}{{/if}}</td>
-          <td class="ct">{{#ifFlag datasettings "d82"}} {{unit}}{{/if}}</td>
-          <td class="rt">{{#ifFlag datasettings "d39"}} ({{formatAmount disc_amt ../bcdp}}%){{/if}}</td>
-          <td class="rt">{{#ifFlag datasettings "d41"}}{{formatAmount taxable ../bcdp}}{{/if}}</td>
-          <td class="rt">{{#ifFlag datasettings "d41"}}{{formatAmount vat_amt ../bcdp}} ({{vat_perc}}%){{/if}}</td>
-          <td class="rt">{{#ifFlag datasettings "d38"}}{{formatAmount amount ../bcdp}}{{/if}}</td>
+          <td class="rt">{{#ifFlag @root.datasettings "d40"}}{{formatAmount price ../bcdp}}{{/ifFlag}}</td>
+          <td class="ct">{{#ifFlag @root.datasettings "d42"}}{{quantity}}{{/ifFlag}}</td>
+          <td class="ct">{{#ifFlag @root.datasettings "d82"}}{{unit}}{{/ifFlag}}</td>
+          <td class="rt">{{#ifFlag @root.datasettings "d39"}}{{disc_amt}} ({{disc_perc}}%){{/ifFlag}}</td>
+          <td class="rt">{{#ifFlag @root.datasettings "d41"}}{{formatAmount taxable ../bcdp}}{{/ifFlag}}</td>
+          <td class="rt">{{#ifFlag @root.datasettings "d41"}}{{formatAmount vat_amt ../bcdp}} ({{vat_perc}}%){{/ifFlag}}</td>
+          <td class="rt">{{#ifFlag @root.datasettings "d38"}}{{formatAmount amount ../bcdp}}{{/ifFlag}}</td>
         </tr>
         {{/each}}
       </tbody>
