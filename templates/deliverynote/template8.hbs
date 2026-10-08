@@ -39,7 +39,7 @@
     .info .val-c { text-align: center; }
 
     /* ── Items ─────────────────────────────────────────── */
-    .items { margin-top: 9px; }   /* height follows the number of items */
+    .items { margin-top: 9px; height: 641px; }   /* minimum height: the column lines run down to the foot; grows with more items */
     .items th {
       border: 1px solid #bfbfbf;
       padding: 1.5px 4px;
@@ -62,6 +62,11 @@
     .items .qty { text-align: center; padding-right: 9px; }
     .items .uom { text-align: center; padding-right: 9px; }
     .items .desc-ar { direction: rtl; unicode-bidi: isolate; }
+
+    /* empty row that runs the column lines down to the foot */
+    .items tbody tr { height: 1px; }
+    .items tr.filler { height: auto; }
+    .items tr.filler td { border-bottom: 1px solid #bfbfbf; }   /* closes the grid just above DELIVERED / RECEIVED BY */
 
     /* ── Foot ──────────────────────────────────────────── */
     .foot td {
@@ -159,6 +164,9 @@
         <td class="uom">{{unit}}</td>
       </tr>
       {{/each}}
+      <tr class="filler">
+        <td></td><td></td><td></td><td></td>
+      </tr>
     </tbody>
   </table>
 

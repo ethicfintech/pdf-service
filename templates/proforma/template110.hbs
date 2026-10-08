@@ -115,7 +115,7 @@
       </colgroup>
       <tr>
         <td>Customer P.O No :{{basicdetails.[0].order_no}}</td>
-        <td>Customer P.O Date :</td>
+        <td>Customer P.O Date :{{basicdetails.[0].order_date}}</td>
         <td class="lbl">Currency</td>
         <td class="r">{{basicdetails.[0].currency_isocode}}</td>
       </tr>
@@ -238,7 +238,7 @@
       <tr><td style=""><u><b>Amount In Words</b></u><br>{{bcamountinwords}} Only</td></tr>
       {{/if}}
       {{#if basicdetails.[0].terms_and_condition}}
-      <tr><td style=""><u><b>Terms and Condution</b></u><br>{{nl2br basicdetails.[0].terms_and_condition}}</td></tr>
+      <tr><td style=""><u><b>Terms and Condition</b></u><br>{{nl2br basicdetails.[0].terms_and_condition}}</td></tr>
       {{/if}}
     </table>
 
