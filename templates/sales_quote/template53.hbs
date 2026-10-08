@@ -11,7 +11,7 @@
 
   body {
     background: #ffffff;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: ibmplexsansarabic;
     font-size: 11px;
     color: #222;
     line-height: 1.4;
@@ -23,7 +23,7 @@
   /* ── Title ─────────────────────────────────── */
   .main-title {
     text-align: center;
-    font-family: "Times New Roman", Times, serif;
+    font-family: ibmplexsansarabic;
     font-size: 20px;
     font-weight: bold;
     margin: 4px 0 14px;
@@ -39,7 +39,7 @@
   .info-table td {
     border: 1px solid #bfbfbf;
     padding: 4px 4px;
-    vertical-align: top;
+    vertical-align: middle;
     font-size: 11px;
   }
   .info-table .lbl {
@@ -163,9 +163,8 @@
     </tr>
     <tr>
       <td class="lbl">Address</td>
-      <td class="val">
-        {{billing_address.[0].address_line1}}{{#if billing_address.[0].address_line2}}{{billing_address.[0].address_line2}}{{/if}}
-        {{#if billing_address.[0].address_line3}}{{billing_address.[0].address_line3}}{{/if}}{{#if billing_address.[0].address_line4}}{{billing_address.[0].address_line4}}{{/if}}{{#if billing_address.[0].address_code}}{{billing_address.[0].address_code}}{{/if}}
+      <td class="val">{{joinAddress branch.[0] ', '}}
+        
       </td>
       <td class="lbl">Mob No.</td>
       <td class="val">{{customer_details.[0].contact_no1}}</td>
@@ -186,7 +185,7 @@
       <td class="lbl">Subject</td>
       <td class="val">{{basicdetails.[0].subj}}</td>
       <td class="lbl">Pages</td>
-      <td class="val"><span class="pageNumber"></span>/<span class="totalPages"></span></td>
+      <td class="val"></td>
     </tr>
   </table>
 
@@ -259,21 +258,29 @@
       <td class="t-blank"></td>
       <td colspan="2" class="t-foot">{{compprof.name}}</td>
     </tr>
+    {{#if bcamountinwords}}
+    <tr>
+      <td class="t-blank"></td>
+      <td colspan="2" class="t-foot">{{bcamountinwords}} Only</td>
+    </tr>
+    {{/if}}
   </table>
 
   <!-- Terms -->
+  {{#if basicdetails.[0].terms_and_condition}}
   <div class="terms-wrap">
     <div class="terms-title">TERMS &amp; CONDITIONS:</div>
     <div class="terms-body">{{nl2br basicdetails.[0].terms_and_condition}}</div>
   </div>
+  {{/if}}
 
   <!-- Bank Account Details -->
   <div class="bank-wrap">
     <div class="bank-title">Bank Account Details</div>
     <div class="bank-row"><span class="k">BENEFICIARY NAME</span>: {{bankdetails.acc_name}}</div>
-    <div class="bank-row"><span class="k">BANK NAME</span>: {{bankdetails.bank_name}}</div>
+    <div class="bank-row"><span class="k">BANK NAME</span>: {{bankdetails.name}}</div>
     <div class="bank-row"><span class="k">BANK ADDRESS</span>: {{bankdetails.branch_name}}</div>
-    <div class="bank-row"><span class="k">A/C NO</span>: {{bankdetails.account_no}}</div>
+    <div class="bank-row"><span class="k">A/C NO</span>: {{bankdetails.acc_no}}</div>
     <div class="bank-row"><span class="k">IBAN</span>: {{bankdetails.iban_no}}</div>
     <div class="bank-row"><span class="k">BIC/SWIFT</span>: {{bankdetails.swift_no}}</div>
   </div>
