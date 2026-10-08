@@ -178,13 +178,13 @@
         <tr>
           <td class="lt">{{addOne @index}}</td>
           <td class="lt">{{item_name}}</td>
-          <td class="rt">{{formatAmount price ../bcdp}}</td>
-          <td class="ct">{{quantity}}</td>
-          <td class="ct">{{unit}}</td>
-          <td class="rt">{{default disc_amt '0'}} ({{default disc_perc '0'}}%)</td>
-          <td class="rt">{{formatAmount taxable ../bcdp}}</td>
-          <td class="rt">{{formatAmount vat_amt ../bcdp}} ({{vat_perc}}%)</td>
-          <td class="rt">{{formatAmount amount ../bcdp}}</td>
+          <td class="rt">{{#ifFlag datasettings "d40"}} {{formatAmount price ../bcdp}}{{/if}}</td>
+          <td class="ct">{{#ifFlag datasettings "d42"}} {{quantity}}{{/if}}</td>
+          <td class="ct">{{#ifFlag datasettings "d82"}} {{unit}}{{/if}}</td>
+          <td class="rt">{{#ifFlag datasettings "d39"}} ({{formatAmount disc_amt ../bcdp}}%){{/if}}</td>
+          <td class="rt">{{#ifFlag datasettings "d41"}}{{formatAmount taxable ../bcdp}}{{/if}}</td>
+          <td class="rt">{{#ifFlag datasettings "d41"}}{{formatAmount vat_amt ../bcdp}} ({{vat_perc}}%){{/if}}</td>
+          <td class="rt">{{#ifFlag datasettings "d38"}}{{formatAmount amount ../bcdp}}{{/if}}</td>
         </tr>
         {{/each}}
       </tbody>
