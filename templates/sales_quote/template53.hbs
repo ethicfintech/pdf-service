@@ -163,7 +163,7 @@
     </tr>
     <tr>
       <td class="lbl">Address</td>
-      <td class="val">{{joinAddress branch.[0] ', '}}
+      <td class="val">{{joinAddress billing_address.[0] ', '}}
         
       </td>
       <td class="lbl">Mob No.</td>
@@ -177,7 +177,7 @@
     </tr>
     <tr>
       <td class="lbl">Your Ref</td>
-      <td class="val">{{basicdetails.[0].reference_no}}</td>
+      <td class="val">{{basicdetails.[0].rfq}}</td>
       <td class="lbl">Our Ref</td>
       <td class="val">{{basicdetails.[0].inv_no}}</td>
     </tr>
@@ -287,6 +287,7 @@
 
   <!-- Footer admin -->
   <div class="signer">{{basicdetails.[0].employeename}}</div>
+  {{#if basicdetails.[0].employeedesignation}}<div class="mob">{{basicdetails.[0].employeedesignation}}</div>{{/if}}
   <div class="mob">Mob:{{basicdetails.[0].employeecontactno}}</div>
 
 </div>
