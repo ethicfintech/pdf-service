@@ -143,10 +143,13 @@
   <table class="items mt" style="margin-top: 3px;">
     <colgroup>
       <col style="width:3%">
-      <col style="width:25%">
+      {{!-- Description: no width, it takes the space left by the other columns --}}
+      <col>
       <col style="width:11%">
+      {{#if (gt (sumProperty @root.itemdetails "length") 0)}}<col style="width:5%">{{/if}}
+      {{#if (gt (sumProperty @root.itemdetails "width") 0)}}<col style="width:5%">{{/if}}
       <col style="width:8%">
-      <col style="width:10%">
+      {{#hasDiscount itemdetails}}<col style="width:10%">{{/hasDiscount}}
       <col style="width:11%">
       <col style="width:8%">
       <col style="width:11%">
@@ -157,8 +160,10 @@
         <th><span class="en">#</span></th>
         <th><span class="en">Description</span><span class="ar">وصف</span></th>
         <th><span class="en">Rate</span><span class="ar">معدل</span></th>
+        {{#if (gt (sumProperty @root.itemdetails "length") 0)}}<th><span class="en">Length</span><span class="ar">الطول</span></th>{{/if}}
+        {{#if (gt (sumProperty @root.itemdetails "width") 0)}}<th><span class="en">Width</span><span class="ar">العرض</span></th>{{/if}}
         <th><span class="en">Quantity</span><span class="ar">كمية</span></th>
-        <th><span class="en">Discount</span><span class="ar">خصومات</span></th>
+        {{#hasDiscount itemdetails}}<th><span class="en">Discount</span><span class="ar">خصومات</span></th>{{/hasDiscount}}
         <th><span class="en">Taxable Amount</span><span class="ar">المبلغ للضريبة</span></th>
         <th><span class="en">Tax Rate</span><span class="ar">نسبة الضريبة</span></th>
         <th><span class="en">Tax Amount</span><span class="ar">مبلغ الضريبة</span></th>
@@ -171,8 +176,13 @@
         <td class="num">{{addOne @index}}</td>
         <td class="idesc">{{item_name}}{{#if name_lang2}}<div>{{name_lang2}}</div>{{/if}}{{#if description}}<div>{{description}}</div>{{/if}}</td>
         <td class="rt"><span style="font-size:12px">{{{currencySymbol ../basicdetails.[0].isocode}}}</span> {{formatAmount price ../bcdp}}</td>
-        <td class="num">{{quantity}}</td>
-        <td class="rt"><span style="font-size:12px">{{{currencySymbol ../basicdetails.[0].isocode}}}</span> {{formatAmount disc_amt ../bcdp}}</td>
+        {{#if (gt (add (sumProperty @root.itemdetails "length") (sumProperty @root.itemdetails "width")) 0)}}
+        <td class="num">{{#if (gt length 0)}}{{this.length}}{{/if}}</td>
+        <td class="num">{{#if (gt width 0)}}{{width}}{{/if}}</td>
+        {{/if}}
+        {{!-- length × width when length or width > 0, else the normal qty --}}
+        <td class="num">{{#if (or (gt length 0) (gt width 0))}}{{formatAmount (multiply length width) ../bcdp}}{{else}}{{quantity}}{{/if}}</td>
+        {{#hasDiscount ../itemdetails}}<td class="rt"><span style="font-size:12px">{{{currencySymbol ../basicdetails.[0].isocode}}}</span> {{formatAmount disc_amt ../bcdp}}</td>{{/hasDiscount}}
         <td class="rt"><span style="font-size:12px">{{{currencySymbol ../basicdetails.[0].isocode}}}</span> {{formatAmount taxable ../bcdp}}</td>
         <td class="num">{{vat_perc}}%</td>
         <td class="rt"><span style="font-size:12px">{{{currencySymbol ../basicdetails.[0].isocode}}}</span> {{formatAmount tax ../bcdp}}</td>
@@ -189,11 +199,13 @@
       <td class="t-ar">الإجمالي (باستثناء ضريبة القيمة المضافة)</td>
       <td class="t-val"><span style="font-size:12px">{{{currencySymbol basicdetails.[0].isocode}}}</span> {{formatAmount basicdetails.[0].subtotal bcdp}}</td>
     </tr>
+    {{#if_gt basicdetails.[0].discount 0}}
     <tr>
       <td class="t-en">Discount</td>
       <td class="t-ar">تخفيض</td>
       <td class="t-val"><span style="font-size:12px">{{{currencySymbol basicdetails.[0].isocode}}}</span> {{formatAmount basicdetails.[0].discount bcdp}}</td>
     </tr>
+    {{/if_gt}}
     <tr>
       <td class="t-en">Total Taxable Amount (Excluding VAT)</td>
       <td class="t-ar">إجمالي المبلغ الخاضع للضريبة (غير شامل ضريبة القيمة المضافة)</td>

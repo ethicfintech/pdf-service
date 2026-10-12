@@ -244,6 +244,8 @@
       font-size: 11px;
     }
     .pay-row:first-of-type { border-top: 1px solid #ccc; }
+    .pay-rev { display: flex; flex-direction: column-reverse; }
+    .pay-rev .pay-row { border-top: none; }   /* keep the old look: no line between bills */
     .pay-row .pk-lbl          { color: #000; flex: 1; }
     .pay-row .pk-val          { font-weight: bold; text-align: right; min-width: 120px; white-space: nowrap; }
     .pay-row .pk-val.negative { color: #000; }
@@ -619,12 +621,15 @@
   {{#if related_project_invoice}}
   <div class="pay-col" style="margin-top:3px; border-radius:6px; margin-bottom:3px;">
     <div class="sub-sec-lbl" style="border-bottom:1px solid #ddd;">Bill payment details:</div>
+    {{!-- column-reverse: latest bill first (Bill 4, 3, 2, 1) --}}
+    <div class="pay-rev">
     {{#each related_project_invoice}}
     <div class="pay-row">
       <span class="pk-lbl">Bill {{addOne @index}} Invoice no: {{inv_no}} dated {{formatDate inv_date}}</span>
       <span class="pk-val">{{../basicdetails.[0].isocode}} {{formatAmount grand_total ../bcdp}}</span>
     </div>
     {{/each}}
+    </div>
   </div>
   {{/if}}
 
