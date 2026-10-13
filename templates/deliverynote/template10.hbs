@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Delivery Note - {{basicdetails.[0].inv_no}}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: ibmplexsansarabic;
+      font-size: 11px;
+      color: #000;
+      background: #fff;
+      margin: 0 5mm;
+    }
+
+    table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+
+    /* ── Title ─────────────────────────────────────────── */
+    .title {
+      font-family: ibmplexsansarabic;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 400;
+      padding: 0 0 2px;
+    }
+    .title .ar { direction: rtl; unicode-bidi: isolate; }
+
+    /* ── Header boxes: customer (left) | gap | document (right) ── */
+    .hdr > tbody > tr > td { padding: 0; vertical-align: top; }
+    .hdr .box {
+      border: 1px solid #000;
+      padding: 4px 6px;
+      font-weight: 700;
+      font-size: 10.5px;
+    }
+    .hdr .box div { line-height: 15px; margin-bottom: 15px; word-wrap: break-word; }
+    .hdr .box div:last-child { margin-bottom: 4px; }
+    /* label | : | value — separate cells so the colons line up */
+    .hdr .kv td { border: none; padding: 0 0 15px; line-height: 15px; vertical-align: top; word-wrap: break-word; }
+    .hdr .kv tr:last-child td { padding-bottom: 4px; }
+    .hdr .kv .sep { text-align: center; }
+
+    /* ── Items ─────────────────────────────────────────── */
+    .items { margin-top: 10px; }
+    .items th, .items td {
+      border: 1px solid #000;
+      padding: 0 5px;
+      line-height: 14px;
+    }
+    .items th { font-weight: 400; text-align: center; vertical-align: bottom; padding-top: 2px; }
+    .items th .ar { display: block; direction: rtl; unicode-bidi: isolate; text-align: center; }
+    .items th .en { display: block; }
+    .items td { font-size: 12.5px; vertical-align: top; line-height: 17px; }
+    .items .sn  { text-align: center; }
+    .items .qty { text-align: center; padding-right: 9px; }
+    .items .uom { text-align: center; }
+    .items .desc-ar { direction: rtl; unicode-bidi: isolate; }
+
+    /* ── Footer text ───────────────────────────────────── */
+    .foot { margin-top: 10px; break-inside: avoid; page-break-inside: avoid; }
+    .foot td { border: none; padding: 0; vertical-align: top; font-size: 11.5px; line-height: 22px; }
+
+    {{#if UseBGWatermark}}
+    {{#if WatermarkCss}}
+    /* WATERMARK — fixed, so it repeats on every printed page (WatermarkCss = data URI built from WatermarkUrl) */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-image: url('{{{WatermarkCss}}}');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 100% auto;
+      opacity: 0.7;
+      pointer-events: none;
+      z-index: -1;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    {{/if}}
+    {{/if}}
+  </style>
+</head>
+<body>
+
+  <!-- TITLE -->
+  <div class="title">Delivery Note / <span class="ar">مذكرة تسليم</span></div>
+
+  <!-- HEADER BOXES -->
+  <table class="hdr">
+    <colgroup>
+      <col style="width:68%">
+      <col style="width:2%">
+      <col style="width:30%">
+    </colgroup>
+    <tr>
+      <td class="box">
+        <table class="kv">
+          <colgroup>
+            <col style="width:12%">
+            <col style="width:3%">
+            <col style="width:85%">
+          </colgroup>
+          <tr><td>Name</td><td class="sep">:</td><td>{{billing_address.[0].name}}</td></tr>
+          {{#if billing_address_lang2.[0].name}}<tr><td></td><td></td><td>{{billing_address_lang2.[0].name}}</td></tr>{{/if}}
+          <tr><td>VAT No</td><td class="sep">:</td><td>{{billing_address.[0].vat}}</td></tr>
+          <tr><td>Address</td><td class="sep">:</td><td>{{joinAddress billing_address.[0] ", "}}</td></tr>
+        </table>
+      </td>
+      <td></td>
+      <td class="box">
+        <table class="kv">
+          <colgroup>
+            <col style="width:30%">
+            <col style="width:5%">
+            <col style="width:45%">
+          </colgroup>
+          <tr><td>Delivery No</td><td class="sep">:</td><td>{{basicdetails.[0].inv_no}}</td></tr>
+          <tr><td>Delivery Date</td><td class="sep">:</td><td>{{basicdetails.[0].inv_date}}</td></tr>
+          <tr><td>PO Number</td><td class="sep">:</td><td>{{basicdetails.[0].order_no}}</td></tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <!-- ITEMS -->
+  <table class="items">
+    <colgroup>
+      <col style="width:11%">
+      <col style="width:69%">
+      <col style="width:10%">
+      <col style="width:10%">
+    </colgroup>
+    <thead>
+      <tr>
+        <th><span class="ar">م</span><span class="en">S.N</span></th>
+        <th><span class="ar">الوصف</span><span class="en">Description</span></th>
+        <th><span class="ar">الكمية</span><span class="en">QTY</span></th>
+        <th><span class="ar">الوحدة</span><span class="en">UOM</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each itemdetails}}
+      <tr>
+        <td class="sn">{{addOne @index}}</td>
+        <td>{{item_name}}{{#if name_lang2}} <span class="desc-ar">{{name_lang2}}</span>{{/if}}{{#if description}} {{description}}{{/if}}</td>
+        <td class="qty">{{quantity}}</td>
+        <td class="uom">{{unit}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <!-- FOOTER TEXT -->
+  <table class="foot">
+    <colgroup>
+      <col style="width:70%">
+      <col style="width:30%">
+    </colgroup>
+    <tr>
+      <td>Received in Good Condition<br>Received by Name &amp; Signature</td>
+      <td>Prepared by</td>
+    </tr>
+  </table>
+
+</body>
+</html>
