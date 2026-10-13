@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Delivery Note - {{basicdetails.[0].inv_no}}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: ibmplexsansarabic;
+      font-size: 11px;
+      color: #000;
+      background: #fff;
+      margin: 0 5mm;
+    }
+
+    table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+
+    /* ── Title ─────────────────────────────────────────── */
+    .title {
+      font-family: ibmplexsansarabic;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 400;
+      padding: 0 0 4px;
+    }
+    .title .en { color: #b72031; }
+    .title .ar { color: #606261; direction: rtl; unicode-bidi: isolate; }
+
+    /* ── Header: left block | gap | right block ────────── */
+    .info td {
+      border: 1px solid #bfbfbf;
+      padding: 5px 5px;
+      vertical-align: top;
+      word-wrap: break-word;
+    }
+    .info .lbl-b { font-weight: 700; }
+    .info td.gap { border-top: none; border-bottom: none; }   /* plain gap between the two boxes */
+    .info .addr div { }
+    .info .addr div:first-child {  }
+    .info .addr .ln { padding-left: 4px; }
+
+    /* ── Items ─────────────────────────────────────────── */
+    .items { margin-top: 18px; }
+    .items th, .items td {
+      border: 1px solid #bfbfbf;
+      padding: 0 5px;
+      line-height: 16px;
+    }
+    .items th { font-weight: 400; vertical-align: bottom; }
+    .items th .ar { display: block; direction: rtl; unicode-bidi: isolate; }
+    .items th .en { display: block; }
+    .items .sn   { text-align: center; }
+    .items .desc { text-align: left; }
+    .items .qty  { text-align: center; }
+    .items .uom  { text-align: center; }
+    .items .th-qty, .items .th-uom { text-align: center; }
+    .items td { font-size: 11px; vertical-align: top; }
+    .items .desc-ar { direction: rtl; unicode-bidi: isolate; }
+
+    /* ── Signatures ────────────────────────────────────── */
+    .sign { margin-top: 18px; break-inside: avoid; page-break-inside: avoid; }
+    .sign td { border: none; text-align: center; vertical-align: top; font-size: 12px; }
+    .sign .imgs { margin-top: 14px; }
+    .sign .imgs img { vertical-align: middle; margin: 0 40px; }
+  </style>
+</head>
+<body>
+
+  <!-- TITLE -->
+  <div class="title">
+    <span class="en">Delivery Note /</span> <span class="ar">مذكرة تسليم</span>
+  </div>
+
+  <!-- HEADER -->
+  {{#with basicdetails.[0]}}
+  <table class="info">
+    <colgroup>
+      <col style="width:15%">
+      <col style="width:43%">
+      <col style="width:2%">
+      <col style="width:15%">
+      <col style="width:25%">
+    </colgroup>
+    <tr>
+      <td class="lbl-b">From</td>
+      <td>{{@root.branch.[0].name}}</td>
+      <td rowspan="4" class="gap"></td>
+      <td>DN Number</td>
+      <td>{{inv_no}}</td>
+    </tr>
+    <tr>
+      <td class="lbl-b">Customer Name</td>
+      <td>{{@root.billing_address.[0].name}}</td>
+      <td>Reference No</td>
+      <td>{{reference_no}}</td>
+    </tr>
+    <tr>
+      <td class="lbl-b" style="vertical-align: middle;">Address</td>
+      <td class="addr">
+        {{#with @root.billing_address.[0]}}
+          {{joinAddress this "<br>"}}
+        {{/with}}
+      </td>
+      <td style="vertical-align: middle;">Invoice No</td>
+      <td style="vertical-align: middle;">{{invoice_no}}</td>
+    </tr>
+    <tr>
+      <td class="lbl-b">Date</td>
+      <td>{{inv_date}}</td>
+      <td>PO No</td>
+      <td>{{order_no}}</td>
+    </tr>
+  </table>
+  {{/with}}
+
+  <!-- ITEMS -->
+  <table class="items">
+    <colgroup>
+        <col style="width:8%">
+        <col style="width:72%">
+        <col style="width:10%">
+        <col style="width:10%">
+    </colgroup>
+    <thead>
+      <tr>
+        <th class="sn"><span class="ar">&nbsp;</span><span class="en">S.N</span></th>
+        <th><span class="ar">الوصف</span><span class="en">Description</span></th>
+        <th class="th-qty"><span class="ar">الكمية</span><span class="en">QTY</span></th>
+        <th class="th-uom"><span class="ar">الوحدة</span><span class="en">UOM</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each itemdetails}}
+      <tr>
+        <td class="sn">{{addOne @index}}</td>
+        <td class="desc">{{item_name}}{{#if name_lang2}} <span class="desc-ar">{{name_lang2}}</span>{{/if}}{{#if description}} {{description}}{{/if}}</td>
+        <td class="qty">{{quantity}}</td>
+        <td class="uom">{{unit}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <!-- SIGNATURES -->
+  <table class="sign">
+    <colgroup>
+      <col style="width:50%">
+      <col style="width:50%">
+    </colgroup>
+    <tr>
+      <td>
+        PREPARED BY
+        <div class="imgs">
+          {{#if Signature}}
+            <img src="{{Signature}}" alt="Signature" style="width:{{datasettings.d459}}px;" onerror="this.style.display='none'"/>
+          {{/if}}
+          {{#if Seal}}
+            <img src="{{Seal}}" alt="Seal" style="width:{{datasettings.d458}}px;" onerror="this.style.display='none'"/>
+          {{/if}}
+        </div>
+      </td>
+      <td>RECEIVED BY</td>
+    </tr>
+  </table>
+
+</body>
+</html>
