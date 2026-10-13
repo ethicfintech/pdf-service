@@ -60,27 +60,6 @@
     /* ── Footer text ───────────────────────────────────── */
     .foot { margin-top: 10px; break-inside: avoid; page-break-inside: avoid; }
     .foot td { border: none; padding: 0; vertical-align: top; font-size: 11.5px; line-height: 22px; }
-
-    {{#if UseBGWatermark}}
-    {{#if WatermarkCss}}
-    /* WATERMARK — fixed, so it repeats on every printed page (WatermarkCss = data URI built from WatermarkUrl) */
-    body::after {
-      content: "";
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background-image: url('{{{WatermarkCss}}}');
-      background-repeat: no-repeat;
-      background-position: center center;
-      background-size: 100% auto;
-      opacity: 0.7;
-      pointer-events: none;
-      z-index: -1;
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
-    }
-    {{/if}}
-    {{/if}}
   </style>
 </head>
 <body>
