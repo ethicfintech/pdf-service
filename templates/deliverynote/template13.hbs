@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Service Delivery Note - {{basicdetails.[0].inv_no}}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: Calibri, Carlito, ibmplexsansarabic, sans-serif;
+      font-size: 11px;
+      color: #000;
+      background: #fff;
+      margin: 0;
+    }
+
+    table { border-collapse: collapse; table-layout: fixed; }
+
+    /* ── Title + full-width rule ───────────────────────── */
+    .title {
+      text-align: center;
+      color: #1f5f9e;
+      font-size: 12.5px;
+      line-height: 16px;
+      padding: 4px 0 13px;
+      border-bottom: 1px solid #e3e3e3;
+    }
+
+    /* content block: 42px from the left edge, 644px wide */
+    .wrap { margin-left: 42px; width: 644px; }
+
+    /* ── Info: left block | right block ────────────────── */
+    .info { width: 100%; margin-top: 9px; }
+    .info td { padding: 0; line-height: 17.8px; vertical-align: top; white-space: nowrap; overflow: hidden; }
+    .info .red { color: #e01b1b; text-decoration: underline; }
+    .info .ul  { text-decoration: underline; }
+    .info .in  { padding-left: 3px; }
+
+    /* ── Items ─────────────────────────────────────────── */
+    .items { width: 100%; margin-top: 34px; border: 1.5px solid #000; }
+    .items th, .items td { border: 1px solid #000; text-align: center; vertical-align: middle; }
+    .items th { font-weight: 400; font-size: 10.5px; height: 32px; }
+    .items td { height: 24px; }
+    .items td.lt { text-align: left; padding: 0 1px; }
+    .items td.b { font-weight: 700; }
+
+    /* ── Comments ──────────────────────────────────────── */
+    .comments { margin-top: 41px; padding-left: 11px; text-decoration: underline; break-inside: avoid; page-break-inside: avoid; }
+  </style>
+</head>
+<body>
+
+  <!-- TITLE -->
+  <div class="title">SERVICE DELIVERY NOTE</div>
+
+  <div class="wrap">
+
+    <!-- INFO -->
+    {{#with basicdetails.[0]}}
+    <table class="info">
+      <colgroup>
+        <col style="width:27.75%">
+        <col style="width:1.9%">
+        <col style="width:26%">
+        <col style="width:22.25%">
+        <col style="width:3.35%">
+        <col style="width:18.75%">
+      </colgroup>
+      <tr>
+        <td class="red">Our contact Ref :</td><td></td><td></td>
+        <td>Our Order ref</td><td>:</td><td>{{order_no}}</td>
+      </tr>
+      <tr>
+        <td class="in">{{salesman_name}}</td><td></td><td></td>
+        <td>ETA</td><td>:</td><td></td>
+      </tr>
+      <tr>
+        <td>-{{@root.compprof.name}}</td><td></td><td></td>
+        <td>ETD</td><td>:</td><td></td>
+      </tr>
+      <tr>
+        <td>Contact Ref: {{contactname}}</td><td></td><td></td>
+        <td>Service Date</td><td>:</td><td>{{inv_date}}</td>
+      </tr>
+      <tr>
+        <td class="ul">Vessel Information</td><td>:</td><td></td>
+        <td>Our Arrival Time</td><td>:</td><td></td>
+      </tr>
+      <tr>
+        <td>Vessel name</td><td>:</td><td></td>
+        <td>Port of Delivery</td><td>:</td><td>{{destination}}</td>
+      </tr>
+      <tr>
+        <td>IMO</td><td>:</td><td></td>
+        <td></td><td></td><td></td>
+      </tr>
+    </table>
+    {{/with}}
+
+    <!-- ITEMS -->
+    <table class="items">
+      <colgroup>
+        <col style="width:10%">
+        <col style="width:70%">
+        <col style="width:10%">
+        <col style="width:10%">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>DESCRIPTION</th>
+          <th>QTY</th>
+          <th>UNIT</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each itemdetails}}
+        <tr>
+          <td>{{addOne @index}}</td>
+          <td class="lt">{{item_name}}{{#if description}} {{description}}{{/if}}</td>
+          <td>{{quantity}}</td>
+          <td class="b">{{unit}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+
+    <!-- COMMENTS -->
+    <div class="comments">Additional Service/ Comments:</div>
+
+  </div>
+
+</body>
+</html>
