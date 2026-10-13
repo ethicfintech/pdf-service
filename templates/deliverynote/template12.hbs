@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Delivery Note - {{basicdetails.[0].inv_no}}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: ibmplexsansarabic;
+      font-size: 10.5px;
+      color: #000;
+      background: #fff;
+      margin: 0 5mm;
+    }
+
+    table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+
+    /* ── Title ─────────────────────────────────────────── */
+    .title {
+      font-family: ibmplexsansarabic;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 20px;
+      padding-bottom: 2px;
+    }
+
+    /* ── Customer box ──────────────────────────────────── */
+    .cust {
+      border: 1px solid #000;
+      padding: 1px 4px 0;
+      font-weight: 700;
+      line-height: 18px;
+    }
+    .cust .nm { padding-left: 4px; }
+
+    /* ── Order / delivery box ──────────────────────────── */
+    .meta { border: 1px solid #000; border-top: none; }
+    .meta > tbody > tr > td {
+      width: 50%;
+      vertical-align: top;
+      padding: 0 12px 0;
+      font-weight: 700;
+      line-height: 18px;
+    }
+    .meta > tbody > tr > td:first-child { border-right: 1px solid #000; }
+    /* label | : | value — separate cells so the colons line up */
+    .meta .kv td { padding: 0; font-weight: 700; line-height: 18px; vertical-align: top; word-wrap: break-word; }
+    .meta .kv .sep { text-align: center; }
+
+    /* ── Items: horizontal rules only ──────────────────── */
+    .items { margin-top: 17px; border-top: 1px solid #000; border-bottom: 1.5px solid #000; }
+    .items th {
+      font-weight: 700;
+      font-size: 12.5px;
+      line-height: 17px;
+      padding: 0 6px;
+      text-align: center;
+      border-bottom: 1px solid #000;
+    }
+    .items th.lt { text-align: left; }
+    .items td {
+      font-size: 12.5px;
+      line-height: 18px;
+      padding: 0 6px;
+      text-align: center;
+      vertical-align: top;
+    }
+    .items td.lt { text-align: left; }
+    .items .desc-ar { direction: rtl; unicode-bidi: isolate; }
+
+    /* ── Goods received ────────────────────────────────── */
+    .recv { margin-top: 20px; padding-left: 7px; font-size: 13.5px; break-inside: avoid; page-break-inside: avoid; }
+    .recv .h { font-weight: 700; text-decoration: underline; line-height: 22px; }
+    .recv .s { text-decoration: underline; line-height: 22px; margin-top: 6px; }
+    .recv .line { width: 145px; border-bottom: 1px solid #000; }
+    /* signature sits on the line; the box keeps the old 117px gap when there is no image */
+    .recv .sig { width: 165px; height: 85px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 2px; }
+    .recv .sig img { max-width: 165px; object-fit: contain; }
+
+    /* ── Terms (only when sent) ─────────────────────────── */
+    .terms { margin-top: 30px; padding-left: 7px; break-inside: avoid; page-break-inside: avoid; }
+    .terms .h { font-weight: 700; font-size: 12px; text-decoration: underline; line-height: 20px; }
+    .terms .b { font-size: 11px; line-height: 16px; margin-top: 3px; }
+  </style>
+</head>
+<body>
+
+  <!-- TITLE -->
+  <div class="title">Delivery Note</div>
+
+  <!-- CUSTOMER -->
+  <div class="cust">
+    <div class="nm">{{billing_address.[0].name}}</div>
+    <div class="nm">{{joinAddress billing_address.[0] "<br> "}}</div>
+    {{#if customer_details.[0].contact_no1}}<div class="nm">Tel : {{customer_details.[0].contact_no1}}</div>{{/if}}
+  </div>
+
+  <!-- ORDER / DELIVERY -->
+  <table class="meta">
+    <tr>
+      <td>
+        <table class="kv">
+          <colgroup>
+            <col style="width:40%">
+            <col style="width:4%">
+            <col style="width:56%">
+          </colgroup>
+          <tr><td>Order Number</td><td class="sep">:</td><td>{{basicdetails.[0].order_no}}</td></tr>
+          <tr><td>Order Date</td><td class="sep">:</td><td>{{basicdetails.[0].order_no}}</td></tr>
+        </table>
+      </td>
+      <td>
+        <table class="kv">
+          <colgroup>
+            <col style="width:40%">
+            <col style="width:4%">
+            <col style="width:56%">
+          </colgroup>
+          <tr><td>Delivery Note Number</td><td class="sep">:</td><td>{{basicdetails.[0].inv_no}}</td></tr>
+          <tr><td>delivery Date</td><td class="sep">:</td><td>{{basicdetails.[0].inv_date}}</td></tr>
+          <tr><td>Delivery Location</td><td class="sep">:</td><td>{{basicdetails.[0].destination}}</td></tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <!-- ITEMS -->
+  <table class="items">
+    <colgroup>
+      <col style="width:6%">
+      <col style="width:74%">
+      <col style="width:10%">
+      <col style="width:10%">
+    </colgroup>
+    <thead>
+      <tr>
+        <th>S.N</th>
+        <th class="lt">Description</th>
+        <th>UOM</th>
+        <th>QTY</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each itemdetails}}
+      <tr>
+        <td>{{addOne @index}}</td>
+        <td class="lt">{{item_name}}{{#if name_lang2}} <span class="desc-ar">{{name_lang2}}</span>{{/if}}{{#if description}} {{description}}{{/if}}</td>
+        <td>{{unit}}</td>
+        <td>{{quantity}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <!-- TERMS AND CONDITIONS -->
+  {{#if basicdetails.[0].terms_and_condition}}
+  <div class="terms">
+    <div class="h">TERMS AND CONDITIONS:</div>
+    <div class="b">{{{nl2br basicdetails.[0].terms_and_condition}}}</div>
+  </div>
+  {{/if}}
+
+  <!-- GOODS RECEIVED BY -->
+  <div class="recv">
+    <div class="h">GOODS RECEIVED BY:</div>
+    <div class="s">Signature and Stamp:</div>
+    <div class="sig">{{#if Signature}}
+            <img src="{{Signature}}" alt="Signature" style="width:{{datasettings.d459}}px;" onerror="this.style.display='none'"/>
+          {{/if}}</div>
+    <div class="line"></div>
+  </div>
+
+</body>
+</html>
