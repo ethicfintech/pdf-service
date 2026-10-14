@@ -19,12 +19,15 @@ const MAX_IDLE_MS = 3 * 60 * 1000;
 async function closeBrowser(browser) {
   if (!browser) return;
   try { await browser.close(); } catch (_) {}
-  // Force-kill by PID if the process is still alive after close()
+  // Force-kill the entire process tree if still alive after close()
   try {
     const proc = browser.process();
     if (proc && proc.pid) {
-      process.kill(proc.pid, 'SIGKILL');
-      console.log(`Force-killed chromium pid ${proc.pid}`);
+      // Kill the process group (negative PID) to catch all children
+      try { process.kill(-proc.pid, 'SIGKILL'); } catch (_) {}
+      // Also kill the main PID directly as fallback
+      try { process.kill(proc.pid, 'SIGKILL'); } catch (_) {}
+      console.log(`Force-killed chromium tree pid ${proc.pid}`);
     }
   } catch (_) {}
 }
