@@ -374,34 +374,34 @@
               {{#each zatcadiscount}}
                 <tr>
                   <td class="tl">{{reason_name}} / <span>{{reason_name_lang2}}</span></td>
-                  <td class="tv">{{formatAmount (divide dld ../ccrate) ../bcdp}}</td>
+                  <td class="tv">{{formatAmount dld ../bcdp}}</td>
                 </tr>
                 {{/each}}
                 <tr class="b">
                   <td class="tl">Net Amount / <span>صافي المجموع</span></td>
-                  <td class="tv">{{formatAmount (divide (subtract basicdetails.[0].subtotal zatcadiscount.[0].dld) ccrate) bcdp}}</td>
+                  <td class="tv">{{formatAmount (subtract basicdetails.[0].subtotal zatcadiscount.[0].dld) bcdp}}</td>
                 </tr>
             {{else}}
 
               {{#if (or basicdetails.[0].discount basicdetails.[0].dld)}}
               <tr>
                 <td class="tl">Discount / <span>الخصم</span></td>
-                <td class="tv">{{formatAmount (divide (add basicdetails.[0].discount basicdetails.[0].dld) ccrate) bcdp}}</td>
+                <td class="tv">{{formatAmount (add basicdetails.[0].discount basicdetails.[0].dld) bcdp}}</td>
               </tr>
               <tr class="b">
                 <td class="tl">Net Amount / <span>صافي المجموع</span></td>
-                <td class="tv">{{formatAmount (divide (subtract basicdetails.[0].subtotal (add basicdetails.[0].discount basicdetails.[0].dld)) ccrate) bcdp}}</td>
+                <td class="tv">{{formatAmount (subtract basicdetails.[0].subtotal (add basicdetails.[0].discount basicdetails.[0].dld)) bcdp}}</td>
               </tr>
               {{/if}}
 
           {{/if}}
             <tr>
               <td class="tl">{{datasettingstextvalue.d828}} / <span>ضريبة القيمة المضافة</span></td>
-              <td class="tv">{{formatAmount (divide basicdetails.[0].vatamt ccrate) bcdp}}</td>
+              <td class="tv">{{formatAmount basicdetails.[0].vatamt bcdp}}</td>
             </tr>
             <tr class="b">
               <td class="tl">Grand Total / <span>المبلغ الإجمالي</span></td>
-              <td class="tv">{{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
+              <td class="tv">{{formatAmount basicdetails.[0].grand_total bcdp}}</td>
             </tr>
           </table>
         </td>
