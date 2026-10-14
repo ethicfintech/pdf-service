@@ -400,7 +400,7 @@
               <td class="tv">{{formatAmount basicdetails.[0].vatamt bcdp}}</td>
             </tr>
             <tr class="b">
-              <td class="tl">Grand Total / <span>المبلغ الإجمالي</span></td>
+              <td class="tl">Grand Total{{#if (neq basicdetails.[0].doc_country_isocode basicdetails.[0].base_country_isocode)}} in {{basicdetails.[0].doc_country_isocode}}{{/if}} / <span>المبلغ الإجمالي</span></td>
               <td class="tv">{{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
             </tr>
           </table>
