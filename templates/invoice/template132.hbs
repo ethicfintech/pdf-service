@@ -401,7 +401,7 @@
             </tr>
             <tr class="b">
               <td class="tl">Grand Total / <span>المبلغ الإجمالي</span></td>
-              <td class="tv">{{formatAmount basicdetails.[0].grand_total bcdp}}</td>
+              <td class="tv">{{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
             </tr>
           </table>
         </td>
