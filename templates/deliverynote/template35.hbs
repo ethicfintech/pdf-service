@@ -146,6 +146,12 @@
           {{#if basicdetails.[0].order_no}}
           <tr><td class="k lbl">LPO No.</td><td class="c">:</td><td>{{basicdetails.[0].order_no}}</td></tr>
           {{/if}}
+          {{#if basicdetails.[0].invoice_no}}
+          <tr><td class="k lbl">Invoice No</td><td class="c">:</td><td>{{basicdetails.[0].invoice_no}}</td></tr>
+          {{/if}}
+          {{#if basicdetails.[0].invoice_date}}
+          <tr><td class="k lbl">Invoice Date</td><td class="c">:</td><td>{{basicdetails.[0].invoice_date}}</td></tr>
+          {{/if}}
         </table>
       </td>
     </tr>
