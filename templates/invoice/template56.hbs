@@ -530,10 +530,12 @@
             <span class="en">Contract / PO No</span></br>
             <span>{{basicdetails.[0].order_no}}</span>
           </td>
+          {{#ifFlag datasettings "d509"}}
           <td>تاريخ الاستحقاق </br>
             <span class="en">Due Date</span></br>
             <span>{{basicdetails.[0].due_date}}</span>
           </td>
+          {{/ifFlag}}
           {{#ifFlag datasettings "d515"}}
           <td>رقم المرجع </br>
             <span class="en">Reference No</span></br>
@@ -563,11 +565,13 @@
             <span class="ar">م</span>
             <span class="en">#</span>
           </th>
+          {{#if itemdetails.[0].item_code}}
           <th style="width:11%">
             <span class="ar">الرمز</span>
             <span class="en"> Code (SKU)</span>
           </th>
-          <th style="width:26%">
+          {{/if}}
+          <th style="width:{{#if itemdetails.[0].item_code}}{{#ifFlag datasettings "d540"}}26%{{else}}33%{{/ifFlag}}{{else}}{{#ifFlag datasettings "d540"}}37%{{else}}44%{{/ifFlag}}{{/if}}">
             <span class="ar">طبيعة السلعة/الخدمة</span>
             <span class="en">Nature of Goods / Services</span>
           </th>
@@ -587,10 +591,12 @@
             <span class="ar">الإجمالي بدون ضريبة</span>
             <span class="en">Amount Excl. VAT</span>
           </th>
+          {{#ifFlag datasettings "d540"}}
           <th style="width:7%">
             <span class="ar"> ضريبةالمضاف</span>
             <span class="en">VAT %</span>
           </th>
+          {{/ifFlag}}
           <th style="width:8%">
             <span class="ar"> قيمة الضريبة</span>
             <span class="en">VAT Amount</span>
@@ -605,7 +611,9 @@
         {{#each itemdetails}}
         <tr>
           <td style="text-align:center;">{{addOne @index}}</td>
+          {{#if @root.itemdetails.[0].item_code}}
           <td style="text-align:left;">{{item_code}}</td>
+          {{/if}}
           <td class="desc-cell">
             {{item_name}}
             {{#if name_lang2}}<div class="sub-ar">{{name_lang2}}</div>{{/if}}
@@ -615,13 +623,15 @@
           <td style="text-align:center;">{{formatAmount quantity ../bcdp}}</td>
           <td style="text-align:right;">{{formatAmount price ../bcdp}}</td>
           <td style="text-align:right;">{{formatAmount taxable ../bcdp}}</td>
+          {{#ifFlag @root.datasettings "d540"}}
           <td style="text-align:center;">{{vat_perc}} %</td>
+          {{/ifFlag}}
           <td style="text-align:right;">{{formatAmount vat_amt ../bcdp}}</td>
           <td style="text-align:right;">{{formatAmount amount ../bcdp}}</td>
         </tr>
         {{/each}}
         <tr>
-          <td colspan="10" style="text-align:center;">***** لا شيء يبدأ *****</td>
+          <td colspan="{{#if itemdetails.[0].item_code}}{{#ifFlag datasettings "d540"}}10{{else}}9{{/ifFlag}}{{else}}{{#ifFlag datasettings "d540"}}9{{else}}8{{/ifFlag}}{{/if}}" style="text-align:center;">***** لا شيء يبدأ *****</td>
         </tr>
       </tbody>
     </table>
@@ -694,9 +704,11 @@
           <th class="bank-head" style="width: 45%;">
             Bank Details&nbsp;/&nbsp;<span class="ar">التفاصيل المصرفية</span>
           </th>
-          <th style="width: 19%;">Prepared By</th>
+          <th style="width: {{#ifFlag datasettings "d576"}}19%{{else}}28%{{/ifFlag}};">Prepared By</th>
+          {{#ifFlag datasettings "d576"}}
           <th style="width: 19%;">Approved By</th>
-          <th style="width: 17%;">Received By</th>
+          {{/ifFlag}}
+          <th style="width: {{#ifFlag datasettings "d576"}}17%{{else}}27%{{/ifFlag}};">Received By</th>
         </tr>
       </thead>
       <tbody>
@@ -735,6 +747,7 @@
                 </div>
             </div>
           </td>
+          {{#ifFlag datasettings "d576"}}
           <td class="sig-cell">
             <div class="sig-area">
               <div class="sig-img-slot">
@@ -745,6 +758,7 @@
               </div>
             </div>
           </td>
+          {{/ifFlag}}
           <td class="sig-cell">
             <div class="sig-area">
               <div class="sig-img-slot"></div>
