@@ -394,11 +394,11 @@
                 </td>
                 <td class="tc">{{unit}}</td>
                 <td class="tc">{{formatAmount quantity ../bcdp}}</td>
-                <td class="te">{{{currencySymbol ../currency_isocode}}} {{formatAmount price ../bcdp}}</td>
-                <td class="te">{{{currencySymbol ../currency_isocode}}} {{formatAmount taxable ../bcdp}}</td>
+                <td class="te">{{{currencySymbol ../basicdetails.[0].currency_isocode}}} {{formatAmount price ../bcdp}}</td>
+                <td class="te">{{{currencySymbol ../basicdetails.[0].currency_isocode}}} {{formatAmount taxable ../bcdp}}</td>
                 <td class="tc">{{vat_perc}}%</td>
-                <td class="te">{{{currencySymbol ../currency_isocode}}} {{formatAmount vat_amt ../bcdp}}</td>
-                <td class="te">{{{currencySymbol ../currency_isocode}}} {{formatAmount amount ../bcdp}}</td>
+                <td class="te">{{{currencySymbol ../basicdetails.[0].currency_isocode}}} {{formatAmount vat_amt ../bcdp}}</td>
+                <td class="te">{{{currencySymbol ../basicdetails.[0].currency_isocode}}} {{formatAmount amount ../bcdp}}</td>
             </tr>
             {{/each}}
         </tbody>
