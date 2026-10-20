@@ -466,13 +466,13 @@
       <tr>
         <td class="t-label">{{tax_label_in_item}}</td>
         <td class="t-label-ar">ضريبة القيمة المضافة</td>
-        <td class="t-amount">{{formatAmount (divide basicdetails.[0].vatamt ccrate) bcdp}}</td>
+        <td class="t-amount">{{formatAmount basicdetails.[0].vatamt bcdp}}</td>
       </tr>
       {{/if_gt}}
       <tr>
         <td class="t-label">Total Amount in {{basicdetails.[0].currency_isocode}}</td>
         <td class="t-label-ar">المبلغ الإجمالي</td>
-        <td class="t-amount">{{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
+        <td class="t-amount">{{formatAmount basicdetails.[0].grand_total bcdp}}</td>
       </tr>
       {{!-- {{#if_gt basicdetails.[0].received 0}}
       <tr>
