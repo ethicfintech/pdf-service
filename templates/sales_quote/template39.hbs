@@ -341,8 +341,8 @@
          its 12% goes to Description when it is dropped --}}
     <colgroup>
       <col style="width:4%">
-      {{#hasItemCode itemdetails}}<col style="width:15%">{{/hasItemCode}}
-      <col style="width:{{#hasItemCode itemdetails}}41{{else}}54{{/hasItemCode}}%">
+      {{#if itemdetails.[0].part_number}}<col style="width:15%">{{/if}}
+      <col style="width:{{#if itemdetails.[0].part_number}}41{{else}}54{{/if}}%">
       <col style="width:8%">
       <col style="width:8%">
       <col style="width:11%">
@@ -354,12 +354,12 @@
           <span class="head-ar">م</span>
           <span class="head-en">S.N</span>
         </th>
-        {{#hasItemCode itemdetails}}
+        {{#if itemdetails.[0].part_number}}
         <th>
           <span class="head-ar"> رقم القطعة</span>
           <span class="head-en">Part Number</span>
         </th>
-        {{/hasItemCode}}
+        {{/if}}
         <th>
           <span class="head-ar">الوصف</span>
           <span class="head-en">Description</span>
@@ -386,9 +386,9 @@
       {{#each itemdetails}}
       <tr>
         <td class="center">{{addOne @index}}</td>
-        {{#hasItemCode ../itemdetails}}
+        {{#if @root.itemdetails.[0].part_number}}
         <td class="center">{{part_number}}</td>
-        {{/hasItemCode}}
+        {{/if}}
         <td class="left">
           <div style="display: flex; justify-content: space-between;">
             <span>{{item_name}}</span>
@@ -402,7 +402,7 @@
       </tr>
       {{/each}}
       <tr class="item-spacer">
-        <td></td>{{#hasItemCode itemdetails}}<td></td>{{/hasItemCode}}<td></td><td></td><td></td><td></td><td></td>
+        <td></td>{{#if itemdetails.[0].part_number}}<td></td>{{/if}}<td></td><td></td><td></td><td></td><td></td>
       </tr>
     </tbody>
   </table>
