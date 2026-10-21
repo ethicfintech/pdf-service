@@ -133,9 +133,9 @@
       <td style="padding-top:4px;"><span class="h">In Words :</span> {{bcamountinwords}}</td>
       <td>
         <table class="stbl">
-          <tr><td class="sl">Gross Amount</td><td class="sv">{{formatAmount basicdetails.[0].subtotal bcdp}}</td></tr>
-          <tr><td class="sl">Discount</td><td class="sv">{{formatAmount basicdetails.[0].discount bcdp}}</td></tr>
-          <tr><td class="sl">Net Amount</td><td class="sv">{{formatAmount basicdetails.[0].grand_total bcdp}}</td></tr>
+          <tr><td class="sl">Gross Amount</td><td class="sv"> {{formatAmount (divide basicdetails.[0].subtotal ccrate) bcdp}}</td></tr>
+          <tr><td class="sl">Discount</td><td class="sv"> {{formatAmount (divide basicdetails.[0].discount ccrate) bcdp}}</td></tr>
+          <tr><td class="sl">Net Amount</td><td class="sv"> {{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td></tr>
         </table>
       </td>
     </tr>
