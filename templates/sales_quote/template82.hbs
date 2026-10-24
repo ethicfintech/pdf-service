@@ -118,10 +118,8 @@
   }
 
   /* row lines are drawn on the <tr>, not each <td>, so no seams appear between cells */
-  .items-table tbody td,
   .totals-table td { position: relative; }
 
-  .items-table tbody td::after,
   .totals-table td::after {
     content: "";
     position: absolute;
@@ -132,18 +130,15 @@
     transform-origin: bottom;
   }
 
-  .items-table tbody td:last-child::after,
   .totals-table td:last-child::after { right: 0; }
 
+  /* item rows use a real border (not ::after) so the line stays aligned when a long row splits across pages;
+     top-aligned so qty/amounts stay beside the start of the description */
   .items-table tbody td {
     padding-top: 11px;
     padding-bottom: 11px;
-  }
-
-  /* keep each item row on one page; a split row misplaces the ::after row lines */
-  .items-table tbody tr {
-    break-inside: avoid;
-    page-break-inside: avoid;
+    vertical-align: top;
+    border-bottom: 1px solid #e3e3e3;
   }
 
   .items-table .center { text-align: center; }
