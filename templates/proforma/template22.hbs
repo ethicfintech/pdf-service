@@ -431,15 +431,15 @@
         <td class="desc">{{item_name}}{{#if name_lang2}}<div style="direction:rtl;text-align:left;font-size:9px;color:#555;">{{name_lang2}}</div>{{/if}}{{#if description}}<div style="direction:rtl;text-align:left;font-size:9px;color:#555;">{{description}}</div>{{/if}}</td>
         <td style="text-align: center;">{{formatAmount quantity ../bcdp}}</td>
         <td style="text-align: center;">{{unit}}</td>
-        <td style="text-align: right;">{{formatAmount price ../bcdp}}</td>
+        <td style="text-align: right;">{{{currencySymbol ../basicdetails.[0].currency_isocode}}} {{formatAmount price ../bcdp}}</td>
         {{#hasDiscount ../itemdetails}}
-        <td style="text-align: right;">{{formatAmount disc_amt ../bcdp}}</td>
+        <td style="text-align: right;">{{{currencySymbol ../basicdetails.[0].currency_isocode}}} {{formatAmount disc_amt ../bcdp}}</td>
         {{/hasDiscount}}
-        <td style="text-align: right;">{{formatAmount taxable ../bcdp}}</td>
+        <td style="text-align: right;">{{{currencySymbol ../basicdetails.[0].currency_isocode}}} {{formatAmount taxable ../bcdp}}</td>
         {{#hasVat ../itemdetails}}
-        <td style="text-align: right;">{{formatAmount vat_amt ../bcdp}}</td>
+        <td style="text-align: right;">{{{currencySymbol ../basicdetails.[0].currency_isocode}}} {{formatAmount vat_amt ../bcdp}}</td>
         {{/hasVat}}
-        <td style="text-align: right;">{{formatAmount amount ../bcdp}}</td>
+        <td style="text-align: right;">{{{currencySymbol ../basicdetails.[0].currency_isocode}}} {{formatAmount amount ../bcdp}}</td>
       </tr>
       {{/each}}
     </tbody>
@@ -458,26 +458,26 @@
       <tr>
         <td class="t-label" style="width:30.33%;">Subtotal</td>
         <td class="t-label-ar" style="width: 27%;">المجموع الفرعي</td>
-        <td class="t-amount" style="width: 39.67%;">{{formatAmount (divide basicdetails.[0].subtotal ccrate) bcdp}}</td>
+        <td class="t-amount" style="width: 39.67%;">{{{currencySymbol basicdetails.[0].currency_isocode}}} {{formatAmount (divide basicdetails.[0].subtotal ccrate) bcdp}}</td>
       </tr>
       {{#if_gt basicdetails.[0].discount 0}}
       <tr>
         <td class="t-label">Discount</td>
         <td class="t-label-ar">تخفيض</td>
-        <td class="t-amount">{{formatAmount (divide basicdetails.[0].discount ccrate) bcdp}}</td>
+        <td class="t-amount">{{{currencySymbol basicdetails.[0].currency_isocode}}} {{formatAmount (divide basicdetails.[0].discount ccrate) bcdp}}</td>
       </tr>
       {{/if_gt}}
       {{#if_gt basicdetails.[0].vatamt 0}}
       <tr>
         <td class="t-label">{{tax_label_in_item}}</td>
         <td class="t-label-ar">ضريبة القيمة المضافة</td>
-        <td class="t-amount">{{formatAmount (divide basicdetails.[0].vatamt ccrate) bcdp}}</td>
+        <td class="t-amount">{{{currencySymbol basicdetails.[0].currency_isocode}}} {{formatAmount (divide basicdetails.[0].vatamt ccrate) bcdp}}</td>
       </tr>
       {{/if_gt}}
       <tr>
         <td class="t-label">Total Amount in {{basicdetails.[0].currency_isocode}}</td>
         <td class="t-label-ar">المبلغ الإجمالي</td>
-        <td class="t-amount">{{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
+        <td class="t-amount">{{{currencySymbol basicdetails.[0].currency_isocode}}} {{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
       </tr>
     </table>
 
