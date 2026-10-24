@@ -140,6 +140,12 @@
     padding-bottom: 11px;
   }
 
+  /* keep each item row on one page; a split row misplaces the ::after row lines */
+  .items-table tbody tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
   .items-table .center { text-align: center; }
   .items-table .left   { text-align: left; }
   .items-table .right  { text-align: right; }
