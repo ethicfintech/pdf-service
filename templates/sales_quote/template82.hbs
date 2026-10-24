@@ -327,6 +327,11 @@
   </div>
   {{/if}}
 
+  <!-- ══ ATTENTION (only when attention is filled) ══ -->
+  {{#if basicdetails.[0].attention}}
+  <div class="subject-block"><b>Attention:</b> {{basicdetails.[0].attention}}</div>
+  {{/if}}
+
   <!-- ══ ITEMS ══ -->
   <table class="items-table">
     <colgroup>
