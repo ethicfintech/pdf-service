@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Delivery Note - {{basicdetails.[0].inv_no}}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: ibmplexsansarabic;
+      font-size: 11px;
+      color: #000;
+      background: #fff;
+      margin: 0 5mm;
+    }
+
+    table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+
+    /* ── Title ─────────────────────────────────────────── */
+    .title {
+      text-align: center;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 20px;
+      padding: 0 0 6px;
+    }
+    .title .en { color: #b72031; }
+    .title .ar { color: #606261; direction: rtl; unicode-bidi: isolate; }
+
+    /* ── Header boxes: customer (left) + document (right) ── */
+    .hdr-wrap > tbody > tr > td { border: none; padding: 0; vertical-align: top; }
+
+    .info td {
+      border: 1px solid #bfbfbf;
+      padding: 4px 6px;
+      line-height: 17px;
+      vertical-align: top;
+      word-wrap: break-word;
+    }
+    .info .lbl { font-weight: 700; }
+    .info .row-d td { vertical-align: middle; }
+
+    /* ── Items ─────────────────────────────────────────── */
+    .items { margin-top: 10px; }
+    .items th {
+      background: #cccccc;
+      border: 1px solid #bfbfbf;
+      padding: 2px 5px;
+      font-weight: 700;
+      text-align: center;
+      vertical-align: middle;
+      line-height: 15px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .items th .ar { display: block; direction: rtl; unicode-bidi: isolate; }
+    .items th .en { display: block; }
+    .items td {
+      border: 1px solid #bfbfbf;
+      padding: 5px 5px 6px;
+      font-size: 10px;
+      line-height: 14px;
+      vertical-align: top;
+    }
+    .items .sn  { text-align: center; }
+    .items .qty { text-align: center; }
+    .items .uom { text-align: center; }
+    .items .desc-ar { direction: rtl; unicode-bidi: isolate; margin: 0 10px; }
+
+    /* ── Stamp / Prepared / Approved ───────────────────── */
+    .sign { margin-top: 17px; break-inside: avoid; page-break-inside: avoid; }
+    .sign td { border: 1px solid #bfbfbf; text-align: center; }
+    .sign .box { vertical-align: middle; padding: 6px 6px 0; }
+    .sign .box img { max-width: 100%; object-fit: contain; }
+    .sign .name { font-weight: 700; display: block;vertical-align: middle; padding:5px;}
+    .sign .lbl {
+      background: #cccccc;
+      line-height: 16px;
+      padding: 1px 4px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    {{#if UseBGWatermark}}
+    {{#if WatermarkCss}}
+    /* WATERMARK — fixed, so it repeats on every printed page (WatermarkCss = data URI built from WatermarkUrl) */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-image: url('{{{WatermarkCss}}}');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 100% auto;
+      opacity: 0.7;
+      pointer-events: none;
+      z-index: -1;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    {{/if}}
+    {{/if}}
+  </style>
+</head>
+<body>
+
+  <!-- TITLE -->
+  <div class="title">
+    <span class="en">Delivery Note</span> / <span class="ar">مذكرة تسليم</span>
+  </div>
+
+  <!-- HEADER BOXES -->
+  <table class="hdr-wrap">
+    <colgroup>
+      <col style="width:57.9%">
+      <col style="width:2.3%">
+      <col style="width:39.8%">
+    </colgroup>
+    <tr>
+      <td>
+        <table class="info">
+          <colgroup>
+            <col style="width:30%">
+            <col style="width:70%">
+          </colgroup>
+          <tr>
+            <td class="lbl">Customer Name</td>
+            <td class="cust">
+              <div>{{billing_address.[0].name}}</div>
+              <div class="addr">{{joinAddress billing_address.[0] ", "}}</div>
+            </td>
+          </tr>
+          <tr class="row-d">
+            <td class="lbl">Date</td>
+            <td>{{basicdetails.[0].inv_date}}</td>
+          </tr>
+        </table>
+      </td>
+      <td></td>
+      <td>
+        <table class="info">
+          <colgroup>
+            <col style="width:29.8%">
+            <col style="width:70.2%">
+          </colgroup>
+          <tr>
+            <td class="lbl">DN Number</td>
+            <td>{{basicdetails.[0].inv_no}}</td>
+          </tr>
+          <tr>
+            <td class="lbl">Invoice No</td>
+            <td>{{basicdetails.[0].invoice_no}}</td>
+          </tr>
+          <tr>
+            <td class="lbl">PO No</td>
+            <td>{{basicdetails.[0].order_no}}</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <!-- ITEMS -->
+  <table class="items">
+    <colgroup>
+      <col style="width:5%">
+      <col style="width:75.1%">
+      <col style="width:9.5%">
+      <col style="width:10.4%">
+    </colgroup>
+    <thead>
+      <tr>
+        <th><span class="ar">م</span><span class="en">S.N</span></th>
+        <th><span class="ar">الوصف</span><span class="en">Description</span></th>
+        <th><span class="ar">الكمية</span><span class="en">QTY</span></th>
+        <th><span class="ar">الوحدة</span><span class="en">UOM</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each itemdetails}}
+      <tr>
+        <td class="sn">{{addOne @index}}</td>
+        <td>{{item_name}}{{#if name_lang2}}<span class="desc-ar">{{name_lang2}}</span>{{/if}}{{#if description}} {{description}}{{/if}}</td>
+        <td class="qty">{{quantity}}</td>
+        <td class="uom">{{unit}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <!-- STAMP / PREPARED BY / APPROVED BY -->
+  <table class="sign">
+    <colgroup>
+      <col style="width:33.34%">
+      <col style="width:33.33%">
+      <col style="width:33.33%">
+    </colgroup>
+    <tr>
+      <td class="box">
+        {{#ifFlag datasettings "d678"}}
+          {{#if Seal}}
+          <img src="{{Seal}}" alt="Seal" style="width:{{datasettings.d458}}px;" onerror="this.style.display='none'"/>
+          {{/if}}
+        {{/ifFlag}}
+      </td>
+      <td class="box"><span class="name">{{basicdetails.[0].salesman_name}}</span></td>
+      <td class="box"></td>
+    </tr>
+    <tr>
+      <td class="lbl">STAMP</td>
+      <td class="lbl">PREPARED BY</td>
+      <td class="lbl">APPROVED BY</td>
+    </tr>
+  </table>
+
+</body>
+</html>

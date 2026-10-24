@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Delivery Note - {{basicdetails.[0].inv_no}}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: ibmplexsansarabic;
+      font-size: 11px;
+      color: #000;
+      background: #fff;
+      margin: 0 5mm;
+    }
+
+    table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+
+    /* ── Title ─────────────────────────────────────────── */
+    .title {
+      text-align: center;
+      font-size: 19px;
+      font-weight: 700;
+      padding: 0 0 8px;
+    }
+    .title .en { color: #b72031; }
+    .title .ar { color: #606261; direction: rtl; unicode-bidi: isolate; }
+
+    /* ── Header boxes: customer (left) + document (right) ── */
+    .hdr-wrap > tbody > tr > td { border: none; padding: 0; vertical-align: top; }
+
+    .info td {
+      border: 1px solid #bfbfbf;
+      padding: 4px 5px;
+      line-height: 18px;
+      vertical-align: top;
+      word-wrap: break-word;
+    }
+    .info .cust div { line-height: 25.5px; }
+    .info .cust div:first-child { line-height: 19px; padding-left: 4px; padding-bottom: 4px; }
+    .info .val-c { text-align: center; }
+    .info .nw { white-space: nowrap; padding-right: 2px; }
+
+    /* ── Items ─────────────────────────────────────────── */
+    .items { margin-top: 12px; }
+    .items th {
+      border: 1px solid #bfbfbf;
+      padding: 1px 5px;
+      font-weight: 400;
+      text-align: center;
+      vertical-align: middle;
+      line-height: 15.5px;
+    }
+    .items th .ar { display: block; direction: rtl; unicode-bidi: isolate; }
+    .items th .en { display: block; }
+    .items td {
+      border: 1px solid #bfbfbf;
+      padding: 3px 5px ;
+      font-size: 10px;
+      vertical-align: middle;
+    }
+    .items .sn  { text-align: center; }
+    .items .qty { text-align: center; }
+    .items .uom { text-align: center; }
+    .items .rt  { text-align: right; }
+    .items .tot td { border-top: none; border-bottom: none; text-align: right; padding: 3px 5px; }
+    .items .tot tr.first td { padding-top: 5px; }
+    .items .tot tr.last td { border-bottom: 1px solid #bfbfbf; padding-bottom: 6px; }
+    .items .desc-ar { direction: rtl; unicode-bidi: isolate; }
+
+    /* ── Signatures ────────────────────────────────────── */
+    .sign { margin-top: 45px; break-inside: avoid; page-break-inside: avoid; }
+
+    /* ── Terms (only when sent) ─────────────────────────── */
+    .terms { margin-top: 12px; break-inside: avoid; page-break-inside: avoid; }
+    .terms .h { font-weight: 700; line-height: 18px; }
+    .terms .b { font-size: 10.5px; line-height: 15px; margin-top: 2px; }
+    .sign td { border: none; padding: 0; vertical-align: top; }
+    .sign .seal { margin-top: 4px; }
+    .sign .seal img { max-width: 100%; object-fit: contain; }
+    .sign .sg {
+      border-top: 1px solid #bfbfbf;
+      text-align: center;
+      padding-top: 22px;
+      font-size: 12px;
+    }
+
+    {{#if UseBGWatermark}}
+    {{#if WatermarkCss}}
+    /* WATERMARK — fixed, so it repeats on every printed page (WatermarkCss = data URI built from WatermarkUrl) */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-image: url('{{{WatermarkCss}}}');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 100% auto;
+      opacity: 0.7;
+      pointer-events: none;
+      z-index: -1;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    {{/if}}
+    {{/if}}
+  </style>
+</head>
+<body>
+
+  <!-- TITLE -->
+  <div class="title">
+    <span class="en">Delivery Note</span> / <span class="ar">مذكرة تسليم</span>
+  </div>
+
+  <!-- HEADER BOXES -->
+  <table class="hdr-wrap">
+    <colgroup>
+      <col style="width:57.9%">
+      <col style="width:2.2%">
+      <col style="width:39.9%">
+    </colgroup>
+    <tr>
+      <td>
+        <table class="info">
+          <colgroup>
+            <col style="width:29.7%">
+            <col style="width:70.3%">
+          </colgroup>
+          <tr>
+            <td>Customer Name</td>
+            <td>
+              <div>{{billing_address.[0].name}}</div>
+              {{#with billing_address.[0]}}
+              {{#if address_line1}}<div>{{address_line1}}</div>{{/if}}
+              {{#if address_line2}}<div>{{address_line2}}</div>{{/if}}
+              {{#if address_line3}}<div>{{address_line3}}</div>{{/if}}
+              {{#if address_line4}}<div>{{address_line4}}</div>{{/if}}
+              {{#if address_line5}}<div>{{address_line5}}</div>{{/if}}
+              {{#if vat}}<div>VAT: {{vat}}</div>{{/if}}
+              {{/with}}
+            </td>
+          </tr>
+          <tr>
+            <td>Date</td>
+            <td>{{basicdetails.[0].inv_date}}</td>
+          </tr>
+        </table>
+      </td>
+      <td></td>
+      <td>
+        <table class="info">
+          <colgroup>
+            <col style="width:29.8%">
+            <col style="width:70.2%">
+          </colgroup>
+          <tr>
+            <td>DN Number</td>
+            <td class="val-c">{{basicdetails.[0].inv_no}}</td>
+          </tr>
+          <tr>
+            <td>Invoice No</td>
+            <td class="val-c">{{basicdetails.[0].invoice_no}}</td>
+          </tr>
+          <tr>
+            <td>PO No</td>
+            <td class="val-c">{{basicdetails.[0].order_no}}</td>
+          </tr>
+          <tr>
+            <td>Supply Date</td>
+            <td class="val-c">{{basicdetails.[0].sup_date}}</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <!-- ITEMS -->
+  <table class="items">
+    <colgroup>
+      <col style="width:5%">
+      <col style="width:55%">
+      <col style="width:10%">
+      <col style="width:10%">
+      <col style="width:10%">
+      <col style="width:10%">
+    </colgroup>
+    <thead>
+      <tr>
+        <th><span class="ar">م</span><span class="en">S.N</span></th>
+        <th><span class="ar">الوصف</span><span class="en">Description</span></th>
+        <th><span class="ar">الكمية</span><span class="en">QTY</span></th>
+        <th><span class="ar">وحدة</span><span class="en">Unit</span></th>
+        <th><span class="ar">سعر الوحدة</span><span class="en">U.Price</span></th>
+        <th><span class="ar">المبلغ الإجمالي</span><span class="en">Total Amt</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each itemdetails}}
+      <tr>
+        <td class="sn">{{addOne @index}}</td>
+        <td>{{item_name}}{{#if name_lang2}} <span class="desc-ar">{{name_lang2}}</span>{{/if}}{{#if description}} {{description}}{{/if}}</td>
+        <td class="qty">{{quantity}}</td>
+        <td class="rt">{{unit}}</td>
+        <td class="rt">{{formatAmount price ../bcdp}}</td>
+        <td class="rt">{{formatAmount taxable ../bcdp}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+    <!-- totals: no rules between rows, one divider before the value column -->
+    <tbody class="tot">
+      <tr class="first">
+        <td colspan="5">Sum</td>
+        <td>{{formatAmount basicdetails.[0].subtotal bcdp}}</td>
+      </tr>
+      <tr>
+        <td colspan="5">Tax</td>
+        <td>{{formatAmount (divide basicdetails.[0].vatamt ccrate) bcdp}}</td>
+      </tr>
+      <tr class="last">
+        <td colspan="5">Total</td>
+        <td>{{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- TERMS AND CONDITIONS -->
+  {{#if basicdetails.[0].terms_and_condition}}
+  <div class="terms">
+    <div class="h">Terms &amp; Conditions</div>
+    <div class="b">{{{nl2br basicdetails.[0].terms_and_condition}}}</div>
+  </div>
+  {{/if}}
+
+  <!-- SIGNATURES -->
+  <table class="sign">
+    <colgroup>
+      <col style="width:33%">
+      <col style="width:0.25%">
+      <col style="width:33.5%">
+      <col style="width:0.25%">
+      <col style="width:33%">
+    </colgroup>
+    <tr>
+      <td class="sg">Prepared By</td>
+      <td></td>
+      <td class="sg">Delivered By</td>
+      <td></td>
+      <td class="sg">Received By</td>
+    </tr>
+  </table>
+
+</body>
+</html>
