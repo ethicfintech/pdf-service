@@ -210,8 +210,8 @@
               </td>
               <td class="center">{{quantity}}</td>
               <td class="center">{{unit}}</td>
-              <td class="right">{{formatAmount price ../bcdp}}</td>
-              <td class="right">{{formatAmount taxable ../bcdp}}</td>
+              <td class="right">{{{currencySymbol ../basicdetails.[0].isocode}}} {{formatAmount price ../bcdp}}</td>
+              <td class="right">{{{currencySymbol ../basicdetails.[0].isocode}}} {{formatAmount taxable ../bcdp}}</td>
             </tr>
             {{/each}}
           </tbody>
@@ -241,7 +241,7 @@
           <tr>
             <td colspan="4" class="words et el">Amount chargable in words :<b>{{bcamountinwords}}</b></td>
             <td rowspan="2" class="t-lbl et">Total Amount</td>
-            <td rowspan="2" class="t-val et er">{{formatAmount (divide basicdetails.[0].subtotal ccrate) bcdp}}</td>
+            <td rowspan="2" class="t-val et er">{{{currencySymbol basicdetails.[0].isocode}}} {{formatAmount (divide basicdetails.[0].subtotal ccrate) bcdp}}</td>
           </tr>
           <tr>
             <td colspan="4" class="el">Cheque should be crossed and made payable to: {{#if branch.[0].name}}{{branch.[0].name}}{{else}}{{compprof.name}}{{/if}}</td>
@@ -250,7 +250,7 @@
           <tr>
             <td colspan="4" class="bank-head el">BANK DETAILS</td>
             <td class="t-lbl">Discount</td>
-            <td class="t-val er">{{formatAmount (divide basicdetails.[0].discount ccrate) bcdp}}</td>
+            <td class="t-val er">{{{currencySymbol basicdetails.[0].isocode}}} {{formatAmount (divide basicdetails.[0].discount ccrate) bcdp}}</td>
           </tr>
 
           <tr>
@@ -259,7 +259,7 @@
             <td class="bank">Beneficiary Bank</td>
             <td class="bank">{{bankdetails.name}}</td>
             <td rowspan="3" class="t-lbl eb">Total Amount</td>
-            <td rowspan="3" class="t-val grand eb er">{{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
+            <td rowspan="3" class="t-val grand eb er">{{{currencySymbol basicdetails.[0].isocode}}} {{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
           </tr>
           <tr>
             <td class="bank el">Beneficiary Branch</td>
