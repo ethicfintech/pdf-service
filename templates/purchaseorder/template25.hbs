@@ -212,9 +212,9 @@
           <td>{{item_name}}{{description}}</td>
           <td class="num">{{formatAmount quantity ../bcdp}}</td>
           <td class="num">{{unit}}</td>
-          <td class="rt">{{formatAmount price ../bcdp}}</td>
-          <td class="rt">{{formatAmount tax ../bcdp}}</td>
-          <td class="rt">{{formatAmount amount ../bcdp}}</td>
+          <td class="rt">{{{currencySymbol ../basicdetails.[0].isocode}}} {{formatAmount price ../bcdp}}</td>
+          <td class="rt">{{{currencySymbol ../basicdetails.[0].isocode}}} {{formatAmount tax ../bcdp}}</td>
+          <td class="rt">{{{currencySymbol ../basicdetails.[0].isocode}}} {{formatAmount amount ../bcdp}}</td>
         </tr>
       {{/each}}
     </tbody>
@@ -233,23 +233,23 @@
         VAT Amount in words : {{vatamountinwords}}
       </td>
       <td class="totlbl">Sub Total ({{basicdetails.[0].isocode}})</td>
-      <td class="totval">{{formatAmount (divide basicdetails.[0].subtotal ccrate) bcdp}}</td>
+      <td class="totval">{{{currencySymbol basicdetails.[0].isocode}}} {{formatAmount (divide basicdetails.[0].subtotal ccrate) bcdp}}</td>
     </tr>
     <tr>
       <td class="totlbl">Discount</td>
-      <td class="totval">{{formatAmount (divide basicdetails.[0].discount ccrate) bcdp}}</td>
+      <td class="totval">{{{currencySymbol basicdetails.[0].isocode}}} {{formatAmount (divide basicdetails.[0].discount ccrate) bcdp}}</td>
     </tr>
     <tr>
       <td class="totlbl">VAT Amount</td>
-      <td class="totval">{{formatAmount (divide basicdetails.[0].vatamt ccrate) bcdp}}</td>
+      <td class="totval">{{{currencySymbol basicdetails.[0].isocode}}} {{formatAmount (divide basicdetails.[0].vatamt ccrate) bcdp}}</td>
     </tr>
     <tr>
       <td class="totlbl">Others</td>
-      <td class="totval">{{formatAmount (divide basicdetails.[0].othervalue ccrate) bcdp}}</td>
+      <td class="totval">{{{currencySymbol basicdetails.[0].isocode}}} {{formatAmount (divide basicdetails.[0].othervalue ccrate) bcdp}}</td>
     </tr>
     <tr>
       <td class="totlbl">Net Amount</td>
-      <td class="totval">{{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
+      <td class="totval">{{{currencySymbol basicdetails.[0].isocode}}} {{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
     </tr>
   </table>
 
