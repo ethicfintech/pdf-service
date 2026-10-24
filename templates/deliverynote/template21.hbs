@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Delivery Note - {{basicdetails.[0].inv_no}}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: ibmplexsansarabic;
+      font-size: 10.5px;
+      color: #000;
+      background: #fff;
+      margin: 0 5mm;
+    }
+
+    table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+    td, th { border: 1px solid #000; vertical-align: top; word-wrap: break-word; }
+
+    /* ── Title ─────────────────────────────────────────── */
+    .title {
+      text-align: center;
+      color: #c0272d;
+      font-size: 13.5px;
+      font-weight: 700;
+      line-height: 18px;
+      padding: 0 0 12px;
+    }
+
+    /* ── Company / document block ──────────────────────── */
+    .hdr td { padding: 4px 4px; line-height: 16px; }
+    .hdr .logo { vertical-align: middle; padding: 6px 8px; }
+    .hdr .logo img { max-width: 100%; max-height: 132px; object-fit: contain; display: block; }
+    .hdr .comp { padding-left: 4px; }
+    .hdr .comp .nm { padding-left: 6px; }
+    .hdr tr.r1 td.k, .hdr tr.r2 td.k { height: 40px; }
+    .hdr tr.r3 td.k { height: 65px; }
+    .b { font-weight: 700; }
+
+    /* ── To / order block ──────────────────────────────── */
+    .to td { padding: 3px 4px; line-height: 16px; }
+    .to tr.r1 td.k, .to tr.r2 td.k { height: 40px; }
+    .to tr.r3 td { height: 24px; vertical-align: middle; }
+
+    /* ── Items ─────────────────────────────────────────── */
+    .items th {
+      font-weight: 400;
+      text-align: center;
+      vertical-align: middle;
+      height: 25px;
+      padding: 0 4px;
+    }
+    .items td { padding: 5px 4px; line-height: 16px; height: 29px; vertical-align: middle; }
+    .items .c { text-align: center; }
+    .items .desc-ar { direction: rtl; unicode-bidi: isolate; }
+    .items tr.gap td { height: 21px; padding: 0; }
+
+    /* ── Confirmation / signatory ──────────────────────── */
+    .foot { break-inside: avoid; page-break-inside: avoid; }
+    .foot td { height: 240px; padding: 4px 4px 30px; }
+    .foot .box { height: 100%; display: flex; flex-direction: column; justify-content: space-between; }
+    .foot .left .top div { line-height: 21.6px; }
+    .foot .left .top div:first-child { padding-left: 3px; }
+    .foot .left .bot div { line-height: 21.6px; }
+    .foot .right { text-align: right; padding-right: 8px; }
+    .foot .right .box { align-items: flex-end; }
+    .foot .seal { margin-right: 14px; }
+    .foot .seal img { max-width: 100%; object-fit: contain; display: block; }
+
+    {{#if UseBGWatermark}}
+    {{#if WatermarkCss}}
+    /* WATERMARK — fixed, so it repeats on every printed page (WatermarkCss = data URI built from WatermarkUrl) */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-image: url('{{{WatermarkCss}}}');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 100% auto;
+      opacity: 0.7;
+      pointer-events: none;
+      z-index: -1;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    {{/if}}
+    {{/if}}
+  </style>
+</head>
+<body>
+
+  <!-- TITLE -->
+  <div class="title">DELIVERY NOTE</div>
+
+  <!-- COMPANY + DOCUMENT -->
+  <table class="hdr">
+    <colgroup>
+      <col style="width:25%">
+      <col style="width:25%">
+      <col style="width:25%">
+      <col style="width:25%">
+    </colgroup>
+    <tr class="r1">
+      <td class="logo" rowspan="3">
+        {{#if Companylogo}}<img src="{{Companylogo}}" alt="Logo" onerror="this.style.display='none'"/>{{/if}}
+      </td>
+      <td class="comp" rowspan="3">
+        {{#with branch.[0]}}
+        <div class="nm">{{name}}</div>
+        <div>{{address_line1}} {{address_line2}} {{address_line3}}</div>
+        <div>{{address_line4}} {{address_line5}}</div>
+        <div>VAT: {{vat}}</div>
+        <div>CR No: {{cr_no}}</div>
+        {{/with}}
+        <div>Email: {{compprof.email}}</div>
+      </td>
+      <td class="k">Delivery Note No<div class="b">{{basicdetails.[0].inv_no}}</div></td>
+      <td class="k">Dated<div class="b">{{basicdetails.[0].inv_date}}</div></td>
+    </tr>
+    <tr class="r2">
+      <td class="k">Term of Delivery<div class="b">{{basicdetails.[0].terms_of_delivery}}</div></td>
+      <td class="k">Mode/Terms Of Payment<div class="b">{{basicdetails.[0].payment_terms}}</div></td>
+    </tr>
+    <tr class="r3">
+      <td class="k">Suppliers Ref<div class="b">{{basicdetails.[0].supplier}}</div></td>
+      <td class="k">Sales Order No<div class="b">{{basicdetails.[0].reference_no}}</div></td>
+    </tr>
+  </table>
+
+  <!-- TO + ORDER DETAILS -->
+  <table class="to">
+    <colgroup>
+      <col style="width:38.9%">
+      <col style="width:36.1%">
+      <col style="width:25%">
+    </colgroup>
+    <tr class="r1">
+      <td rowspan="3">
+        <div class="b">To</div>
+        {{#with billing_address.[0]}}
+        <div>{{name}}</div>
+        <div>{{address_line1}} {{address_line2}} {{address_line3}}</div>
+        <div>{{address_line4}} {{address_line5}}</div>
+        {{#if vat}}<div>VAT: {{vat}}</div>{{/if}}
+        {{/with}}
+      </td>
+      <td class="k">Client Order No<div class="b">{{basicdetails.[0].order_no}}</div></td>
+      <td class="k">Dated</td>
+    </tr>
+    <tr class="r2">
+      <td class="k">Dispatched Through<div class="b">{{basicdetails.[0].dispatched_through}}</div></td>
+      <td class="k">Destination<div class="b">{{basicdetails.[0].destination}}</div></td>
+    </tr>
+    <tr class="r3">
+      <td colspan="2">Sales Rep Name : <span class="b">{{basicdetails.[0].salesman_name}}</span></td>
+    </tr>
+  </table>
+
+  <!-- ITEMS -->
+  <table class="items">
+    <colgroup>
+      <col style="width:6%">
+      <col style="width:12%">
+      <col style="width:46%">
+      <col style="width:12.1%">
+      <col style="width:12%">
+      <col style="width:11.9%">
+    </colgroup>
+    <thead>
+      <tr>
+        <th>Sl.No</th>
+        <th>Part No</th>
+        <th>Description of Goods</th>
+        <th>Batch No</th>
+        <th>UOM</th>
+        <th>Quantity</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each itemdetails}}
+      <tr>
+        <td class="c">{{addOne @index}}</td>
+        <td class="c">{{item_code}}</td>
+        <td>{{item_name}}{{#if name_lang2}} <span class="desc-ar">{{name_lang2}}</span>{{/if}}{{#if description}} {{description}}{{/if}}</td>
+        <td class="c"></td>
+        <td class="c">{{unit}}</td>
+        <td class="c">{{quantity}}</td>
+      </tr>
+      {{/each}}
+      <tr class="gap"><td colspan="6"></td></tr>
+    </tbody>
+  </table>
+
+  <!-- CONFIRMATION / AUTHORISED SIGNATORY -->
+  <table class="foot">
+    <colgroup>
+      <col style="width:50%">
+      <col style="width:50%">
+    </colgroup>
+    <tr>
+      <td class="left">
+        <div class="box">
+          <div class="top">
+            <div>Confirmed that the above-mentioned materials/equipment have been received in good condition.</div>
+            <div>Received By</div>
+          </div>
+          <div class="bot">
+            <div>Name:</div>
+            <div>Stamp</div>
+          </div>
+        </div>
+      </td>
+      <td class="right">
+        <div class="box">
+          <div>For {{branch.[0].name}}</div>
+          {{#if Seal}}<div class="seal"><img src="{{Seal}}" alt="Seal" style="width:{{datasettings.d458}}px;" onerror="this.style.display='none'"/></div>{{/if}}
+          <div style="margin-bottom:21.6px;">Authorised Signatory</div>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>
