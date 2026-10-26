@@ -518,15 +518,15 @@
         <tr><td>Branch Name</td><td style="5%">:</td><td>{{bankdetails.branch_name}}</td></tr>
       </table>
     </div>
-{{!-- 
+
     <div style="display:flex;align-items:center;gap:20px;flex-shrink:0;">
-      {{#ifFlag datasettings "d977"}}
-      {{#if Signature}}<img src="{{Signature}}" alt="Signature" style="max-height:70px;max-width:100px;" onerror="this.style.display='none'"/>{{/if}}
+      {{#ifFlag datasettings "d165"}}
+      {{#if Signature}}<img src="{{Signature}}" alt="Signature" style="max-width:{{default datasettings.d458 '120'}}px;" onerror="this.style.display='none'"/>{{/if}}
       {{/ifFlag}}
-      {{#ifFlag datasettings "d794"}}
-      {{#if Seal}}<img src="{{Seal}}" alt="Seal" style="max-height:70px;max-width:100px;" onerror="this.style.display='none'"/>{{/if}}
+      {{#ifFlag datasettings "d146"}}
+      {{#if Seal}}<img src="{{Seal}}" alt="Seal" style="max-width:{{default datasettings.d459 '120'}}px;" onerror="this.style.display='none'"/>{{/if}}
       {{/ifFlag}}
-    </div> --}}
+    </div>
 
   </div>
   {{!-- {{/ifFlag}} --}}
