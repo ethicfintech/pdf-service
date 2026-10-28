@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Proforma Invoice - {{basicdetails.[0].inv_no}}</title>
+<style>
+
+*{
+    margin:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family: ibmplexsansarabic;
+    font-size:9px;
+    color:#000;
+    margin:0 8mm;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+td,th{
+    border:1px solid #000;
+    padding:2px 4px;
+    vertical-align:middle;
+}
+
+.title-bar{
+    text-align:center;
+    font-size:14px;
+    font-weight:bold;
+    padding:6px 0;
+}
+
+.section-title{
+    background:#f2f2f2;
+    font-weight:bold;
+}
+
+.label-ar{
+    direction:rtl;
+    text-align:right;
+}
+
+.center{ text-align:center; }
+.right{ text-align:right; }
+.bold{ font-weight:bold; }
+
+.items-head{
+    background:#f2f2f2;
+    font-weight:bold;
+    text-align:center;
+}
+
+</style>
+</head>
+<body>
+
+<!-- Title -->
+
+<div class="title-bar">
+PROFORMA INVOICE / فاتورة الأولية
+</div>
+
+<!-- Invoice Number Row -->
+
+<table style="border:none;border-collapse:collapse;width:100%;font-size:12px;">
+<tr>
+<td width="21%" style="border:none;" class="bold">Doc No / <span>رقم وثيقة </span></td>
+<td width="1%" style="border:none;" class="bold">:</td>
+<td width="28%" style="border:none;text-align:left;">{{basicdetails.[0].inv_no}}</td>
+<td width="39%" style="border:none;" class="right"></td>
+<td width="1%" style="border:none;" class="bold"></td>
+<td width="10%" style="border:none;" class="label-ar bold"></td>
+</tr>
+</table>
+
+
+<!-- From / Supplier -->
+
+<table style="border-collapse:collapse;width:100%;margin-top:4px;font-size:11px;">
+    <tr>
+        <td colspan="8" class="section-title">
+            <table style="width:100%;border:none;">
+                <tr style="font-size:11px;">
+                    <td style="border:none;padding:0;">From / <span>من</span></td>
+                    <td style="border:none;padding:0;direction:rtl;text-align:right;"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td width="10%">Name</td>
+        <td width="39%" colspan="3">{{branch.[0].name}}</td>
+        <td width="39%" colspan="3" class="label-ar">{{branch_lang2.[0].name}}</td>
+        <td width="10%" class="label-ar" colspan="3">الاسم</td>
+    </tr>
+    <tr>
+        <td>Street Name</td>
+        <td colspan="3">{{branch.[0].address_line2}}</td>
+        <td colspan="3" class="label-ar">{{branch_lang2.[0].address_line2}}</td>
+        <td class="label-ar" colspan="3">اسم الشارع</td>
+    </tr>
+    <tr>
+        <td width="10%">Building No</td>
+        <td width="16%">{{branch.[0].address_line1}}</td>
+        <td width="8%">City</td>
+        <td width="16%">{{branch.[0].address_line4}}</td>
+        <td width="16%" class="label-ar">{{branch_lang2.[0].address_line4}}</td>
+        <td width="8%" class="label-ar">المدينة</td>
+        <td width="16%" class="label-ar">{{branch_lang2.[0].address_line1}}</td>
+        <td width="10%" class="label-ar">رقم المبنى</td>
+    </tr>
+    <tr>
+        <td>Add. No</td>
+        <td>{{branch.[0].additional_no}}</td>
+        <td>District</td>
+        <td>{{branch.[0].address_line3}}</td>
+        <td class="label-ar">{{branch_lang2.[0].address_line3}}</td>
+        <td class="label-ar">الحي</td>
+        <td class="label-ar">{{branch_lang2.[0].additional_no}}</td>
+        <td class="label-ar">رقم اضافي</td>
+    </tr>
+    <tr>
+        <td>Postal Code</td>
+        <td>{{branch.[0].address_code}}</td>
+        <td>Country</td>
+        <td>{{branch.[0].address_line5}}</td>
+        <td class="label-ar">{{branch_lang2.[0].address_line5}}</td>
+        <td class="label-ar">البلد</td>
+        <td class="label-ar">{{branch_lang2.[0].address_code}}</td>
+        <td class="label-ar">الرمز البريدي</td>
+    </tr>
+    <tr>
+        <td>VAT Number</td>
+        <td>{{branch.[0].vat}}</td>
+        <td>CRN</td>
+        <td>{{branch.[0].cr_no}}</td>
+        <td class="label-ar">{{branch_lang2.[0].cr_no}}</td>
+        <td class="label-ar">معرف اخر</td>
+        <td class="label-ar">{{branch_lang2.[0].vat}}</td>
+        <td class="label-ar">الرقم الضريبي</td>
+    </tr>
+</table>
+
+
+<!-- Client Details -->
+
+
+<table style="border-collapse:collapse;width:100%;margin-top:4px;font-size:11px;">
+    <tr>
+        <td colspan="8" class="section-title">
+            <table style="width:100%;border:none;">
+                <tr style="font-size:11px;">
+                    <td style="border:none;padding:0;">To / <span>تفاصيل العميل</span></td>
+                    <td style="border:none;padding:0;direction:rtl;text-align:right;"> </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td width="10%">Name</td>
+        <td width="39%" colspan="3">{{billing_address.[0].name}}</td>
+        <td width="39%" colspan="3" class="label-ar">{{billing_address_lang2.[0].name}}</td>
+        <td width="10%" class="label-ar" colspan="3">الاسم</td>
+    </tr>
+    <tr>
+        <td>Street Name</td>
+        <td colspan="3">{{billing_address.[0].address_line2}}</td>
+        <td colspan="3" class="label-ar">{{billing_address_lang2.[0].address_line2}}</td>
+        <td class="label-ar" colspan="3">اسم الشارع</td>
+    </tr>
+    <tr>
+        <td width="10%">Building No</td>
+        <td width="16%">{{billing_address.[0].address_line1}}</td>
+        <td width="8%">City</td>
+        <td width="16%">{{billing_address.[0].address_line4}}</td>
+        <td width="16%" class="label-ar">{{billing_address_lang2.[0].address_line4}}</td>
+        <td width="8%" class="label-ar">المدينة</td>
+        <td width="16%" class="label-ar">{{billing_address_lang2.[0].address_line1}}</td>
+        <td width="10%" class="label-ar">رقم المبنى</td>
+    </tr>
+    <tr>
+        <td>Add. No</td>
+        <td>{{customer_details.[0].additional_no}}</td>
+        <td>District</td>
+        <td>{{billing_address.[0].address_line3}}</td>
+        <td class="label-ar">{{billing_address_lang2.[0].address_line3}}</td>
+        <td class="label-ar">الحي</td>
+        <td class="label-ar">{{customer_details.[0].additional_no_lang2}}</td>
+        <td class="label-ar">رقم اضافي</td>
+    </tr>
+    <tr>
+        <td>Postal Code</td>
+        <td>{{billing_address.[0].address_code}}</td>
+        <td>Country</td>
+        <td>{{billing_address.[0].address_line5}}</td>
+        <td class="label-ar">{{billing_address_lang2.[0].address_line5}}</td>
+        <td class="label-ar">البلد</td>
+        <td class="label-ar">{{billing_address_lang2.[0].address_code}}</td>
+        <td class="label-ar">الرمز البريدي</td>
+    </tr>
+    <tr>
+        <td>VAT Number</td>
+        <td>{{billing_address.[0].vat}}</td>
+        <td>CRN</td>
+        <td>{{customer_details.[0].cr_no}}</td>
+        <td class="label-ar">{{customer_details.[0].cr_no_lang2}}</td>
+        <td class="label-ar">معرف اخر</td>
+        <td class="label-ar">{{billing_address_lang2.[0].vat}}</td>
+        <td class="label-ar">الرقم الضريبي</td>
+    </tr>
+</table>
+
+
+<!-- Invoice meta row -->
+
+<table style="border-collapse:collapse;width:100%;margin-top:4px;font-size:11px;">
+    <tr style="text-align: center;">
+        <td width="25%">
+            <div>Doc Date</div>
+            <div>تاريخ</div>
+        </td>
+        <td width="25%">
+            <div>Contract / PO No</div>
+            <div> رقم طلب الشراء </div>
+        </td>
+        <td width="25%">
+            <div>Due Date</div>
+            <div> تاريخ الاستحقاق</div>
+        </td>
+        <td width="25%">
+            <div>Project Name</div>
+            <div>اسم المشروع</div>
+        </td>
+    </tr>
+    <tr style="text-align: center;">
+        <td>{{basicdetails.[0].inv_date}}</td>
+        <td>{{basicdetails.[0].order_no}}</td>
+        <td>{{basicdetails.[0].due_date}}</td>
+        <td>{{basicdetails.[0].project_name}}</td>
+    </tr>
+</table>
+
+
+<!-- Items Table (RTL order in cells) -->
+
+<table style="border-collapse:collapse;width:100%;margin-top:4px;">
+    <thead>
+        <tr class="items-head">
+            <th width="4%">
+                <div>SI</div>
+                <div class="label-ar" style="text-align: center;">م</div>
+            </th>
+            <th width="31%">
+                <div>Description</div>
+                <div class="label-ar" style="text-align: center;">الوصف</div>
+            </th>
+            <th width="8">
+                <div>QTY</div>
+                <div class="label-ar" style="text-align: center;">الكمية</div>
+            </th>
+            <th width="7%">
+                <div>Unit</div>
+                <div class="label-ar" style="text-align: center;">وحدة</div>
+            </th>
+            <th width="11%">
+                <div>Price</div>
+                <div class="label-ar" style="text-align: center;">سعر الوحدة</div>
+            </th>
+            <th width="13%">
+                <div>Amount</div>
+                <div class="label-ar" style="text-align: center;"> الإجمالي خاضع للضريبة</div>
+            </th>
+            <th width="11%">
+                    {{#with basicdetails.[0]}}
+                        <div>{{#if (eq currency_isocode "SAR")}}VAT 15%{{else if (eq currency_isocode "AED")}}VAT 5%{{else if (eq currency_isocode "BHD")}}VAT 10%{{else if (eq currency_isocode "OMR")}}VAT 5%{{else if (eq currency_isocode "INR")}}TAX{{else}}VAT{{/if}}</div>
+                    {{/with}}
+                <div class="label-ar" style="text-align: center;">الضريبة</div>
+            </th>
+            <th width="15%">
+                <div>Amount Incl.TAX</div>
+                <div class="label-ar" style="text-align: center;">المبلغ شامل الضريبة</div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each itemdetails}}
+        <tr>
+            <td class="center">{{addOne @index}}</td>
+            <td>
+                {{item_name}}
+                    {{#if name_lang2}}<div>{{name_lang2}}</div>{{/if}}
+                    {{#if description}}<div>{{description}}</div>{{/if}}
+            </td>
+            <td class="center">{{quantity}}</td>
+            <td class="center">{{unit}}</td>
+            <td class="right"><span style="font-size: 10px;">{{currencySymbol ../basicdetails.[0].currency_isocode}}</span> {{formatAmount price ../bcdp}}</td>
+            <td class="right"><span style="font-size: 10px;">{{currencySymbol ../basicdetails.[0].currency_isocode}}</span> {{formatAmount taxable ../bcdp}}</td>
+            <td class="right"><span style="font-size: 10px;">{{currencySymbol ../basicdetails.[0].currency_isocode}}</span> {{formatAmount tax ../bcdp}}</td>
+            <td class="right"><span style="font-size: 10px;">{{currencySymbol ../basicdetails.[0].currency_isocode}}</span> {{formatAmount amount ../bcdp}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+
+<!-- Totals + QR -->
+<table style="border-collapse:collapse;width:100%;margin-top:4px;font-size:11px;">
+    <tr style="text-align: center;">
+        <td width="25%">
+            <div>SubTotal</div>
+            <div>المجموع الفرعي</div>
+        </td>
+        <td width="25%">
+            {{#with basicdetails.[0]}}
+            <div>{{#if (eq currency_isocode "SAR")}}VAT 15%{{else if (eq currency_isocode "AED")}}VAT 5%{{else if (eq currency_isocode "BHD")}}VAT 10%{{else if (eq currency_isocode "OMR")}}VAT 5%{{else if (eq currency_isocode "INR")}}TAX{{else}}VAT{{/if}}</div>
+            <div>{{#if (eq currency_isocode "INR")}}الضريبة{{else}}ضريبة القيمة المضافة{{/if}}</div>
+            {{/with}}
+        </td>
+        <td width="25%">
+            <div>Total</div>          
+            <div>المجموع</div>
+        </td>
+        <td width="25%">
+            <div>Balance Due</div>
+            <div>الرصيد المستحق</div>
+        </td>
+    </tr>
+    <tr style="text-align: center;">
+        <td><span style="font-size: 11px;">{{currencySymbol basicdetails.[0].currency_isocode}}</span> {{formatAmount basicdetails.[0].subtotal bcdp}}</td>
+        <td><span style="font-size: 11px;">{{currencySymbol basicdetails.[0].currency_isocode}}</span> {{formatAmount basicdetails.[0].vatamt bcdp}}</td>
+        <td><span style="font-size: 11px;">{{currencySymbol basicdetails.[0].currency_isocode}}</span> {{formatAmount basicdetails.[0].grand_total bcdp}}</td>
+        <td><span style="font-size: 11px;">{{currencySymbol basicdetails.[0].currency_isocode}}</span> {{formatAmount basicdetails.[0].balance bcdp}}</td>
+    </tr>
+    <tr>
+        <td>Amount in Words</td>
+        <td colspan="3">{{bcamountinwords}}</td>
+    </tr>
+    {{#if bcamountinwordsar}}
+    <tr>
+        <td> المبلغ بالكلمات</td>
+        <td colspan="3">{{bcamountinwordsar}}</td>
+    </tr>
+    {{/if}}
+</table>
+
+
+<!-- Bank Details + Signatures -->
+
+<style>
+  /* equal, fixed row heights: the signature cells (rowspan 4)
+     fit inside them, so no extra height gets dumped onto the first bank row */
+  .bank-row > td { height: 28px; }
+</style>
+<table style="border-collapse:collapse;width:100%;margin-top:6px;page-break-inside:avoid;break-inside:avoid;">
+        <tr class="section-title" style="text-align:center;">
+            <th colspan="2">
+                <table style="width:100%;border:none;">
+                    <tr>
+                        <td style="border:none;padding:0;text-align:center;font-weight:bold;font-size:11px;">Bank Details / <span>التفاصيل المصرفية</span></td>
+                    </tr>
+                </table>
+            </th>
+            <th style="font-size: 11px;">Prepared By / <span>أُعدت بواسطة</span></th>
+            <th style="font-size: 10px;">Recieved By / <span>استلمت من قبل</span></th>
+        </tr>
+        <tr class="bank-row">
+            <td width="21%">
+                <div>Account Name <span class="label-ar">/ إسم الحساب</span></div>
+            </td>
+            <td width="29%">{{bankdetails.acc_name}}</td>
+            <td width="25%" rowspan="4" style="vertical-align:bottom;text-align:center;padding-bottom:6px;">
+                {{#if Signature}}<div><img src="{{Signature}}" alt="Signature" style="max-width:{{datasettings.d459}}px; display:block;" onerror="this.style.display='none'"/></div>{{/if}}
+                <div>Signature</div>
+            </td>
+            <td width="25%" rowspan="4" style="vertical-align:bottom;text-align:center;padding-bottom:6px;">
+                <div>Signature </div>
+            </td>
+        </tr>
+        <tr class="bank-row">
+            <td>
+                <div>Bank Name <span class="label-ar">/ اسم البنك</span></div>
+            </td>
+            <td>{{bankdetails.name}}</td>
+        </tr>
+        <tr class="bank-row">
+            <td>
+                <div>Account Number <span class="label-ar">/ رقم حساب</span></div>
+            </td>
+            <td>{{bankdetails.acc_no}}</td>
+        </tr>
+        <tr class="bank-row">
+            <td>
+                <div>IBAN No <span class="label-ar">/ رقم الآيبان</span></div>
+            </td>
+            <td>{{bankdetails.iban_no}}</td>
+        </tr>
+</table>
+
+</body>
+</html>
