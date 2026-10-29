@@ -102,7 +102,7 @@
       <div class="doc-title">PROFORMA INVOICE</div>
       <div class="doc-no"># {{basicdetails.[0].inv_no}}</div>
       <div class="bal-lbl">Balance Due</div>
-      <div class="bal-val">{{basicdetails.[0].currency_isocode}} {{formatAmount basicdetails.[0].balance bcdp}}</div>
+      <div class="bal-val">{{{currencySymbol basicdetails.[0].currency_isocode}}} {{formatAmount basicdetails.[0].balance bcdp}}</div>
       <div class="meta">
         <div>Invoice Date : {{basicdetails.[0].inv_date}}</div>
         {{#if basicdetails.[0].due_date}}<div>Due Date : {{basicdetails.[0].due_date}}</div>{{/if}}
@@ -146,10 +146,10 @@
       </td>
       <td style="text-align: center;">{{quantity}}</td>
       <td style="text-align: center;">{{unit}}</td>
-      <td>{{formatAmount price ../bcdp}}</td>
-      <td>{{formatAmount taxable ../bcdp}}</td>
-      <td>{{formatAmount vat_amt ../bcdp}}({{vat_perc}}%)</td>
-      <td>{{formatAmount amount ../bcdp}}</td>
+      <td>{{{currencySymbol ../basicdetails.[0].currency_isocode}}} {{formatAmount price ../bcdp}}</td>
+      <td>{{{currencySymbol ../basicdetails.[0].currency_isocode}}} {{formatAmount taxable ../bcdp}}</td>
+      <td>{{{currencySymbol ../basicdetails.[0].currency_isocode}}} {{formatAmount vat_amt ../bcdp}}({{vat_perc}}%)</td>
+      <td>{{{currencySymbol ../basicdetails.[0].currency_isocode}}} {{formatAmount amount ../bcdp}}</td>
     </tr>
     {{/each}}
   </tbody>
@@ -157,11 +157,11 @@
 
 <!-- ══ TOTALS ══ -->
 <table class="totals-table">
-  <tr><td class="k">Sub Total</td><td>{{formatAmount basicdetails.[0].subtotal bcdp}}</td></tr>
-  <tr><td class="k">Discount</td><td>(-){{formatAmount basicdetails.[0].discount bcdp}}</td></tr>
-  <tr><td class="k">VAT</td><td>{{formatAmount basicdetails.[0].vatamt bcdp}}</td></tr>
-  <tr class="b"><td class="k">Grand Total</td><td>{{basicdetails.[0].currency_isocode}} {{formatAmount basicdetails.[0].grand_total bcdp}}</td></tr>
-  <tr class="b"><td class="k">Balance Due</td><td>{{basicdetails.[0].currency_isocode}} {{formatAmount basicdetails.[0].balance bcdp}}</td></tr>
+  <tr><td class="k">Sub Total</td><td>{{{currencySymbol basicdetails.[0].currency_isocode}}} {{formatAmount basicdetails.[0].subtotal bcdp}}</td></tr>
+  <tr><td class="k">Discount</td><td>(-){{{currencySymbol basicdetails.[0].currency_isocode}}} {{formatAmount basicdetails.[0].discount bcdp}}</td></tr>
+  <tr><td class="k">VAT</td><td>{{{currencySymbol basicdetails.[0].currency_isocode}}} {{formatAmount basicdetails.[0].vatamt bcdp}}</td></tr>
+  <tr class="b"><td class="k">Grand Total</td><td>{{{currencySymbol basicdetails.[0].currency_isocode}}} {{formatAmount basicdetails.[0].grand_total bcdp}}</td></tr>
+  <tr class="b"><td class="k">Balance Due</td><td>{{{currencySymbol basicdetails.[0].currency_isocode}}} {{formatAmount basicdetails.[0].balance bcdp}}</td></tr>
 </table>
 
 <!-- ══ AMOUNT IN WORDS / TERMS ══ -->
