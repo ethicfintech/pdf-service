@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Proforma Invoice - {{basicdetails.[0].inv_no}}</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: ibmplexsansarabic;
+    font-size: 10px;
+    color: #222;
+    margin: 0 8mm;
+  }
+
+  table { width: 100%; border-collapse: collapse; }
+  td, th { vertical-align: top; }
+
+  .muted  { color: #555; }
+  .name   { font-size: 14px; font-weight: bold; color: #222; margin: 4px 0 8px; }
+  .lbl    { font-size: 10px; color: #333; }
+  .line   { font-size: 10px; line-height: 1.5; }
+
+  /* ── Top: bill/ship to (left) + title/meta (right) ── */
+  .top-table > tbody > tr > td { border: none; }
+  .doc-title { font-size: 29px; color: #2b4a82; text-align: right; line-height: 1.1; }
+  .doc-no    { font-size: 12px; font-weight: bold; text-align: right; margin-top: 8px; }
+  .bal-lbl   { font-size: 10px; color: #555; text-align: right; margin-top: 16px; }
+  .bal-val   { font-size: 12px; font-weight: bold; text-align: right; margin-top: 3px; }
+  .meta      { font-size: 10px; text-align: right; line-height: 1.7; margin-top: 12px; }
+
+  /* ── Items ── */
+  .items-table { margin-top: 18px; table-layout: fixed; }
+  .items-table th {
+    font-size: 9px;
+    font-weight: bold;
+    color: #777575;
+    padding: 4px 5px 6px;
+    text-align: center;
+  }
+  .items-table th .ar { display: block; font-weight: normal; color: #777575; margin-top: 2px; }
+  .items-table th.l { text-align: center; }
+  .items-table td {
+    font-size: 10px;
+    padding: 7px 5px;
+    border-bottom: 1px solid #ddd;
+    text-align: right;
+  }
+  .items-table td.l { text-align: left; }
+  .items-table .sub { display: block; color: #555; margin-top: 2px; }
+  .items-table tbody tr { page-break-inside: avoid; break-inside: avoid; }
+
+  /* ── Totals ── */
+  .totals-table { width: 46%; margin: 8px 0 0 auto; }
+  .totals-table td { font-size: 10px; padding: 4px 5px; text-align: right; }
+  .totals-table td.k { width: 50%; }
+  .totals-table tr.b td { font-weight: bold; }
+
+  /* ── Words / terms ── */
+  .words-table { margin-top: 14px; }
+  .words-table td { font-size: 9px; padding: 6px 0; }
+  .words-table td.k { width: 12%; color: #333; }
+  .words-table td.s { width: 1.5%; color: #333; }
+  .words-table td.v { color: #1f3a7a; }
+
+  /* ── Bank ── */
+  .bank-title { font-size: 13px; font-weight: bold; color: #2b4a82; margin-top: 25px; margin-bottom: 8px; }
+  .bank-table { page-break-inside: avoid; break-inside: avoid; }
+  .bank-table td { font-size: 9px; padding: 3px 0; color: #333; }
+  .bank-table td.k { width: 12%; }
+  .bank-table td.s { width: 1.5%; }
+</style>
+</head>
+<body>
+
+<!-- ══ BILL TO / SHIP TO  +  TITLE / META ══ -->
+<table class="top-table">
+  <tr>
+    <td style="width:58%;">
+      <div class="lbl">Bill To</div>
+      <div class="name">{{billing_address.[0].name}}</div>
+      {{#if (or billing_address.[0].address_line1 billing_address.[0].address_line2 billing_address.[0].address_line4)}}
+      <div class="line">{{billing_address.[0].address_line1}} {{billing_address.[0].address_line2}} &nbsp;{{billing_address.[0].address_line4}}</div>
+      {{/if}}
+      {{#if (or billing_address.[0].address_line3 billing_address.[0].address_line5)}}
+      <div class="line">{{billing_address.[0].address_line3}} &nbsp;{{billing_address.[0].address_line5}}</div>
+      {{/if}}
+      <div class="line" style="margin-top:4px;">
+        {{#if customer_details.[0].cr_no}}CR No : {{customer_details.[0].cr_no}}{{/if}}{{#if customer_details.[0].cr_no}}{{#if billing_address.[0].vat}} | {{/if}}{{/if}}{{#if billing_address.[0].vat}}VAT : {{billing_address.[0].vat}}{{/if}}
+      </div>
+
+      <div class="lbl" style="margin-top:14px;">Shipped To</div>
+      <div class="name">{{shipping_address.[0].name}}</div>
+      {{#if (or shipping_address.[0].address_line1 shipping_address.[0].address_line2 shipping_address.[0].address_line4)}}
+      <div class="line">{{shipping_address.[0].address_line1}} {{shipping_address.[0].address_line2}} &nbsp;{{shipping_address.[0].address_line4}}</div>
+      {{/if}}
+      {{#if (or shipping_address.[0].address_line3 shipping_address.[0].address_line5)}}
+      <div class="line">{{shipping_address.[0].address_line3}} &nbsp;{{shipping_address.[0].address_line5}}</div>
+      {{/if}}
+    </td>
+    <td style="width:42%;">
+      <div class="doc-title">PROFORMA INVOICE</div>
+      <div class="doc-no"># {{basicdetails.[0].inv_no}}</div>
+      <div class="bal-lbl">Balance Due</div>
+      <div class="bal-val">{{basicdetails.[0].currency_isocode}} {{formatAmount basicdetails.[0].balance bcdp}}</div>
+      <div class="meta">
+        <div>Invoice Date : {{basicdetails.[0].inv_date}}</div>
+        {{#if basicdetails.[0].due_date}}<div>Due Date : {{basicdetails.[0].due_date}}</div>{{/if}}
+      </div>
+    </td>
+  </tr>
+</table>
+
+<!-- ══ ITEMS ══ -->
+<table class="items-table">
+  <colgroup>
+    <col style="width:5%">
+    <col style="width:31%">
+    <col style="width:9%">
+    <col style="width:7%">
+    <col style="width:11%">
+    <col style="width:11%">
+    <col style="width:12%">
+    <col style="width:14%">
+  </colgroup>
+  <thead>
+    <tr>
+      <th class="l">No<span class="ar">رقم</span></th>
+      <th class="l">Item &amp; Description<span class="ar">وصف السلعة</span></th>
+      <th>Quantity<span class="ar">كمية</span></th>
+      <th>UOM<span class="ar">الوحدة</span></th>
+      <th>Rate<span class="ar">معدل</span></th>
+      <th>Total<span class="ar">المجموع</span></th>
+      <th>VAT<span class="ar">ضريبة القيمة المضافة</span></th>
+      <th>Total Amount<span class="ar">المبلغ الإجمالي</span></th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each itemdetails}}
+    <tr>
+      <td style="text-align: center;">{{addOne @index}}</td>
+      <td class="l">
+        {{item_name}}
+        {{#if name_lang2}}<span class="sub">{{name_lang2}}</span>{{/if}}
+        {{#if description}}<span class="sub">{{description}}</span>{{/if}}
+      </td>
+      <td style="text-align: center;">{{quantity}}</td>
+      <td style="text-align: center;">{{unit}}</td>
+      <td>{{formatAmount price ../bcdp}}</td>
+      <td>{{formatAmount taxable ../bcdp}}</td>
+      <td>{{formatAmount vat_amt ../bcdp}}({{vat_perc}}%)</td>
+      <td>{{formatAmount amount ../bcdp}}</td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+<!-- ══ TOTALS ══ -->
+<table class="totals-table">
+  <tr><td class="k">Sub Total</td><td>{{formatAmount basicdetails.[0].subtotal bcdp}}</td></tr>
+  <tr><td class="k">Discount</td><td>(-){{formatAmount basicdetails.[0].discount bcdp}}</td></tr>
+  <tr><td class="k">VAT</td><td>{{formatAmount basicdetails.[0].vatamt bcdp}}</td></tr>
+  <tr class="b"><td class="k">Grand Total</td><td>{{basicdetails.[0].currency_isocode}} {{formatAmount basicdetails.[0].grand_total bcdp}}</td></tr>
+  <tr class="b"><td class="k">Balance Due</td><td>{{basicdetails.[0].currency_isocode}} {{formatAmount basicdetails.[0].balance bcdp}}</td></tr>
+</table>
+
+<!-- ══ AMOUNT IN WORDS / TERMS ══ -->
+<table class="words-table">
+  <tr>
+    <td class="k">Amount in words</td>
+    <td class="s">:</td>
+    <td class="v">{{bcamountinwords}}</td>
+  </tr>
+  <tr>
+    <td class="k">Terms</td>
+    <td class="s">:</td>
+    <td class="v">{{nl2br basicdetails.[0].terms_and_condition}}</td>
+  </tr>
+</table>
+
+<!-- ══ BANK ══ -->
+<div class="bank-title">Bank Account Details</div>
+<table class="bank-table">
+  <tr><td class="k">Account Name</td><td class="s">:</td><td>{{bankdetails.acc_name}}</td></tr>
+  <tr><td class="k">Account Number</td><td class="s">:</td><td>{{bankdetails.acc_no}}</td></tr>
+  <tr><td class="k">Branch</td><td class="s">:</td><td>{{bankdetails.branch_name}}</td></tr>
+  <tr><td class="k">IBAN</td><td class="s">:</td><td>{{bankdetails.iban_no}}</td></tr>
+  <tr><td class="k">SWIFT</td><td class="s">:</td><td>{{bankdetails.swift_no}}</td></tr>
+</table>
+
+</body>
+</html>
