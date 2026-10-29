@@ -384,7 +384,7 @@ TAX INVOICE / فاتورة ضريبية
             </td>
             <td width="23%">{{bankdetails.acc_name}}</td>
             <td width="20%" rowspan="4" style="vertical-align:bottom;text-align:center;padding-bottom:6px;">
-                {{#if Signature}}<div><img src="{{Signature}}" alt="" style="max-height:75px; max-width:100%; display:block; margin:0 auto 4px;" onerror="this.style.display='none'"/></div>{{/if}}
+                {{#ifFlag datasettings "d165"}}{{#if Signature}}<div><img src="{{Signature}}" alt="Signature" style="max-width:{{datasettings.d459}}px; display:block;" onerror="this.style.display='none'"/></div>{{/if}}{{/ifFlag}}
                 <div>Signature</div>
             </td>
             <td width="20%" rowspan="4" style="vertical-align:bottom;text-align:center;padding-bottom:6px;">
