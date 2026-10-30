@@ -433,7 +433,7 @@
                       {{/each}}
                       <tr>
                         <td class="ts">Total Amount After Discount</td>
-                        <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount (subtract subtotal (sumProperty ../zatcadiscount 'dld')) ../bcdp}}</td>
+                        <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount (divide (subtract subtotal (sumProperty ../zatcadiscount 'dld')) ../ccrate) ../bcdp}}</td>
                         <td class="ar arab">المبلغ الإجمالي بعد الخصم</td>
                       </tr>
                     {{else}}
@@ -505,7 +505,7 @@
             <th>Recieved By / <span class="arab">فاتورة مستالم</span></th>
         </tr>
         <tr>
-            <td class="ts">Bank Name / <span class="arab">اسم الحساب</span></td>
+            <td class="ts">Account Name / <span class="arab">اسم الحساب</span></td>
             <td class="ts bval">{{bankdetails.name}}{{#if bankdetails_lang2.name}} / <span class="arab">{{bankdetails_lang2.name}}</span>{{/if}}</td>
             <td class="sig" rowspan="5">
                 {{!-- d165 prints the signature here; if that is off, d146 puts
