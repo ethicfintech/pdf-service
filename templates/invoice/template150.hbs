@@ -433,7 +433,7 @@
                       {{/each}}
                       <tr>
                         <td class="ts">Total Amount After Discount</td>
-                        <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount (divide (subtract subtotal (sumProperty ../zatcadiscount 'dld')) ../ccrate) ../bcdp}}</td>
+                        <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount (subtract subtotal (sumProperty ../zatcadiscount 'dld')) ../bcdp}}</td>
                         <td class="ar arab">المبلغ الإجمالي بعد الخصم</td>
                       </tr>
                     {{else}}
