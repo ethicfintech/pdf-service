@@ -103,6 +103,12 @@
       max-width: 70px;
     }
 
+    .items-table .img-col { display: none; }
+    {{#each itemdetails}}{{#if image1DataUri}}
+    .items-table .img-col { display: table-cell; width: 9%; }
+    .items-table .desc-col { width: 27% !important; }
+    {{/if}}{{/each}}
+
     /* ── Summary table ─────────────────────────── */
     .summary-table {
       width: 100%;
@@ -198,15 +204,15 @@
   <table class="header-table">
     <tr>
       <td class="lbl">Quote No :</td>
-      <td class="val">{{basicdetails.[0].inv_no}}</td>
+      <td class="val"><b>{{basicdetails.[0].inv_no}}</b></td>
       <td class="date-lbl">Quote Date : {{basicdetails.[0].inv_date}}</td>
     </tr>
     <tr>
       <td class="lbl">To :</td>
       <td class="to-cell" colspan="2">
-        {{billing_address.[0].name}}<br>
+        <b>{{billing_address.[0].name}}</b><br>
         {{#if billing_address.[0].address_line1}}{{billing_address.[0].address_line1}}{{#if billing_address.[0].address_line2}}, {{billing_address.[0].address_line2}}{{/if}}{{#if billing_address.[0].address_line3}}, {{billing_address.[0].address_line3}}{{/if}}{{#if billing_address.[0].address_line4}}, {{billing_address.[0].address_line4}}{{/if}}{{#if billing_address.[0].address_line5}}, {{billing_address.[0].address_line5}}{{/if}}<br>{{/if}}
-        {{#if basicdetails.[0].salesman_name}}Sales Person: {{basicdetails.[0].salesman_name}}{{/if}}
+        {{#if basicdetails.[0].employeename}}Sales Person: {{basicdetails.[0].employeename}}{{/if}}
       </td>
     </tr>
   </table>
@@ -223,13 +229,14 @@
   <table class="items-table">
     <thead>
       <tr>
-        <th style="width:5%;">#</th>
-        <th style="width:36%;">Description &amp; Specifications</th>
+        <th style="width:4%;">#</th>
+        <th class="img-col">Image</th>
+        <th class="desc-col" style="width:36%;">Description &amp; Specifications</th>
         <th style="width:9%;">Unit</th>
         <th style="width:9%;">Qty</th>
-        <th style="width:11%;">Unit Rate</th>
-        <th style="width:9%;">Disc</th>
-        <th style="width:9%;">VAT 15%</th>
+        <th style="width:10%;">Unit Rate</th>
+        <th style="width:10%;">Disc</th>
+        <th style="width:10%;">VAT 15%</th>
         <th style="width:12%;">Amount</th>
       </tr>
     </thead>
@@ -237,7 +244,8 @@
       {{#each itemdetails}}
       <tr>
         <td>{{addOne @index}}</td>
-        <td class="td-desc" style="text-align:left;padding-left: 10px;">
+        <td class="img-col td-image">{{#if image1DataUri}}<img src="{{image1DataUri}}" alt=""/>{{/if}}</td>
+        <td class="td-desc"style="text-align:left;padding-left: 10px;">
           <div>{{item_name}}</div>
           {{#if name_lang2}}<div style="direction:rtl;">{{name_lang2}}</div>{{/if}}
           {{#if description}}<div style="font-size:10px;color:#444;">{{description}}</div>{{/if}}
@@ -287,19 +295,20 @@
   {{!-- ══ SIGN OFF ══ --}}
   <div class="sign-off">Many Thanks &amp; Regards</div>
   <div class="sign-images">
-    {{#if Seal}}
+    {{#ifFlag datasettings "d249"}}
       <img src="{{Seal}}" class="sig-img" alt="Seal" onerror="this.style.display='none'"/>
-    {{/if}}
-    {{#if Signature}}
+    {{/ifFlag}}
+    {{!-- {{#if Signature}}
       </br><img src="{{Signature}}" class="sig-img" alt="Signature" onerror="this.style.display='none'"/>
-    {{/if}}
+    {{/if}} --}}
   </div>
 
   {{!-- ══ SENDER BLOCK ══ --}}
   <div class="sender-block">
     <div class="sender-name">{{#if basicdetails.[0].employeename}}{{basicdetails.[0].employeename}}{{/if}}</div>
-    {{#if basicdetails.[0].employeecontactno}}<div class="sender-phone">{{basicdetails.[0].employeecontactno}}</div>{{/if}}
-    {{#if basicdetails.employeeemail}}<div class="sender-email">{{basicdetails.employeeemail}}</div>{{/if}}
+    {{#if basicdetails.[0].employeecontact_no1}}<div class="sender-phone">Mob - {{basicdetails.[0].employeecontact_no1}}</div>{{/if}}
+    {{#if basicdetails.employeeemail}}<div class="sender-email">Email - {{basicdetails.employeeemail}}</div>{{/if}}
+    {{#if basicdetails.website}}<div class="sender-email">Web - {{basicdetails.website}}</div>{{/if}}
   </div>
 
 </body>
