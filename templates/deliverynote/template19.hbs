@@ -60,6 +60,8 @@
       line-height: 14px;
       vertical-align: top;
     }
+    .items tbody td { border-top: none; border-bottom: none; }
+    .items tbody tr:last-child td { border-bottom: 1px solid #bfbfbf; }
     .items .sn  { text-align: center; }
     .items .qty { text-align: center; padding-right: 9px; }
     .items .uom { text-align: center; }
@@ -132,7 +134,7 @@
               {{#with @root.billing_address.[0]}}
                 {{joinAddress this "<br>"}}
               {{/with}}
-              {{#if vat}}<div>VAT: {{vat}}</div>{{/if}}
+              {{#if billing_address.[0].vat}}<div>VAT: {{billing_address.[0].vat}}</div>{{/if}}
             </td>
           </tr>
           <tr>
