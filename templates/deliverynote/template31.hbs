@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Delivery Note - {{basicdetails.[0].inv_no}}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: ibmplexsansarabic, Arial, Helvetica, sans-serif;
+      font-size: 11px;
+      color: #000;
+      background: #fff;
+      margin: 0 5mm;
+    }
+
+    table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+
+    /* page wrapper: repeats the title + header block on every printed page */
+    .pagewrap > tbody > tr > td { border: none; padding: 0; vertical-align: top; }
+
+    /* ── Title ─────────────────────────────────────────── */
+    .title {
+      text-align: center;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 4px 0 10px;
+    }
+    .title .en { color: #b72031; }
+    .title .ar { color: #606261; direction: rtl; unicode-bidi: isolate; }
+
+    /* ── Header blocks: customer (left) + document (right) ── */
+    .hdr-wrap > tbody > tr > td { border: none; padding: 0; vertical-align: top; }
+
+    .info td {
+      border: 1px solid #bfbfbf;
+      padding: 3px 8px;
+      vertical-align: top;
+      word-wrap: break-word;
+    }
+    .info .lbl { font-weight: 700; white-space: nowrap; color: #1d2433; }
+    .info .val { font-weight: 400; }
+    .info .addr { padding-top: 2px; line-height: 1.5; }
+    .info.cust td { height: 48px; vertical-align: middle; }
+    .info.cust tr:first-child td { height: 73px; vertical-align: top; padding-top: 10px; }
+    .info.doc td { height: 36px; vertical-align: middle; }
+
+    /* ── Items ─────────────────────────────────────────── */
+    .items { margin-top: 14px; }
+    .items th {
+      border: 1px solid #bfbfbf;
+      background-color: #ccc;
+      font-weight: 700;
+      text-align: center;
+      vertical-align: middle;
+      padding: 3px 4px;
+    }
+    .items th .ar { display: block; direction: rtl; unicode-bidi: isolate; font-size: 10px; }
+    .items th .en { display: block; font-size: 10px; }
+    .items td {
+      border: 1px solid #bfbfbf;
+      padding: 3px 6px;
+      vertical-align: middle;
+    }
+    .items tbody td { border-top: none; border-bottom: none; }
+    .items tbody tr:last-child td { border-bottom: 1px solid #bfbfbf; }
+    .items .sn,
+    .items .num  { text-align: center; }
+    .items .desc-ar { direction: rtl; text-align: right; unicode-bidi: isolate; }
+    .items .desc-note { padding-top: 2px; }
+
+    /* ── Terms & conditions ────────────────────────────── */
+    .terms { margin-top: 16px; }
+    .terms-title { font-weight: 700; padding: 0 0 6px 20px; color: #2d3e5e; }
+    .terms-body { line-height: 1.6; padding-left: 20px; }
+
+    /* ── Signatures ────────────────────────────────────── */
+    .bottom { margin-top: 24px; break-inside: avoid; page-break-inside: avoid; }
+    .divider { border: none; border-top: 1px solid #bfbfbf; margin-bottom: 14px; }
+    .sign-labels td { border: none; padding: 0; text-align: center; font-weight: 700; vertical-align: bottom; color: #000; }
+    .sign-labels .sig { font-weight: 400; }
+    .sign-labels .sig img { display: block; margin: 0 auto 4px; }
+    .sign-labels .sig-label { font-weight: 700; }
+    .sign-box { border: 1px solid #000; height: 34px; margin-top: 26px; text-align: center; }
+  </style>
+</head>
+<body>
+
+<table class="pagewrap">
+<tbody>
+<tr>
+<td>
+
+  <!-- TITLE -->
+  <div class="title">
+    <span class="en">Delivery Note /</span> <span class="ar">مذكرة تسليم</span>
+  </div>
+
+  <!-- HEADER: customer block (left) + document block (right) -->
+  <table class="hdr-wrap">
+    <colgroup>
+      <col style="width:58%">
+      <col style="width:2%">
+      <col style="width:40%">
+    </colgroup>
+    <tr>
+      <td>
+        <table class="info cust">
+          <colgroup>
+            <col style="width:32%">
+            <col style="width:68%">
+          </colgroup>
+          <tr>
+            <td class="lbl">Customer Name</td>
+            <td class="val">
+              {{billing_address.[0].name}}
+              {{#if (joinAddress billing_address.[0] ", ")}}
+              <div class="addr">{{joinAddress billing_address.[0] ", "}}</div>
+              {{/if}}
+            </td>
+          </tr>
+          <tr>
+            <td class="lbl">Contact Number</td>
+            <td class="val">{{customer_details.[0].contact_no1}}</td>
+          </tr>
+          {{#if basicdetails.[0].contactname}}
+          <tr>
+            <td class="lbl">Contact Name</td>
+            <td class="val">{{basicdetails.[0].contactname}}</td>
+          </tr>
+          {{/if}}
+          {{#if basicdetails.[0].contactno}}
+          <tr>
+            <td class="lbl">Contact No</td>
+            <td class="val">{{basicdetails.[0].contactno}}</td>
+          </tr>
+          {{/if}}
+        </table>
+      </td>
+      <td></td>
+      <td>
+        <table class="info doc">
+          <colgroup>
+            <col style="width:42%">
+            <col style="width:58%">
+          </colgroup>
+          <tr>
+            <td class="lbl">DN Number</td>
+            <td class="val">{{basicdetails.[0].inv_no}}</td>
+          </tr>
+          <tr>
+            <td class="lbl">Delivery Date</td>
+            <td class="val">{{basicdetails.[0].inv_date}}</td>
+          </tr>
+          <tr>
+            <td class="lbl">Invoice No</td>
+            <td class="val">{{basicdetails.[0].invoice_no}}</td>
+          </tr>
+          <tr>
+            <td class="lbl">Invoice Date</td>
+            <td class="val">{{basicdetails.[0].invoice_date}}</td>
+          </tr>
+          <tr>
+            <td class="lbl">Sales person</td>
+            <td class="val">{{#if basicdetails.[0].attention}}{{basicdetails.[0].attention}}{{else}}{{basicdetails.[0].salesman_name}}{{/if}}</td>
+          </tr>
+          <tr>
+            <td class="lbl">Driver Name</td>
+            <td class="val">{{basicdetails.[0].driver_name}}</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+</td>
+</tr>
+<tr>
+<td>
+
+  <!-- ITEMS -->
+  <table class="items">
+    <colgroup>
+      <col style="width:6%">
+      <col style="width:14%">
+      {{!-- {{#if (gt (sumProperty itemdetails "order_qty") 0)}}
+      <col style="width:36%">
+      <col style="width:8%">
+      <col style="width:8%">
+      <col style="width:9%">
+      <col style="width:9%">
+      <col style="width:10%">
+      {{else}} --}}
+      <col style="width:56%">
+      <col style="width:12%">
+      <col style="width:12%">
+      {{!-- {{/if}} --}}
+    </colgroup>
+    <thead>
+      <tr>
+        <th><span class="ar">م</span><span class="en">S.N</span></th>
+        <th><span class="ar">الجزء رقم</span><span class="en">Part No</span></th>
+        <th><span class="ar">الوصف</span><span class="en">Description</span></th>
+        <th><span class="ar">الكمية</span><span class="en">QTY</span></th>
+        <th><span class="ar">الوحدة</span><span class="en">UOM</span></th>
+        {{!-- {{#if (gt (sumProperty itemdetails "order_qty") 0)}}
+        <th><span class="ar">الأمر</span><span class="en">Ordered</span></th>
+        <th><span class="ar">التوصيل</span><span class="en">Delivered</span></th>
+        <th><span class="ar">منتهي</span><span class="en">Outstanding</span></th>
+        {{/if}} --}}
+      </tr>
+    </thead>
+    <tbody>
+      {{#each itemdetails}}
+      <tr>
+        <td class="sn">{{addOne @index}}</td>
+        <td>{{item_code}}</td>
+        <td>
+          {{item_name}}
+          {{#if name_lang2}}<span class="desc-ar">{{name_lang2}}</span>{{/if}}
+          {{#if description}}<span class="desc-note">{{description}}</span>{{/if}}
+        </td>
+        <td class="num">{{quantity}}</td>
+        <td class="num">{{unit}}</td>
+        {{!-- {{#if (gt (sumProperty ../itemdetails "order_qty") 0)}}
+        <td class="num">{{order_qty}}</td>
+        <td class="num">{{delivered_qty}}</td>
+        <td class="num">{{subtract order_qty delivered_qty}}</td>
+        {{/if}} --}}
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+</td>
+</tr>
+<tr>
+<td>
+
+  <!-- TERMS & CONDITIONS -->
+  {{#if basicdetails.[0].terms_and_condition}}
+  <div class="terms">
+    <div class="terms-title">Terms &amp; Conditions</div>
+    <div class="terms-body">{{nl2br basicdetails.[0].terms_and_condition}}</div>
+  </div>
+  {{/if}}
+
+  <!-- SIGNATURES -->
+  <div class="bottom">
+    <hr class="divider">
+    <table class="sign-labels">
+      <colgroup>
+        <col style="width:40%">
+        <col style="width:20%">
+        <col style="width:40%">
+      </colgroup>
+      <tr>
+        <td class="sig">
+          {{#ifFlag datasettings "d679"}}
+             <img src="{{Signature}}" alt="Signature" style="width:{{datasettings.d459}}px;" onerror="this.style.display='none'"/>
+          {{/ifFlag}}
+          <div class="sig-label">DELIVERED BY</div>
+        </td>
+        <td></td>
+        <td>RECEIVED BY</td>
+      </tr>
+    </table>
+    <div class="sign-box">{{datasettingstextvalue.d344}}</div>
+  </div>
+
+</td>
+</tr>
+</tbody>
+</table>
+
+</body>
+</html>
