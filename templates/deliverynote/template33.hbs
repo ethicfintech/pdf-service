@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Delivery Note - {{basicdetails.[0].inv_no}}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: ibmplexsansarabic, Arial, Helvetica, sans-serif;
+      font-size: 11px;
+      color: #000;
+      background: #fff;
+      margin: 0 5mm;
+    }
+
+    table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+
+    /* ── Title ─────────────────────────────────────────── */
+    .title {
+      text-align: center;
+      font-size: 20px;
+      font-weight: 700;
+      padding: 0 0 8px;
+    }
+    .title .en { color: #b72031; }
+    .title .ar { color: #606261; direction: rtl; unicode-bidi: isolate; }
+
+    /* ── Header boxes: customer (left) + document (right) ── */
+    .hdr-wrap > tbody > tr > td { border: none; padding: 0; vertical-align: top; }
+
+    .info td {
+      border: 1px solid #bfbfbf;
+      padding: 4px 8px;
+      font-size: 11px;
+      vertical-align: top;
+      word-wrap: break-word;
+    }
+    .info .lbl { font-weight: 700; font-size: 11px;}
+    .info .date-row td { vertical-align: middle; padding: 4px 10px; }
+    .info .doc-row td { vertical-align: middle; padding: 4px 10px; }
+
+    /* ── Items ─────────────────────────────────────────── */
+    .items { margin-top: 12px; }
+    .items th {
+      border: 1px solid #bfbfbf;
+      background-color: #ccc;
+      padding: 1px 5px;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+      vertical-align: middle;
+      line-height: 18px;
+    }
+    .items th .ar { display: block; direction: rtl; unicode-bidi: isolate; }
+    .items th .en { display: block; }
+    .items td {
+      border: 1px solid #bfbfbf;
+      padding: 7px 5px;
+      font-size: 11px;
+      vertical-align: top;
+    }
+    .items tbody td { border-top: none; border-bottom: none; }
+    .items tbody tr:last-child td { border-bottom: 1px solid #bfbfbf; }
+    .items .sn  { text-align: center; }
+    .items .qty { text-align: center; }
+    .items .uom { text-align: center; }
+    .items .desc-ar { direction: rtl; unicode-bidi: isolate; }
+
+    /* ── Terms (only when sent) ─────────────────────────── */
+    .terms { margin-top: 12px; break-inside: avoid; page-break-inside: avoid; }
+    .terms .h { font-weight: 700; line-height: 18px; }
+    .terms .b { font-size: 10.5px; line-height: 15px; margin-top: 2px; }
+
+    /* ── Bottom: received / signature / prepared block ─── */
+    .bottom { margin-top: 20px; break-inside: avoid; page-break-inside: avoid; }
+    .bottom td { border: 1px solid #bfbfbf; text-align: center; font-size: 12px; }
+    .bottom .bar td { background: #ccc; padding: 0 5px; }
+    .bottom .box td { vertical-align: middle; padding: 4px; height: 120px;}
+    .bottom .box img { max-width: 100%; object-fit: contain; }
+
+    {{#if UseBGWatermark}}
+    {{#if WatermarkCss}}
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-image: url('{{{WatermarkCss}}}');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 100% auto;
+      opacity: 0.7;
+      pointer-events: none;
+      z-index: -1;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    {{/if}}
+    {{/if}}
+  </style>
+</head>
+<body>
+
+  <!-- TITLE -->
+  <div class="title">
+    <span class="en">Delivery Note</span> / <span class="ar">مذكرة تسليم</span>
+  </div>
+
+  <!-- HEADER BOXES -->
+  <table class="hdr-wrap">
+    <colgroup>
+      <col style="width:57.9%">
+      <col style="width:2.2%">
+      <col style="width:39.9%">
+    </colgroup>
+    <tr>
+      <td>
+        <table class="info">
+          <colgroup>
+            <col style="width:29.7%">
+            <col style="width:70.3%">
+          </colgroup>
+          <tr class="cust-row">
+            <td class="lbl">Customer Name</td>
+            <td class="cust-name">
+              <div>{{billing_address.[0].name}}</div>
+              {{#with billing_address.[0]}}
+                {{#if (joinAddress this ", ")}}<div>{{joinAddress this ", "}}</div>{{/if}}
+                {{#if vat}}<div>VAT: {{vat}}</div>{{/if}}
+              {{/with}}
+            </td>
+          </tr>
+          <tr class="date-row">
+            <td class="lbl">Date</td>
+            <td>{{basicdetails.[0].inv_date}}</td>
+          </tr>
+        </table>
+      </td>
+      <td></td>
+      <td>
+        <table class="info">
+          <colgroup>
+            <col style="width:29.8%">
+            <col style="width:70.2%">
+          </colgroup>
+          <tr class="doc-row">
+            <td class="lbl">DN Number</td>
+            <td>{{basicdetails.[0].inv_no}}</td>
+          </tr>
+          <tr class="doc-row">
+            <td class="lbl">Invoice No</td>
+            <td>{{basicdetails.[0].invoice_no}}</td>
+          </tr>
+          <tr class="doc-row">
+            <td class="lbl">PO No</td>
+            <td>{{basicdetails.[0].order_no}}</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <!-- ITEMS -->
+  <table class="items">
+    <colgroup>
+      <col style="width:5%">
+      <col style="width:75%">
+      <col style="width:10%">
+      <col style="width:10%">
+    </colgroup>
+    <thead>
+      <tr>
+        <th><span class="ar">م</span><span class="en">S.N</span></th>
+        <th><span class="ar">الوصف</span><span class="en">Description</span></th>
+        <th><span class="ar">الكمية</span><span class="en">QTY</span></th>
+        <th><span class="ar">الوحدة</span><span class="en">UOM</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each itemdetails}}
+      <tr>
+        <td class="sn">{{addOne @index}}</td>
+        <td>{{item_name}}{{#if name_lang2}} <span class="desc-ar">{{name_lang2}}</span>{{/if}}{{#if description}} {{description}}{{/if}}</td>
+        <td class="qty">{{quantity}}</td>
+        <td class="uom">{{unit}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <!-- TERMS AND CONDITIONS -->
+  {{#if basicdetails.[0].terms_and_condition}}
+  <div class="terms">
+    <div class="h">Terms &amp; Conditions</div>
+    <div class="b">{{{nl2br basicdetails.[0].terms_and_condition}}}</div>
+  </div>
+  {{/if}}
+
+  <!-- RECEIVED / SIGNATURE / PREPARED BLOCK -->
+  <div class="bottom">
+    <table>
+      <colgroup>
+        <col style="width:33.33%">
+        <col style="width:33.33%">
+        <col style="width:33.34%">
+      </colgroup>
+      <tr class="bar">
+        <td colspan="3">Materials received in good condition.</td>
+      </tr>
+      <tr class="box">
+        <td></td>
+        <td></td>
+        <td>
+          {{!-- {{#ifFlag datasettings "d679"}}
+          <img src="{{Signature}}" alt="Signature" style="width:{{datasettings.d459}}px;" onerror="this.style.display='none'"/>
+          {{/ifFlag}} --}}
+          {{#ifFlag datasettings "d678"}}
+          <img src="{{Seal}}" alt="Seal" style="width:{{datasettings.d458}}px;" onerror="this.style.display='none'"/>
+          {{/ifFlag}}
+        </td>
+      </tr>
+      <tr class="bar">
+        <td>Customer's Signature.</td>
+        <td></td>
+        <td>Prepared by</td>
+      </tr>
+    </table>
+  </div>
+
+</body>
+</html>
