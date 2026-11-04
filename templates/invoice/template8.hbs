@@ -239,10 +239,18 @@ TAX INVOICE / الفاتورة الضريبية
         <td>{{basicdetails.[0].sup_date}}</td>
         <td>{{basicdetails.[0].order_no}}</td>
         <td>{{basicdetails.[0].due_date}}</td>
-        <td>{{basicdetails.[0].inv_from}} - {{basicdetails.[0].inv_to}}</td>
+        <td><span class="my-fmt">{{basicdetails.[0].inv_from}}</span></td>
         <td>{{basicdetails.[0].project_name}}</td>
     </tr>
 </table>
+
+<script>
+  // inv_from like "02-Mar-2026" -> "Mar-2026" (month-year only)
+  document.querySelectorAll('.my-fmt').forEach(function (el) {
+    var m = el.textContent.trim().match(/^\d{1,2}[-\/ ]([A-Za-z]{3})[A-Za-z]*[-\/ ](\d{4})$/);
+    if (m) el.textContent = m[1] + '-' + m[2];
+  });
+</script>
 
 
 <!-- Items Table (RTL order in cells) -->
