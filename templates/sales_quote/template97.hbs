@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Quotation - {{basicdetails.[0].inv_no}}</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: ibmplexsansarabic;
+    font-size: 10px;
+    color: #000;
+    background: #fff;
+    margin: 0 8mm;
+  }
+
+  .page { width: 100%; padding-top: 4px; }
+
+  /* ── Top: Bill To | Title + Meta ── */
+  .top-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin-bottom: 6px;
+  }
+
+  .top-table > tbody > tr > td {
+    vertical-align: top;
+    padding: 0;
+  }
+
+  .bill-to-heading {
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
+  .bill-to-name { font-weight: bold; margin-top: 2px; }
+
+  .bill-to-line { line-height: 1.35; }
+
+  .bill-to-vat { margin-top: 4px; }
+
+  .bill-to-cr { margin-top: 4px; }
+
+  /* English | Arabic Bill To side by side (Arabic column only when lang2 data exists) */
+  .bill-to-table { width: 100%; border-collapse: collapse; }
+  .bill-to-table td { vertical-align: top; padding: 0; width: 50%; }
+  .bill-to-table td.bill-to-ar { direction: rtl; text-align: right; padding-right: 10px; }
+
+  .title-block { text-align: right; }
+
+  .quotation-title {
+    font-size: 30px;
+    font-weight: bold;
+    letter-spacing: 4px;
+    line-height: 1.1;
+  }
+
+  .quotation-no {
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 6px;
+    margin-bottom: 6px;
+  }
+
+  .meta-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+
+  .meta-table td {
+    padding: 3px 4px;
+    vertical-align: middle;
+  }
+
+  .meta-table .m-lbl { width: 30%; text-align: left; padding-left: 6%; white-space: nowrap; }
+  .meta-table .m-val { width: 35%; text-align: right; padding-right: 10px; }
+  .meta-table .m-ar  { width: 35%; text-align: right; direction: rtl; color:rgb(65, 64, 64); }
+
+  /* ── Subject ── */
+  .subject-block { margin: 6px 0; }
+  .subject-greeting { font-weight: bold; }
+
+  /* ── Items table ── */
+  .items-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+
+  .items-table th,
+  .items-table td {
+    padding: 4px 8px;
+    vertical-align: middle;
+  }
+
+  .items-table thead th {
+    background: #000000;
+    color: #fff;
+    text-align: center;
+    font-weight: bold;
+    font-size: 10px;
+    position: relative;
+  }
+
+  /* Hairlines: Chrome rounds borders under 1px up to 1px in PDFs, so thin lines
+     are 1px bars scaled to 0.5px. (box-shadow hairlines leave edge artifacts in
+     some PDF viewers.) */
+  .items-table thead th + th::before {
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0; left: 0;
+    width: 1px;
+    background: #fff;
+    transform: scaleX(0.5);
+    transform-origin: left;
+  }
+
+  /* row lines are drawn on the <tr>, not each <td>, so no seams appear between cells */
+  .totals-table td { position: relative; }
+
+  .totals-table td::after {
+    content: "";
+    position: absolute;
+    left: 0; right: -1px; bottom: 0;   /* 1px overlap so cell segments join without gaps */
+    height: 1px;
+    background: #ccc;
+    transform: scaleY(0.5);
+    transform-origin: bottom;
+  }
+
+  .totals-table td:last-child::after { right: 0; }
+
+  /* item rows use a real border (not ::after) so the line stays aligned when a long row splits across pages;
+     top-aligned so qty/amounts stay beside the start of the description */
+  .items-table tbody td {
+    padding-top: 11px;
+    padding-bottom: 11px;
+    vertical-align: top;
+    border-bottom: 1px solid #e3e3e3;
+  }
+
+  .items-table .center { text-align: center; }
+  .items-table .left   { text-align: left; }
+  .items-table .right  { text-align: right; }
+  .items-table .qty    { text-align: center; color: #1a237e; }
+
+  /* ── Totals ── */
+  .totals-table {
+    width: 50%;
+    margin-left: auto;
+    margin-top: 16px;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+
+  .totals-table td {
+    padding: 4px 6px;
+    vertical-align: middle;
+    font-size: 10px;
+  }
+
+  .totals-table tr:last-child td { font-weight: bold; }
+
+  .totals-table .t-label  { width: 30%; text-align: left; }
+  .totals-table .t-ar     { width: 28%; text-align: right; direction: rtl; font-size: 10.5px; }
+  .totals-table .t-amount { width: 42%; text-align: right; font-size: 11px; padding-right: 14px; }
+  .totals-table tr:last-child .t-amount { font-size: 10.5px; }
+
+  /* ── Amount in words ── */
+  .words-line {
+    margin-top: 8px;
+    text-align: right;
+    font-size: 10px;
+  }
+
+  /* ── Thank You + Payment Details ── */
+  .thank-you {
+    font-family: thecoastal, "Segoe Script", cursive;   /* embedded by templateService (assets/TheCoastal.ttf) */
+    font-size: 33px;
+    line-height: 1;
+    margin-top: 22px;
+    padding-left: 2px;
+  }
+
+  .payment-heading {
+    text-align: center;
+    font-weight: bold;
+    font-size: 10px;
+    margin-top: -8px;
+    margin-bottom: 10px;
+  }
+
+  .payment-wrap { position: relative; }
+
+  .payment-table {
+    width: 100%;
+    font-size: 9px;
+    border-collapse: collapse;
+    table-layout: fixed;
+    box-shadow: 0 0 0 0.5px #ccc;
+  }
+
+  .payment-table td {
+    padding: 4px 6px;
+    vertical-align: middle;
+  }
+
+  .payment-table tr:first-child td { padding-top: 7px; }
+  .payment-table tr:last-child td  { padding-bottom: 7px; }
+
+  .payment-table .p-lbl  { width: 15%; text-align: left; }
+  .payment-table .p-sep  { width: 2%;  text-align: center; }
+  .payment-table .p-val  { width: 35%; text-align: left; }
+  .payment-table .p-arv  { width: 32%; text-align: right; direction: rtl; }
+  .payment-table .p-ar   { width: 12%; text-align: right; direction: rtl; }
+
+  .payment-seal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -10%);
+  }
+
+  .payment-seal img {
+    max-height: 105px;
+    max-width: 105px;
+    display: block;
+  }
+
+  /* ── Authorized Signatory ── */
+  .auth-sign {
+    margin-top: 40px;
+    padding-left: 36px;
+  }
+
+  /* ── Terms ── */
+  .terms-section { margin-top: 24px; }
+
+  .terms-heading {
+    font-weight: bold;
+    text-decoration: underline;
+    margin-bottom: 4px;
+  }
+
+  .terms-body { line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ══ TOP: Bill To | QUOTATION + meta ══ -->
+  <table class="top-table">
+    <colgroup>
+      <col style="width:60%">
+      <col style="width:40%">
+    </colgroup>
+    <tr>
+      <td>
+        <table class="bill-to-table">
+          <tr>
+          <td>
+        <div class="bill-to-heading">Customer Name </div>
+        <div class="bill-to-name">{{billing_address.[0].name}}</div>
+        {{#if billing_address.[0].address_line1}}<div class="bill-to-line">{{billing_address.[0].address_line1}}</div>{{/if}}
+        {{#if billing_address.[0].address_line2}}<div class="bill-to-line">{{billing_address.[0].address_line2}}</div>{{/if}}
+        {{#if billing_address.[0].address_line3}}
+        <div class="bill-to-line">{{billing_address.[0].address_line3}}{{#if billing_address.[0].address_line4}}, {{billing_address.[0].address_line4}}{{/if}}</div>
+        {{else}}
+        {{#if billing_address.[0].address_line4}}<div class="bill-to-line">{{billing_address.[0].address_line4}}</div>{{/if}}
+        {{/if}}
+        {{#if billing_address.[0].address_line5}}<div class="bill-to-line">{{billing_address.[0].address_line5}}</div>{{/if}}
+        <div class="bill-to-vat">{{tax_label}}: {{billing_address.[0].vat}}</div>
+        {{#ifFlag datasettings "d844"}}{{#if customer_details.[0].cr_no}}<div class="bill-to-cr">C R Number: {{customer_details.[0].cr_no}}</div>{{/if}}{{/ifFlag}}
+        {{#if basicdetails.[0].contactname}}<div class="bill-to-cr">Contact: {{basicdetails.[0].contactname}}</div>{{/if}}
+        {{!-- {{#if basicdetails.[0].contactname}}<div class="bill-to-cr">Contact: {{basicdetails.[0].contactname}}</div>{{/if}} --}}
+          </td>
+          {{#with billing_address_lang2.[0]}}
+          {{#if (or name vat address_line1)}}
+          <td class="bill-to-ar">
+            {{#if name}}<div class="bill-to-heading">تمت محاسبته عل</div>{{/if}}
+            {{#if name}}<div class="bill-to-name">{{name}}</div>{{/if}}
+            {{#if address_line1}}<div class="bill-to-line">{{address_line1}}</div>{{/if}}
+            {{#if address_line2}}<div class="bill-to-line">{{address_line2}}</div>{{/if}}
+            {{#if address_line3}}<div class="bill-to-line">{{address_line3}}{{#if address_line4}}، {{address_line4}}{{/if}}</div>{{else}}{{#if address_line4}}<div class="bill-to-line">{{address_line4}}</div>{{/if}}{{/if}}
+            {{#if address_line5}}<div class="bill-to-line">{{address_line5}}</div>{{/if}}
+            {{#ifFlag datasettings "d841"}}{{#if vat}}<div class="bill-to-vat">الرقم الضريبي : {{vat}}</div>{{/if}}{{/ifFlag}}
+            {{#ifFlag datasettings "d842"}}{{#if @root.customer_details.[0].cr_no_lang2}}<div class="bill-to-cr">رقم السجل التجاري : {{@root.customer_details.[0].cr_no_lang2}}</div>{{/if}}{{/ifFlag}}
+          </td>
+          {{/if}}
+          {{/with}}
+          </tr>
+        </table>
+      </td>
+      <td>
+        <div class="title-block">
+          {{!-- <div class="quotation-title">QUOTATION</div> --}}
+          <div class="quotation-no">Doc Number : {{basicdetails.[0].inv_no}}</div>
+        </div>
+        <table class="meta-table">
+          <tr>
+            <td class="m-lbl">Doc Date</td>
+            <td class="m-val">{{basicdetails.[0].inv_date}}</td>
+            <td class="m-ar">تاريخ الوثيقة</td>
+          </tr>
+          <tr>
+            <td class="m-lbl">Due Date</td>
+            <td class="m-val">{{basicdetails.[0].due_date}}</td>
+            <td class="m-ar">تاريخ الاستحقاق</td>
+          </tr>
+          <tr>
+            <td class="m-lbl">Reference No</td>
+            <td class="m-val">{{basicdetails.[0].reference_no}}</td>
+            <td class="m-ar">رقم المرجع</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <!-- ══ SUBJECT (only when subj is filled) ══ -->
+  {{#if basicdetails.[0].subj}}
+  <div class="subject-block">
+    <span class="subject-greeting">Subject :</span>
+    <span style="font-weight:normal;">{{basicdetails.[0].subj}}</span>
+  </div>
+  {{/if}}
+
+  <!-- ══ ATTENTION (only when attention is filled) ══ -->
+  {{#if basicdetails.[0].attention}}
+  <div class="subject-block"><b>Attention:</b> {{basicdetails.[0].attention}}</div>
+  {{/if}}
+
+  <!-- ══ ITEMS ══ -->
+  <table class="items-table">
+    <colgroup>
+      <col style="width:4.5%">
+      {{!-- Description width: 37% base, -11% when the Discount column shows, -8% when the Unit column (AED) shows --}}
+      <col style="width:{{#if (eq @root.basicdetails.[0].base_country_isocode "AED")}}{{#hasDiscount itemdetails}}43{{else}}54{{/hasDiscount}}{{else}}{{#hasDiscount itemdetails}}51{{else}}62{{/hasDiscount}}{{/if}}%">
+      {{#if (eq @root.basicdetails.[0].base_country_isocode "AED")}}<col style="width:8%">{{/if}}
+      <col style="width:11%">
+      <col style="width:11%">
+      <col style="width:11%">
+      {{#hasDiscount itemdetails}}<col style="width:11%">{{/hasDiscount}}
+    </colgroup>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Item Description</th>
+        {{#if (eq @root.basicdetails.[0].base_country_isocode "AED")}}<th>Unit</th>{{/if}}
+        <th>Qty</th>
+        <th>Price</th>
+        <th>Item Total</th>
+        {{#hasDiscount itemdetails}}<th>Discount</th>{{/hasDiscount}}
+      </tr>
+    </thead>
+    <tbody>
+      {{#each itemdetails}}
+      <tr>
+        <td class="center">{{addOne @index}}</td>
+        <td class="left">{{item_name}}{{#if name_lang2}}<div style="font-size:10px;color:#444;">{{nl2br name_lang2}}</div>{{/if}}{{#if description}}<div style="font-size:10px;color:#444;">{{nl2br description}}</div>{{/if}}</td>
+        {{#if (eq @root.basicdetails.[0].base_country_isocode "AED")}}<td class="center">{{unit}}</td>{{/if}}
+        <td class="center">{{quantity}}</td>
+        <td class="right">{{formatAmount price ../bcdp}}</td>
+        <td class="right">{{formatAmount taxable ../bcdp}}</td>
+        {{#hasDiscount ../itemdetails}}<td class="right">{{formatAmount disc_amt ../bcdp}}</td>{{/hasDiscount}}
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <!-- ══ TOTALS ══ -->
+  <table class="totals-table">
+    <tr>
+      <td class="t-label">Total Price</td>
+      <td class="t-ar">السعر الإجمالي</td>
+      <td class="t-amount">{{formatAmount basicdetails.[0].subtotal bcdp}}</td>
+    </tr>
+    {{#if zatcadiscount}}
+        {{#each zatcadiscount}}
+          <tr>
+            <td class="t-label">{{reason_name}} {{dld_perc}}</td>
+            <td class="t-ar">{{reason_name_lang2}}</td>
+            <td class="t-amount">{{formatAmount (divide dld ../ccrate) ../bcdp}}</td>
+          </tr>
+        {{/each}}
+      {{else}}
+            {{!-- {{#if_gt (add basicdetails.[0].discount basicdetails.[0].dld) 0}} --}}
+            <tr>
+              <td class="t-label">Total Discount</td>
+              <td class="t-ar">إجمالي الخصم</td>
+              <td class="t-amount">{{formatAmount (divide (add basicdetails.[0].discount basicdetails.[0].dld) ccrate) bcdp}}</td>
+            </tr>
+            {{!-- {{/if_gt}} --}}
+      {{/if}}
+    <tr>
+      <td class="t-label">{{tax_label_in_total_section}}</td>
+      <td class="t-ar">قيمة الضريبة</td>
+      <td class="t-amount">{{formatAmount (divide basicdetails.[0].vatamt ccrate) bcdp}}</td>
+    </tr>
+    <tr>
+      <td class="t-label">Total</td>
+      <td class="t-ar">المبلغ الإجمالي</td>
+      <td class="t-amount">{{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
+    </tr>
+  </table>
+
+  <!-- ══ AMOUNT IN WORDS ══ -->
+  {{#if bcamountinwords}}
+  <div class="words-line">Total Amount in words : {{bcamountinwords}}</div>
+  {{/if}}
+
+  <!-- ══ THANK YOU ══ -->
+  <div class="thank-you">Thank You</div>
+
+  <!-- ══ PAYMENT DETAILS ══ (always starts page 2, with Signatory and Terms after it) -->
+  <div class="payment-heading" style="page-break-before: always; break-before: page; margin-top: 0;">Payment Details</div>
+  <div class="payment-wrap">
+    <table class="payment-table">
+      <tr>
+        <td class="p-lbl">Account Name</td>
+        <td class="p-sep">:</td>
+        <td class="p-val">{{bankdetails.acc_name}}</td>
+        <td class="p-arv">{{bankdetails_lang2.acc_name}}</td>
+        <td class="p-sep">:</td>
+        <td class="p-ar">اسم الحساب</td>
+      </tr>
+      <tr>
+        <td class="p-lbl">Bank Name</td>
+        <td class="p-sep">:</td>
+        <td class="p-val">{{bankdetails.name}}</td>
+        <td class="p-arv">{{bankdetails_lang2.name}}</td>
+        <td class="p-sep">:</td>
+        <td class="p-ar">بنك</td>
+      </tr>
+      <tr>
+        <td class="p-lbl">Account Number</td>
+        <td class="p-sep">:</td>
+        <td class="p-val">{{bankdetails.acc_no}}</td>
+        <td class="p-arv">{{bankdetails_lang2.acc_no}}</td>
+        <td class="p-sep">:</td>
+        <td class="p-ar">رقم الحساب</td>
+      </tr>
+      <tr>
+        <td class="p-lbl">IBAN No</td>
+        <td class="p-sep">:</td>
+        <td class="p-val">{{bankdetails.iban_no}}</td>
+        <td class="p-arv">{{bankdetails_lang2.iban_no}}</td>
+        <td class="p-sep">:</td>
+        <td class="p-ar">آيبان</td>
+      </tr>
+    </table>
+    {{#ifFlag datasettings "d249"}}
+    <div class="payment-seal">
+      <img src="{{Seal}}" alt="Seal" style="width:{{datasettings.d458}}px;" onerror="this.style.display='none'"/>
+     
+    </div>
+    {{/ifFlag}}
+  </div>
+
+  <!-- ══ AUTHORIZED SIGNATORY ══ -->
+  <div class="auth-sign">
+    {{!-- {{#if Signature}}<img src="{{Signature}}" alt="Signature" onerror="this.style.display='none'"/>{{/if}} --}}
+    Authorized Signatory / المعتمد التوقيع
+  </div>
+
+  <!-- ══ TERMS AND CONDITIONS ══ -->
+  <div class="terms-section">
+    <div class="terms-heading">Terms and Conditions</div>
+    {{#if basicdetails.[0].terms_and_condition}}
+    <div class="terms-body">{{nl2br basicdetails.[0].terms_and_condition}}</div>
+    {{/if}}
+  </div>
+
+</div>
+</body>
+</html>
