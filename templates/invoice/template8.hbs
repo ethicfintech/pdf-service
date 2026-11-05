@@ -307,8 +307,8 @@ TAX INVOICE / الفاتورة الضريبية
           <td class="right"><span style="font-size: 12px;">{{currencySymbol basicdetails.[0].currency_isocode}}</span> {{formatAmount price ../bcdp}}</td>
           <td>
               {{item_name}}
-                  {{#if name_lang2}}<div>{{name_lang2}}</div>{{/if}}
-                  {{#if description}}<div>{{description}}</div>{{/if}}
+                  {{#if name_lang2}}<div>{{nl2br name_lang2}}</div>{{/if}}
+                  {{#if description}}<div>{{nl2br description}}</div>{{/if}}
           </td>
           <td class="center">{{item_code}}</td>
           <td class="center">{{addOne @index}}</td>
