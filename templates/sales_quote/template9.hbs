@@ -10,7 +10,7 @@
 
   body {
     background: #ffffff;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: ibmplexsansarabic;
     font-size: 11px;
     color: #222;
     line-height: 1.45;
@@ -22,7 +22,7 @@
   /* ── Title ─────────────────────────────────── */
   .main-title {
     text-align: center;
-    font-family: 'Times New Roman', Times, serif;
+    font-family: ibmplexsansarabic;
     font-size: 26px;
     font-weight: bold;
     color: #1f3a6b;
@@ -35,10 +35,10 @@
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
-    border: 1px solid #000;
+    border: 2px solid #000;
   }
   .doc-table > tbody > tr > td {
-    border: 1px solid #000;
+    border: 1px solid #ccc;
     padding: 0;
     vertical-align: top;
     font-size: 11px;
@@ -48,7 +48,6 @@
   .top-head {
     text-align: center;
     padding: 10px;
-    border-bottom: 1px solid #000;
     font-size: 12px;
   }
 
@@ -68,19 +67,20 @@
 
   /* ── Address / quotation block ─────────────── */
   .addr-cell {
-    padding: 10px;
+    padding: 8px 8px;
     vertical-align: top;
     min-height: 130px;
+    font-size: 9px;
   }
   .addr-line { line-height: 1.55; }
 
   .qno-cell {
-    padding: 30px 10px;
+    padding: 62px 10px 10px;
     text-align: center;
     vertical-align: middle;
-    font-size: 12px;
+    font-size: 14px;
   }
-  .qno-val { font-weight: bold; font-size: 13px; }
+  .qno-val { font-weight: bold; font-size: 14px; }
 
   /* ── Items table ───────────────────────────── */
   .items-table {
@@ -91,23 +91,25 @@
   .items-table th,
   .items-table td {
     font-size: 11px;
-    vertical-align: middle;
+    vertical-align: top;
     padding: 8px 6px;
     border: 1px solid #ccc;
   }
   .items-table thead th {
     text-align: center;
+    vertical-align: middle;
     font-weight: bold;
     background: #0d1676;
     color: #ffffff;
     border: 1px solid #1f3a6b;
   }
+  .items-table tbody td { height: 57px; }
   .items-table .center { text-align: center; }
   .items-table .right  { text-align: right; }
   .items-table .left   { text-align: left; }
 
   /* ── Remark row ────────────────────────────── */
-  .remark-cell { padding: 6px 10px; font-size: 11px; }
+  .remark-cell { padding: 6px 10px; font-size: 11px; min-height: 20px; }
 
   /* ── Bottom combined section ───────────────── */
   .bottom-table {
@@ -122,25 +124,7 @@
   }
 
   .words-block { padding: 8px 10px; }
-  .words-label { }
   .words-value { font-weight: bold; margin-top: 2px; }
-  .banking-title {
-    margin-top: 10px;
-    font-weight: bold;
-    text-decoration: underline;
-  }
-
-  .bank-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 6px;
-  }
-  .bank-table td {
-    border: 1px solid #ccc;
-    padding: 6px 8px;
-    font-size: 11px;
-  }
-  .bank-table .bank-lbl { width: 40%; }
 
   .totals-table {
     width: 100%;
@@ -148,25 +132,37 @@
   }
   .totals-table td {
     padding: 8px 10px;
-    font-size: 11px;
-     border-bottom: 1px solid #ccc;
+    font-size: 13px;
+    border-bottom: 1px solid #ccc;
   }
-  .totals-table tr:last-child td { border-bottom: none; }
   .totals-table .t-lbl { text-align: right; border-right: 1px solid #ccc; }
   .totals-table .t-val { text-align: right; width: 35%; }
-  .totals-table .total-row td { font-weight: bold; }
 
   .signoff-cell {
     padding: 8px 10px;
     text-align: right;
+    font-size: 13px;
   }
-  .signoff-cell .sign-imgs {
-    margin-top: 14px;
-    text-align: center;
-    line-height: 1.4;
+
+  {{#if UseBGWatermark}}
+  {{#if WatermarkCss}}
+  body::after {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image: url('{{{WatermarkCss}}}');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 100% auto;
+    opacity: 0.7;
+    pointer-events: none;
+    z-index: -1;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
-  .sig-img  { max-height: 80px; max-width: 160px; display: inline-block; vertical-align: middle; }
-  .seal-img { max-height: 90px; max-width: 110px; display: inline-block; vertical-align: middle; margin-left: 60px; }
+  {{/if}}
+  {{/if}}
 </style>
 </head>
 <body>
@@ -180,7 +176,7 @@
   <table class="doc-table">
     <!-- Header bar: customer name | reference + date -->
     <tr>
-      <td style="width:50%; padding:10px;"  class="top-head">
+      <td style="width:50%; padding:10px;" class="top-head">
         {{billing_address.[0].name}}
       </td>
       <td style="width:50%; padding:0;">
@@ -219,25 +215,25 @@
         <table class="items-table">
           <colgroup>
             <col style="width:5%">
-            <col style="width:12%">
-            <col style="width:19%">
-            <col style="width:8%">
-            <col style="width:8%">
-            <col style="width:13%">
-            <col style="width:12%">
+            <col style="width:21%">
+            <col style="width:9%">
+            <col style="width:9%">
+            <col style="width:11%">
+            <col style="width:11%">
+            <col style="width:11%">
             <col style="width:11%">
             <col style="width:12%">
           </colgroup>
           <thead>
             <tr>
               <th>#</th>
-              <th>PART NO</th>
               <th>DESCRIPTION</th>
               <th>QTY</th>
               <th>UOM</th>
               <th>UNIT PRICE</th>
               <th>SUBTOTAL</th>
-              <th>VAT {{#if itemdetails.[0].vat_perc}}{{itemdetails.[0].vat_perc}}%{{/if}}</th>
+              <th>VAT</th>
+              <th>{{#if itemdetails.[0].vat_perc}}{{itemdetails.[0].vat_perc}}%{{/if}}</th>
               <th>TOTAL</th>
             </tr>
           </thead>
@@ -245,7 +241,6 @@
             {{#each itemdetails}}
             <tr>
               <td class="center">{{addOne @index}}</td>
-              <td class="center">{{#if part_number}}{{part_number}}{{else}}{{item_code}}{{/if}}</td>
               <td class="left">
                 {{item_name}}
                 {{#if name_lang2}}<div>{{name_lang2}}</div>{{/if}}
@@ -255,6 +250,7 @@
               <td class="center">{{unit}}</td>
               <td class="right"><span style="font-size:14px;">{{currencySymbol ../basicdetails.[0].base_country_isocode}}</span>{{formatAmount price ../bcdp}}</td>
               <td class="right"><span style="font-size:14px;">{{currencySymbol ../basicdetails.[0].base_country_isocode}}</span>{{formatAmount taxable ../bcdp}}</td>
+              <td class="center">{{vat_perc}}</td>
               <td class="right"><span style="font-size:14px;">{{currencySymbol ../basicdetails.[0].base_country_isocode}}</span>{{formatAmount vat_amt ../bcdp}}</td>
               <td class="right"><span style="font-size:14px;">{{currencySymbol ../basicdetails.[0].base_country_isocode}}</span>{{formatAmount amount ../bcdp}}</td>
             </tr>
@@ -273,38 +269,15 @@
       </td>
     </tr>
 
-    <!-- Words + Bank + Totals -->
+    <!-- Words + Totals -->
     <tr>
       <td colspan="2" style="padding:0;">
         <table class="bottom-table">
           <tr>
             <td style="width:50%; padding:0; vertical-align:top; border:none;">
               <div class="words-block">
-                <div class="words-label">Amount chargable in words:</div>
+                <div>Amount chargable in words:</div>
                 <div class="words-value">{{bcamountinwords}}</div>
-                <div class="banking-title">Banking Details:</div>
-                <table class="bank-table">
-                  <tr>
-                    <td class="bank-lbl">Name</td>
-                    <td>{{bankdetails.acc_name}}</td>
-                  </tr>
-                  <tr>
-                    <td class="bank-lbl">Bank</td>
-                    <td>{{bankdetails.name}}</td>
-                  </tr>
-                  <tr>
-                    <td class="bank-lbl">Account</td>
-                    <td>{{bankdetails.acc_no}}</td>
-                  </tr>
-                  <tr>
-                    <td class="bank-lbl">IBAN</td>
-                    <td>{{bankdetails.iban_no}}</td>
-                  </tr>
-                  <tr>
-                    <td class="bank-lbl">SWIFT No</td>
-                    <td>{{bankdetails.swift_no}}</td>
-                  </tr>
-                </table>
               </div>
             </td>
             <td style="width:50%; padding:0; vertical-align:top;">
@@ -322,20 +295,12 @@
                   <td class="t-val"><span style="font-size:14px;">{{currencySymbol basicdetails.[0].base_country_isocode}}</span>{{formatAmount (subtract (divide basicdetails.[0].subtotal ccrate) (divide basicdetails.[0].discount ccrate)) bcdp}}</td>
                 </tr>
                 <tr>
-                  <td class="t-lbl">VAT {{#if itemdetails.[0].vat_perc}}{{itemdetails.[0].vat_perc}}%{{/if}}</td>
-                  <td class="t-val"><span style="font-size:14px;">{{currencySymbol basicdetails.[0].base_country_isocode}}</span>{{formatAmount (divide basicdetails.[0].vatamt ccrate) bcdp}}</td>
-                </tr>
-                <tr class="total-row" style="border-bottom: 1px solid #ccc;">
                   <td class="t-lbl">Total Amount</td>
                   <td class="t-val"><span style="font-size:14px;">{{currencySymbol basicdetails.[0].base_country_isocode}}</span>{{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
                 </tr>
               </table>
               <div class="signoff-cell">
-                <div  style="border-bottom: 1px solid #000; padding-bottom:10px;">For {{#if compprof.name}}{{compprof.name}}{{else}}{{basicdetails.[0].branchname}}{{/if}}</div>
-                <div class="sign-imgs">
-                  {{#if Signature}}<img class="sig-img" src="{{Signature}}" alt="signature"/>{{/if}}
-                  {{#if Seal}}<img class="seal-img" src="{{Seal}}" alt="Seal" style="max-height:{{default datasettings.d459 '100'}}px; max-width:{{default datasettings.d459 '180'}}px;" onerror="this.style.display='none'"/>{{/if}}
-                </div>
+                For {{#if compprof.name}}{{compprof.name}}{{else}}{{basicdetails.[0].branchname}}{{/if}}
               </div>
             </td>
           </tr>
