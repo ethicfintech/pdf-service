@@ -88,9 +88,9 @@
     <tr>
       <td class="dlbl">Sales Quote Number<span class="ar">رقم عرض أسعار المبيعات</span></td>
       <td>{{basicdetails.[0].inv_no}}</td>
-      <td class="dlbl">Sales Quote issue date<span class="ar">تاريخ إصدار عرض أسعار المبيعات</span></td>
+      <td class="dlbl">Sales Quote Issue Date<span class="ar">تاريخ إصدار عرض أسعار المبيعات</span></td>
       <td>{{basicdetails.[0].inv_date}}</td>
-      <td class="dlbl">Sales Quote due date<span class="ar">تاريخ استحقاق اقتباس المبيعات</span></td>
+      <td class="dlbl">Sales Quote Due D ate<span class="ar">تاريخ استحقاق اقتباس المبيعات</span></td>
       <td>{{basicdetails.[0].due_date}}</td>
     </tr>
   </table>
@@ -115,7 +115,7 @@
           <tr><td class="plbl">Country</td><td>{{branch.[0].address_line5}}</td><td class="par">البلد</td></tr>
           <tr><td class="plbl">Postal Code</td><td>{{branch.[0].address_code}}</td><td class="par">رمز بريدي</td></tr>
           <tr><td class="plbl">VAT Number</td><td>{{branch.[0].vat}}</td><td class="par">رقم ضريبة</td></tr>
-          {{#if basicdetails.[0].employeename}}<tr><td class="plbl">Salesperson</td><td>{{basicdetails.[0].employeename}}</td><td class="par"> مندوب مبيعات</td></tr>{{/if}}
+          {{#if basicdetails.[0].employeename}}<tr><td class="plbl">Salesperson</td><td>{{basicdetails.[0].employeename}} | No :{{basicdetails.[0].employeecontactno}}</td><td class="par"> مندوب مبيعات</td></tr>{{/if}}
         </table>
       </td>
       <td></td>
