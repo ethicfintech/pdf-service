@@ -307,8 +307,8 @@ TAX INVOICE / الفاتورة الضريبية
           <td class="right"><span style="font-size: 12px;">{{currencySymbol basicdetails.[0].currency_isocode}}</span> {{formatAmount price ../bcdp}}</td>
           <td>
               {{item_name}}
-                  {{#if name_lang2}}<div>{{nl2br name_lang2}}</div>{{/if}}
-                  {{#if description}}<div>{{nl2br description}}</div>{{/if}}
+                  {{#if name_lang2}}<div>{{name_lang2}}</div>{{/if}}
+                  {{#if description}}<div>{{description}}</div>{{/if}}
           </td>
           <td class="center">{{item_code}}</td>
           <td class="center">{{addOne @index}}</td>
@@ -389,11 +389,11 @@ TAX INVOICE / الفاتورة الضريبية
             <th style="font-size: 9px;">Approved By / <span>اعتمدت من قبل</span></th>
         </tr>
         <tr>
-            <td width="18%" style="padding: 5px 2px;">
+            <td width="16.8%" style="padding: 5px 2px;">
                 <div>Account Name <span class="label-ar">/ إسم الحساب</span></div>
             </td>
-            <td width="26.5%" style="padding: 5px 2px;">{{bankdetails.acc_name}}</td>
-           <td width="19.5%" rowspan="5" style="vertical-align:bottom;text-align:center;padding-bottom:6px;height:90px;">
+            <td width="29.2%" style="padding: 5px 2px;">{{bankdetails.acc_name}}</td>
+           <td width="18%" rowspan="5" style="vertical-align:bottom;text-align:center;padding-bottom:6px;height:90px;">
             <div style="">{{#ifFlag datasettings "d165"}}<img class="seal-img" src="{{Signature}}" alt="Signature" style="max-height:{{datasettings.d459}}px; max-width:{{datasettings.d459}}px;" onerror="this.style.display='none'"/>{{else}}<div style="height:60px;"></div>{{/ifFlag}}</div>
                 <div>Signature with Stamp</div>
             </td>
