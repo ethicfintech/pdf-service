@@ -277,7 +277,7 @@
           <tr>
             <td class="t-en">Total Amount</td>
             <td class="t-ar">المبلغ الإجمالي</td>
-            <td class="t-val">{{formatAmount (divide basicdetails.[0].subtotal ccrate) bcdp}}</td>
+            <td class="t-val">{{formatAmount basicdetails.[0].subtotal bcdp}}</td>
           </tr>
           {{#if zatcadiscount.[0]}}
             {{#each zatcadiscount}}

@@ -328,7 +328,7 @@
         {{/if}}
       </td>
       <td class="t-lbl">Total before Discount ({{basicdetails.[0].currency_isocode}}) <span class="ar"> المجموع قبل الخصم  </span></td>
-      <td class="t-val">{{formatAmount (divide basicdetails.[0].subtotal ccrate) bcdp}}</td>
+      <td class="t-val">{{formatAmount basicdetails.[0].subtotal bcdp}}</td>
     </tr>
     <tr>
       <td class="t-lbl">Discount <span class="ar"> خصم</span></td>

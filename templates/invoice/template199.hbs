@@ -518,7 +518,7 @@
             {{formatAmount basicdetails.[0].vatamt bcdp}}
         </span>
         <span class="t-val" style="width:10%;">
-            {{formatAmount basicdetails.[0].grand_total bcdp}}
+            {{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}
         </span>
     </div>
 
@@ -540,7 +540,7 @@
                 {{formatAmount (subtract basicdetails.[0].grand_total basicdetails.[0].vatamt) bcdp}}
             </td>
             <td style="border-bottom: 1px solid #000;width: 13.3%;">
-                {{formatAmount basicdetails.[0].vatamt bcdp}}
+                {{formatAmount (divide basicdetails.[0].vatamt ccrate) bcdp}}
             </td>
             </tr>
         </table>
@@ -553,7 +553,7 @@
                 Total Payable Amount (Including VAT) :
             </td>
             <td class="value" style="width: 13.3%;">
-                {{basicdetails.[0].currency_isocode}} {{formatAmount basicdetails.[0].grand_total bcdp}}
+                {{basicdetails.[0].currency_isocode}} {{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}
             </td>
             </tr>
         </table>

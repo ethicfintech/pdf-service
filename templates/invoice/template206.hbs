@@ -428,7 +428,7 @@
         <td class="qty-val" style="border: 1px solid #000;">{{formatAmount (sumProperty itemdetails 'quantity') bcdp}}</td>
         <td class="lbl-en"  style="border: 1px solid #000;border-right:none;">Total Before VAT</td>
         <td class="lbl-ar" style="border: 1px solid #000;border-left:none;"> الإجمالي قبل ضريبة القيمة المضافة</td>
-        <td class="val" style="border: 1px solid #000;"><span class="ryl">{{currencySymbol basicdetails.[0].base_country_isocode}}</span>{{formatAmount (divide basicdetails.[0].subtotal ccrate) bcdp}}</td>
+        <td class="val" style="border: 1px solid #000;"><span class="ryl">{{currencySymbol basicdetails.[0].base_country_isocode}}</span>{{formatAmount basicdetails.[0].subtotal bcdp}}</td>
       </tr>
       {{#if zatcadiscount.[0]}}
         {{#each zatcadiscount}}
