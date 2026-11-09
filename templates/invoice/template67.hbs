@@ -418,11 +418,11 @@
                 </td>
                 <td class="tc">{{unit}}</td>
                 <td class="tc">{{formatAmount quantity ../bcdp}}</td>
-                <td class="te">{{{currencySymbol (default isocode ../isocode)}}} {{formatAmount price ../bcdp}}</td>
-                <td class="te">{{{currencySymbol (default isocode ../isocode)}}} {{formatAmount taxable ../bcdp}}</td>
+                <td class="te">{{{currencySymbol @root.basicdetails.[0].currency_isocode}}} {{formatAmount price ../bcdp}}</td>
+                <td class="te">{{{currencySymbol @root.basicdetails.[0].currency_isocode}}} {{formatAmount taxable ../bcdp}}</td>
                 <td class="tc">{{vat_perc}}%</td>
-                <td class="te">{{{currencySymbol (default isocode ../isocode)}}} {{formatAmount vat_amt ../bcdp}}</td>
-                <td class="te">{{{currencySymbol (default isocode ../isocode)}}} {{formatAmount amount ../bcdp}}</td>
+                <td class="te">{{{currencySymbol @root.basicdetails.[0].currency_isocode}}} {{formatAmount vat_amt ../bcdp}}</td>
+                <td class="te">{{{currencySymbol @root.basicdetails.[0].currency_isocode}}} {{formatAmount amount ../bcdp}}</td>
             </tr>
             {{/each}}
         </tbody>
@@ -440,7 +440,7 @@
                     {{#with basicdetails.[0]}}
                     <tr>
                         <td class="ts">Grand Total Amount (Excl. VAT)</td>
-                        <td class="amt">{{{currencySymbol ../isocode}}} {{formatAmount subtotal ../bcdp}}</td>
+                        <td class="amt">{{{currencySymbol @root.basicdetails.[0].currency_isocode}}} {{formatAmount subtotal ../bcdp}}</td>
                         <td class="ar arab">المبلغ الإجمالي (بدون ضريبة)</td>
                     </tr>
                     {{!-- Discount rows, three cases:
@@ -451,25 +451,25 @@
                       {{#each ../zatcadiscount}}
                       <tr>
                         <td class="ts">{{#if reason_name}}{{reason_name}}{{else}}Total Discount{{/if}}</td>
-                        <td class="amt">{{{currencySymbol ../../isocode}}} {{formatAmount (divide dld ../../ccrate) ../../bcdp}}</td>
+                        <td class="amt">{{{currencySymbol @root.basicdetails.[0].currency_isocode}}} {{formatAmount (divide dld ../../ccrate) ../../bcdp}}</td>
                         <td class="ar arab">{{#if reason_name_lang2}}{{reason_name_lang2}}{{else}}إجمالي مبلغ الخصم{{/if}}</td>
                       </tr>
                       {{/each}}
                       <tr>
                         <td class="ts">Total Amount After Discount</td>
-                        <td class="amt">{{{currencySymbol ../isocode}}} {{formatAmount (divide (subtract subtotal (sumProperty ../zatcadiscount 'dld')) ../ccrate) ../bcdp}}</td>
+                        <td class="amt">{{{currencySymbol @root.basicdetails.[0].currency_isocode}}} {{formatAmount (divide (subtract subtotal (sumProperty ../zatcadiscount 'dld')) ../ccrate) ../bcdp}}</td>
                         <td class="ar arab">المبلغ الإجمالي بعد الخصم</td>
                       </tr>
                     {{else}}
                       {{#if (gt (add discount dld) 0)}}
                       <tr>
                         <td class="ts">Total Discount</td>
-                        <td class="amt">{{{currencySymbol ../isocode}}} {{formatAmount (divide (add discount dld) ../ccrate) ../bcdp}}</td>
+                        <td class="amt">{{{currencySymbol @root.basicdetails.[0].currency_isocode}}} {{formatAmount (divide (add discount dld) ../ccrate) ../bcdp}}</td>
                         <td class="ar arab">إجمالي مبلغ الخصم</td>
                       </tr>
                       <tr>
                         <td class="ts">Total Amount After Discount</td>
-                        <td class="amt">{{{currencySymbol ../isocode}}} {{formatAmount (divide (subtract subtotal (add discount dld)) ../ccrate) ../bcdp}}</td>
+                        <td class="amt">{{{currencySymbol @root.basicdetails.[0].currency_isocode}}} {{formatAmount (divide (subtract subtotal (add discount dld)) ../ccrate) ../bcdp}}</td>
                         <td class="ar arab">المبلغ الإجمالي بعد الخصم</td>
                       </tr>
                       {{/if}}
@@ -480,24 +480,24 @@
                       {{#each ../zatcacharge}}
                       <tr>
                         <td class="ts">{{#if reason_name}}{{reason_name}}{{else}}Charges{{/if}}</td>
-                        <td class="amt">{{{currencySymbol ../../isocode}}} {{formatAmount (divide dld ../../ccrate) ../../bcdp}}</td>
+                        <td class="amt">{{{currencySymbol @root.basicdetails.[0].currency_isocode}}} {{formatAmount (divide dld ../../ccrate) ../../bcdp}}</td>
                         <td class="ar arab">{{#if reason_name_lang2}}{{reason_name_lang2}}{{else}}الرسوم{{/if}}</td>
                       </tr>
                       {{/each}}
                     {{/if}}
                     <tr>
                         <td class="ts">Total VAT Amount</td>
-                        <td class="amt">{{{currencySymbol ../isocode}}} {{formatAmount (divide vatamt ../ccrate) ../bcdp}}</td>
+                        <td class="amt">{{{currencySymbol @root.basicdetails.[0].currency_isocode}}} {{formatAmount (divide vatamt ../ccrate) ../bcdp}}</td>
                         <td class="ar arab">إجمالي مبلغ ضريبة القيمة المضافة</td>
                     </tr>
                     <tr>
                         <td class="ts">Grand Total Amount (Incl. VAT)</td>
-                        <td class="amt">{{{currencySymbol ../isocode}}} {{formatAmount (divide grand_total ../ccrate) ../bcdp}}</td>
+                        <td class="amt">{{{currencySymbol @root.basicdetails.[0].currency_isocode}}} {{formatAmount (divide grand_total ../ccrate) ../bcdp}}</td>
                         <td class="ar arab">المبلغ الإجمالي (شامل ضريبة)</td>
                     </tr>
                     <tr>
                         <td class="ts">Net Due Amount</td>
-                        <td class="amt">{{{currencySymbol ../isocode}}} {{formatAmount (divide balance ../ccrate) ../bcdp}}</td>
+                        <td class="amt">{{{currencySymbol @root.basicdetails.[0].currency_isocode}}} {{formatAmount (divide balance ../ccrate) ../bcdp}}</td>
                         <td class="ar arab">المبلغ المستحق الصافي</td>
                     </tr>
                     {{/with}}

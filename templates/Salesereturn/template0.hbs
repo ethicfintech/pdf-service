@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SALES RETURN - {{basicdetails.[0].inv_no}}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: ibmplexsansarabic; font-size: 10px; color: #222; background: #fff; margin: 0 5mm; }
+    .ar { direction: rtl; }
+    table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+
+    /* title */
+    .title-ar { text-align: center; font-size: 17px; color: #2f4a6d; line-height: 1.3; }
+    .title-en { text-align: center; font-size: 19px; color: #2f4a6d; margin-bottom: 8px; line-height: 1.3; }
+
+    .naked > tbody > tr > td { border: none; padding: 0; vertical-align: top; }
+
+    /* doc info */
+    .dbox td { border: 1px solid #bfbfbf; padding: 5px 6px; font-size: 10px; vertical-align: middle; }
+    .dbox .dlbl { background-color: #efefef; line-height: 1.5; }
+    .dbox .dlbl .ar { display: block; }
+
+    .qr-cell { text-align: center; vertical-align: middle; }
+    .qr-cell img { display: block !important; margin: 0 auto !important; }
+
+    /* seller / buyer */
+    .party { height: 100%; }
+    .party td { border: 1px solid #bfbfbf; padding: 5px 6px; font-size: 10px; vertical-align: middle; line-height: 1.4; }
+    .party .phead td { background-color: #efefef; }
+    .party .phead .ar { float: right; }
+    .party .plbl { background-color: #efefef; }
+    .party .par { direction: rtl; text-align: right; background-color: #efefef; }
+
+    /* items */
+    .items td, .items th { border: 1px solid #bfbfbf; padding: 4px 5px; font-size: 10px; vertical-align: middle; }
+    .items thead th { background-color: #fff; text-align: center; font-weight: 700; line-height: 1.25; color: #000; }
+    .items thead th .en, .items thead th .ar { display: block; }
+    .items thead th .ar { font-size: 7px; font-weight: 400; }
+    .items td.num { text-align: center; }
+    .items td.rt { text-align: right; }
+
+    /* terms | totals */
+    .foot > tbody > tr > td { border: none; padding: 0; vertical-align: top; }
+    .terms { height: 100%; }
+    .terms td { border: 1px solid #bfbfbf; padding: 5px 6px; font-size: 10px; font-weight: 700; }
+    .terms td.tbody { font-weight: 400; height: 100px; vertical-align: top; line-height: 1.5; }
+    .tot td { border: 1px solid #bfbfbf; padding: 5px 7px; font-size: 10px; vertical-align: middle; }
+    .tot .t-en { width: 37%; }
+    .tot .t-ar { width: 33%; direction: rtl; text-align: right; }
+    .tot .t-val { width: 30%; text-align: right; white-space: nowrap; font-size: 10px; }
+  </style>
+</head>
+<body>
+
+  <!-- TITLE -->
+  <div class="title-ar">مرتجع المبيعات</div>
+  <div class="title-en">SALES RETURN</div>
+
+  <!-- DOC INFO | QR -->
+  <table class="naked">
+    <colgroup><col style="width:50%"><col style="width:50%"></colgroup>
+    <tr>
+      <td>
+        <table class="dbox">
+          <colgroup><col style="width:46%"><col style="width:54%"></colgroup>
+          <tr>
+            <td class="dlbl">Sales Return Number<span class="ar">رقم مذكرة الائتمان</span></td>
+            <td>{{basicdetails.[0].inv_no}}</td>
+          </tr>
+          <tr>
+            <td class="dlbl">Sales Return Issue Date<span class="ar">تاريخ إصدار مذكرة الائتمان</span></td>
+            <td>{{basicdetails.[0].inv_date}}</td>
+          </tr>
+          <tr>
+            <td class="dlbl">Against Invoice/Date<span class="ar">مقابل الفاتورة / التاريخ</span></td>
+            <td>{{basicdetails.[0].against_inv_no}}<br/>{{basicdetails.[0].against_inv_date}}</td>
+          </tr>
+        </table>
+      </td>
+      <td class="qr-cell">{{#if qrCodeBase64}}{{{qrDataUri qrCodeBase64}}}{{/if}}</td>
+    </tr>
+  </table>
+
+  <!-- SELLER | BUYER -->
+  <table class="naked" style="margin-top: 3px;">
+    <colgroup><col style="width:49.5%"><col style="width:1%"><col style="width:49.5%"></colgroup>
+    <tr>
+      <td>
+        <table class="party">
+          <colgroup><col style="width:22%"><col style="width:58%"><col style="width:20%"></colgroup>
+          <tr class="phead"><td colspan="3">Seller <span class="ar">المورد</span></td></tr>
+          <tr><td class="plbl">Name</td><td>{{branch.[0].name}}</td><td class="par">الاسم</td></tr>
+          <tr><td class="plbl">Building No.</td><td>{{branch.[0].address_line1}}</td><td class="par">رقم المبنى</td></tr>
+          <tr><td class="plbl">Street Name</td><td>{{branch.[0].address_line2}}</td><td class="par">اسم الشارع</td></tr>
+          <tr><td class="plbl">District</td><td>{{branch.[0].address_line3}}</td><td class="par">الحي</td></tr>
+          <tr><td class="plbl">City</td><td>{{branch.[0].address_line4}}</td><td class="par">المدينة</td></tr>
+          <tr><td class="plbl">Country</td><td>{{branch.[0].address_line5}}</td><td class="par">البلد</td></tr>
+          <tr><td class="plbl">Postal Code</td><td>{{branch.[0].address_code}}</td><td class="par">الرمز البريدي</td></tr>
+          <tr><td class="plbl">VAT Number</td><td>{{branch.[0].vat}}</td><td class="par">رقم ضريبة</td></tr>
+        </table>
+      </td>
+      <td></td>
+      <td>
+        <table class="party">
+          <colgroup><col style="width:22%"><col style="width:58%"><col style="width:20%"></colgroup>
+          <tr class="phead"><td colspan="3">Buyer <span class="ar">العميل</span></td></tr>
+          <tr><td class="plbl">Name</td><td>{{billing_address.[0].name}}</td><td class="par">الاسم</td></tr>
+          <tr><td class="plbl">Building No.</td><td>{{billing_address.[0].address_line1}}</td><td class="par">رقم المبنى</td></tr>
+          <tr><td class="plbl">Street Name</td><td>{{billing_address.[0].address_line2}}</td><td class="par">اسم الشارع</td></tr>
+          <tr><td class="plbl">District</td><td>{{billing_address.[0].address_line3}}</td><td class="par">الحي</td></tr>
+          <tr><td class="plbl">City</td><td>{{billing_address.[0].address_line4}}</td><td class="par">المدينة</td></tr>
+          <tr><td class="plbl">Country</td><td>{{billing_address.[0].address_line5}}</td><td class="par">البلد</td></tr>
+          <tr><td class="plbl">Postal Code</td><td>{{billing_address.[0].address_code}}</td><td class="par">الرمز البريدي</td></tr>
+          <tr><td class="plbl">VAT Number</td><td>{{billing_address.[0].vat}}</td><td class="par">رقم ضريبة</td></tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <!-- ITEMS -->
+  <table class="items" style="margin-top: 5px;">
+    <colgroup>
+      <col style="width:3%">
+      <col>
+      <col style="width:10%">
+      <col style="width:8%">
+      <col style="width:8%">
+      <col style="width:13%">
+      <col style="width:8%">
+      <col style="width:9%">
+      <col style="width:11%">
+    </colgroup>
+    <thead>
+      <tr>
+        <th><span class="en">#</span></th>
+        <th><span class="en">Description</span><span class="ar">وصف</span></th>
+        <th><span class="en">Rate</span><span class="ar">معدل</span></th>
+        <th><span class="en">Quantity</span><span class="ar">كمية</span></th>
+        <th><span class="en">Discount</span><span class="ar">خصومات</span></th>
+        <th><span class="en">Taxable Amount</span><span class="ar">المبلغ الخاضع للضريبة</span></th>
+        <th><span class="en">Vat Rate</span><span class="ar">معدل الضريبة</span></th>
+        <th><span class="en">Vat Amt</span><span class="ar">مبلغ الضريبة</span></th>
+        <th><span class="en">Item Subtotal</span><span class="ar">المجموع</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each itemdetails}}
+      <tr>
+        <td class="num">{{addOne @index}}</td>
+        <td>{{item_name}}{{#if name_lang2}}<div>{{name_lang2}}</div>{{/if}}{{#if description}}<div>{{description}}</div>{{/if}}</td>
+        <td class="rt">{{formatAmount price ../bcdp}}</td>
+        <td class="num">{{quantity}}</td>
+        <td class="num">{{formatAmount disc_amt ../bcdp}}</td>
+        <td class="rt">{{formatAmount taxable ../bcdp}}</td>
+        <td class="num">{{vat_perc}}%</td>
+        <td class="rt">{{formatAmount tax ../bcdp}}</td>
+        <td class="rt">{{formatAmount amount ../bcdp}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <!-- TERMS | TOTALS -->
+  <table class="foot" style="margin-top: 5px;">
+    <colgroup><col style="width:49.5%"><col style="width:1%"><col style="width:49.5%"></colgroup>
+    <tr>
+      <td>
+        {{#if basicdetails.[0].terms_and_condition}}
+        <table class="terms">
+          <colgroup><col style="width:50%"><col style="width:50%"></colgroup>
+          <tr><td>Terms And Conditions</td><td style="direction:rtl;text-align:right;">الأحكام والشروط</td></tr>
+          <tr><td class="tbody" colspan="2">{{#if basicdetails.[0].terms_and_condition}}{{{nl2br basicdetails.[0].terms_and_condition}}}{{/if}}</td></tr>
+        </table>
+        {{/if}}
+      </td>
+      <td></td>
+      <td>
+        <table class="tot">
+          <tr>
+            <td class="t-en">Subtotal</td>
+            <td class="t-ar">المجموع الفرعي</td>
+            <td class="t-val">{{formatAmount basicdetails.[0].subtotal bcdp}}</td>
+          </tr>
+          <tr>
+            <td class="t-en">Discount</td>
+            <td class="t-ar">مجموع الخصومات</td>
+            <td class="t-val">{{formatAmount basicdetails.[0].discount bcdp}}</td>
+          </tr>
+          <tr>
+            <td class="t-en">Total Taxable Amount</td>
+            <td class="t-ar">الإجمالي لوضع الضريبة</td>
+            <td class="t-val">{{formatAmount (subtract basicdetails.[0].subtotal basicdetails.[0].discount) bcdp}}</td>
+          </tr>
+          <tr>
+            <td class="t-en">Total VAT</td>
+            <td class="t-ar">ضريبة القيمة المضافة</td>
+            <td class="t-val">{{formatAmount basicdetails.[0].vatamt bcdp}}</td>
+          </tr>
+          <tr>
+            <td class="t-en">Total Amount</td>
+            <td class="t-ar">إجمالي المبلغ المستحق</td>
+            <td class="t-val">{{formatAmount basicdetails.[0].grand_total bcdp}}</td>
+          </tr>
+          <tr>
+            <td class="t-en">Paid</td>
+            <td class="t-ar"></td>
+            <td class="t-val">{{formatAmount basicdetails.[0].received bcdp}}</td>
+          </tr>
+          <tr>
+            <td class="t-en">Balance</td>
+            <td class="t-ar"></td>
+            <td class="t-val">{{formatAmount basicdetails.[0].balance bcdp}}</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>
