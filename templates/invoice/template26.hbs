@@ -337,10 +337,10 @@ TAX INVOICE / فاتورة ضريبية
     </tr>
     <tr style="text-align: center;">
         <td><span style="font-size: 11px;">{{currencySymbol basicdetails.[0].currency_isocode}}</span> {{formatAmount basicdetails.[0].subtotal bcdp}}</td>
-        <td><span style="font-size: 11px;">{{currencySymbol basicdetails.[0].currency_isocode}}</span> {{formatAmount basicdetails.[0].vatamt bcdp}}</td>
-        <td><span style="font-size: 11px;">{{currencySymbol basicdetails.[0].currency_isocode}}</span> {{formatAmount basicdetails.[0].grand_total bcdp}}</td>
-        <td><span style="font-size: 11px;">{{currencySymbol basicdetails.[0].currency_isocode}}</span> {{formatAmount basicdetails.[0].received bcdp}}</td>
-        <td><span style="font-size: 11px;">{{currencySymbol basicdetails.[0].currency_isocode}}</span> {{formatAmount basicdetails.[0].balance bcdp}}</td>
+        <td><span style="font-size: 11px;">{{currencySymbol basicdetails.[0].currency_isocode}}</span> {{formatAmount (divide basicdetails.[0].vatamt ccrate) bcdp}}</td>
+        <td><span style="font-size: 11px;">{{currencySymbol basicdetails.[0].currency_isocode}}</span> {{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
+        <td><span style="font-size: 11px;">{{currencySymbol basicdetails.[0].currency_isocode}}</span> {{formatAmount (divide basicdetails.[0].received ccrate) bcdp}}</td>
+        <td><span style="font-size: 11px;">{{currencySymbol basicdetails.[0].currency_isocode}}</span> {{formatAmount (divide basicdetails.[0].balance ccrate) bcdp}}</td>
     </tr>
     <tr>
         <td>Amount in Words</td>

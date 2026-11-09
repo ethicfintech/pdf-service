@@ -677,8 +677,8 @@
     </tr>
     <tr style="text-align: center;">
         <td>{{formatAmount basicdetails.[0].subtotal bcdp}}</td>
-        <td>{{formatAmount basicdetails.[0].vatamt bcdp}}</td>
-        <td>{{formatAmount basicdetails.[0].grand_total bcdp}}</td>
+        <td>{{formatAmount (divide basicdetails.[0].vatamt ccrate) bcdp}}</td>
+        <td>{{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
         <td>
             {{#if (or paymentdistribution basicdetails.[0].paymentdistribution)}}
             <table class="pay-list">
@@ -694,8 +694,8 @@
             {{basicdetails.[0].doc_payment_status}} / {{basicdetails.[0].doc_payment_status_lang2}}
             {{/if}}
         </td>
-        <td>{{formatAmount basicdetails.[0].discount bcdp}}</td>
-        <td>{{formatAmount basicdetails.[0].balance bcdp}}</td>
+        <td>{{formatAmount (divide basicdetails.[0].discount ccrate) bcdp}}</td>
+        <td>{{formatAmount (divide basicdetails.[0].balance ccrate) bcdp}}</td>
     </tr>
     <tr>
         <td colspan="6" style="text-align: center;background-color:#EEE9E9;">Total In words :{{bcamountinwords}}</td>

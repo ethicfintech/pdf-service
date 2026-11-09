@@ -365,7 +365,7 @@
                 <span class="en">Total Taxable Amount / </span> <span class="ar">إجمالي المبلغ الخاضع للضريبة</span>
                 {{!-- <span class="ar">إجمالي المبلغ الخاضع للضريبة</span> --}}
             </td>
-            <td class="amt"><span style="font-size: 13.5px;">{{{currencySymbol ../basicdetails.[0].isocode}}}</span>{{formatAmount (divide subtotal ccrate) bcdp}}</td>
+            <td class="amt"><span style="font-size: 13.5px;">{{{currencySymbol ../basicdetails.[0].isocode}}}</span>{{formatAmount subtotal bcdp}}</td>
         </tr>
         {{#if discount}}
         <tr>

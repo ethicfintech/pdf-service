@@ -337,7 +337,7 @@ TAX INVOICE / الفاتورة الضريبية
         <td width="30%">
             <div class="right">إجمالي ضريبة القيمة المضافة</div>
         </td>
-        <td class="right"><span style="font-size: 15px;">{{currencySymbol basicdetails.[0].currency_isocode}}</span> {{formatAmount basicdetails.[0].vatamt bcdp}}</td>
+        <td class="right"><span style="font-size: 15px;">{{currencySymbol basicdetails.[0].currency_isocode}}</span> {{formatAmount (divide basicdetails.[0].vatamt ccrate) bcdp}}</td>
     </tr>
     <tr>
         <td>
@@ -346,7 +346,7 @@ TAX INVOICE / الفاتورة الضريبية
         <td width="30%">
             <div class="right">المبلغ الإجمالي (شامل ضريبة القيمة المضافة)</div>
         </td>
-        <td class="right"><span style="font-size: 15px;">{{currencySymbol basicdetails.[0].currency_isocode}}</span> {{formatAmount basicdetails.[0].grand_total bcdp}}</td>
+        <td class="right"><span style="font-size: 15px;">{{currencySymbol basicdetails.[0].currency_isocode}}</span> {{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
     </tr>
     <tr>
         <td class="bold">
@@ -355,7 +355,7 @@ TAX INVOICE / الفاتورة الضريبية
         <td width="30%">
             <div class="right bold">مجموع المستحق الدفع</div>
         </td>
-        <td class="right bold"><span style="font-size: 15px;">{{currencySymbol basicdetails.[0].currency_isocode}}</span> {{formatAmount basicdetails.[0].balance bcdp}}</td>
+        <td class="right bold"><span style="font-size: 15px;">{{currencySymbol basicdetails.[0].currency_isocode}}</span> {{formatAmount (divide basicdetails.[0].balance ccrate) bcdp}}</td>
     </tr>
 </table>
 

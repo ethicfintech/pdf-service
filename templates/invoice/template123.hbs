@@ -598,7 +598,7 @@
         </td>
         <td class="lbl">Total Without VAT</td>
         <td class="arl">الإجمالي بدون ضريبة</td>
-        <td class="val">{{formatAmount (divide basicdetails.[0].subtotal ccrate) bcdp}}</td>
+        <td class="val">{{formatAmount basicdetails.[0].subtotal bcdp}}</td>
       </tr>
       {{#if zatcadiscount.[0]}}
 

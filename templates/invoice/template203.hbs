@@ -529,18 +529,18 @@
         {{#if basicdetails.[0].discount}}
         <tr>
           <td class="t-label-en">Discount / <span class="ar">الخصم</span></td>
-          <td class="t-value">{{formatAmount basicdetails.[0].discount bcdp}} <span class="iso">{{basicdetails.[0].currency_isocode}}</span></td>
+          <td class="t-value">{{formatAmount (divide basicdetails.[0].discount ccrate) bcdp}} <span class="iso">{{basicdetails.[0].currency_isocode}}</span></td>
         </tr>
         {{/if}}
 
         <tr>
           <td class="t-label-en">{{#if datasettingstextvalue.d828}}{{datasettingstextvalue.d828}}{{else}}Total VAT{{/if}} / <span class="ar">مجموع ضريبة القيمة المضافة</span></td>
-          <td class="t-value">{{formatAmount basicdetails.[0].vatamt bcdp}} <span class="iso">{{basicdetails.[0].currency_isocode}}</span></td>
+          <td class="t-value">{{formatAmount (divide basicdetails.[0].vatamt ccrate) bcdp}} <span class="iso">{{basicdetails.[0].currency_isocode}}</span></td>
         </tr>
 
         <tr class="row-grand">
           <td class="t-label-en">Total Amount Due / <span class="ar">إجمالي المبلغ المستحق</span></td>
-          <td class="t-value">{{formatAmount basicdetails.[0].grand_total bcdp}} <span class="iso">{{basicdetails.[0].currency_isocode}}</span></td>
+          <td class="t-value">{{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}} <span class="iso">{{basicdetails.[0].currency_isocode}}</span></td>
         </tr>
       </table>
     </div>

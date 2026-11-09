@@ -440,7 +440,7 @@
                     {{#with basicdetails.[0]}}
                     <tr>
                         <td class="ts">Grand Total Amount (Excl. VAT)</td>
-                        <td class="amt">{{{currencySymbol ../isocode}}} {{formatAmount (divide subtotal ../ccrate) ../bcdp}}</td>
+                        <td class="amt">{{{currencySymbol ../isocode}}} {{formatAmount subtotal ../bcdp}}</td>
                         <td class="ar arab">المبلغ الإجمالي (بدون ضريبة)</td>
                     </tr>
                     {{!-- Discount rows, three cases:

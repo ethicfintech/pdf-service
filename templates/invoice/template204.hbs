@@ -306,7 +306,7 @@
 
       <tr style="border-top:none;">
         <td class="s-lbl" style="width:80%;border-top:none;">SUBTOTAL IN {{basicdetails.[0].base_country_isocode}}</td>
-        <td class="s-val" style="width:15%;border-top:none;">{{formatAmount (divide basicdetails.[0].subtotal ccrate) bcdp}}</td>
+        <td class="s-val" style="width:15%;border-top:none;">{{formatAmount basicdetails.[0].subtotal bcdp}}</td>
       </tr>
       {{#if basicdetails.[0].discount}}
       <tr>

@@ -645,7 +645,7 @@
           </td>
           <td class="tot-lbl-en">Total Excl. VAT ({{basicdetails.[0].base_country_isocode}})</td>
           <td class="tot-lbl-ar">الإجمالي باستثناء ضريبة القيمة المضافة</td>
-          <td class="tot-val">{{formatAmount (divide basicdetails.[0].subtotal ccrate) bcdp}}</td>
+          <td class="tot-val">{{formatAmount basicdetails.[0].subtotal bcdp}}</td>
         </tr>
         {{#if zatcadiscount.[0]}}
         {{#each zatcadiscount}}

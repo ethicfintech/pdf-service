@@ -276,7 +276,7 @@
     </colgroup>
     <tr>
       <td class="t-en">Total excl. VAT({{basicdetails.[0].base_country_isocode}})</td>
-      <td class="t-val">{{formatAmount (divide basicdetails.[0].subtotal ccrate) bcdp}}</td>
+      <td class="t-val">{{formatAmount basicdetails.[0].subtotal bcdp}}</td>
       <td class="t-ar" style="font-weight: bold;">الإجمالي غير شامل ضريبة القيمة المضافة</td>
       <td class="qr-cell" rowspan="4">{{{qrDataUri qrCodeBase64}}}</td>
     </tr>

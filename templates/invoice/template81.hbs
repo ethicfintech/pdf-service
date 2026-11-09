@@ -553,7 +553,7 @@
 
     <div class="fin-row">
         <span class="f-lbl">Total</span>
-        <span class="f-amt">{{basicdetails.[0].base_country_isocode}} {{formatAmount (divide basicdetails.[0].subtotal ccrate) bcdp}}</span>
+        <span class="f-amt">{{basicdetails.[0].base_country_isocode}} {{formatAmount basicdetails.[0].subtotal bcdp}}</span>
       </div>
 
       {{#if (gt basicdetails.[0].uaeadvclamedamt 0)}}
