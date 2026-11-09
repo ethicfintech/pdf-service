@@ -231,11 +231,11 @@
       <tr>
         <th style="width:4%;">#</th>
         <th class="img-col">Image</th>
-        <th class="desc-col" style="width:36%;">Description &amp; Specifications</th>
+       <th class="desc-col" style="width:{{#hasDiscount itemdetails}}36{{else}}46{{/hasDiscount}}%;">Description &amp; Specifications</th>
         <th style="width:9%;">Unit</th>
         <th style="width:9%;">Qty</th>
         <th style="width:10%;">Unit Rate</th>
-        <th style="width:10%;">Disc</th>
+        {{#hasDiscount itemdetails}}<th style="width:10%;">Disc</th>{{/hasDiscount}}
         <th style="width:10%;">VAT 15%</th>
         <th style="width:12%;">Amount</th>
       </tr>
@@ -253,7 +253,7 @@
         <td>{{unit}}</td>
         <td>{{formatAmount quantity ../bcdp}}</td>
         <td class="td-right">{{formatAmount price ../bcdp}}</td>
-        <td class="td-right">{{formatAmount disc_amt ../bcdp}}</td>
+        {{#hasDiscount ../itemdetails}}<td class="td-right">{{formatAmount disc_amt ../bcdp}}</td>{{/hasDiscount}}
         <td class="td-right">{{formatAmount tax ../bcdp}}</td>
         <td class="td-right">{{formatAmount amount ../bcdp}}</td>
       </tr>
