@@ -366,24 +366,28 @@
         </td>
         <td style="width:60%;padding:0;vertical-align:top">
           <table class="totals2">
+            {{#if zatcadiscount.[0]}}
             <tr>
               <td class="tl">Total Amount / <span>المبلغ الإجمالي</span></td>
-              <td class="tv">{{formatAmount basicdetails.[0].subtotal bcdp}}</td>
+              <td class="tv">{{formatAmount (subtract basicdetails.[0].subtotal basicdetails.[0].discount) bcdp}}</td>
             </tr>
-            {{#if zatcadiscount.[0]}}
               {{#each zatcadiscount}}
                 <tr>
                   <td class="tl">{{reason_name}} / <span>{{reason_name_lang2}}</span></td>
-                  <td class="tv">{{formatAmount (divide dld ../ccrate) ../bcdp}}</td>
+                  <td class="tv">{{formatAmount dld ../bcdp}}</td>
                 </tr>
                 {{/each}}
                 <tr class="b">
                   <td class="tl">Net Amount / <span>صافي المجموع</span></td>
-                  <td class="tv">{{formatAmount (subtract basicdetails.[0].subtotal (divide zatcadiscount.[0].dld ccrate)) bcdp}}</td>
+                  <td class="tv">{{formatAmount (subtract basicdetails.[0].subtotal zatcadiscount.[0].dld) bcdp}}</td>
                 </tr>
             {{else}}
 
               {{#if (or basicdetails.[0].discount basicdetails.[0].dld)}}
+              <tr>
+                <td class="tl">Total Amount / <span>المبلغ الإجمالي</span></td>
+                <td class="tv">{{formatAmount basicdetails.[0].subtotal bcdp}}</td>
+              </tr>
               <tr>
                 <td class="tl">Discount / <span>الخصم</span></td>
                 <td class="tv">{{formatAmount (divide (add basicdetails.[0].discount basicdetails.[0].dld) ccrate) bcdp}}</td>
