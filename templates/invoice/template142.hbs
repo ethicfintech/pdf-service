@@ -480,23 +480,23 @@
       <table class="tot-table">
         <tbody>
 
+          {{#if zatcadiscount.[0]}}
           <tr>
             <td class="tot-td-en">Gross Total</td>
             <td class="tot-td-right">
               <div class="tot-right-inner">
                 <span class="ar-lbl">المجموع الكلي</span>
-                <span class="amt">{{formatAmount basicdetails.[0].subtotal bcdp}}</span>
+                <span class="amt">{{formatAmount (subtract basicdetails.[0].subtotal (divide basicdetails.[0].discount ccrate)) bcdp}}</span>
               </div>
             </td>
           </tr>
-          {{#if zatcadiscount.[0]}}
             {{#each zatcadiscount}}
               <tr>
                 <td class="tot-td-en">{{reason_name}}</td>
                 <td class="tot-td-right">
                   <div class="tot-right-inner">
                     <span class="ar-lbl">{{reason_name_lang2}}</span>
-                    <span class="amt">{{formatAmount (divide dld ../ccrate) bcdp}}</span>
+                    <span class="amt">{{formatAmount dld ../bcdp}}</span>
                   </div>
                 </td>
               </tr>
@@ -506,11 +506,20 @@
                 <td class="tot-td-right">
                   <div class="tot-right-inner">
                     <span class="ar-lbl">الإجمالي الواضع للضريبة</span>
-                    <span class="amt">{{formatAmount (divide (subtract basicdetails.[0].subtotal zatcadiscount.[0].dld) ccrate) bcdp}}</span>
+                    <span class="amt">{{formatAmount (subtract (subtract basicdetails.[0].subtotal (divide basicdetails.[0].discount ccrate)) zatcadiscount.[0].dld) bcdp}}</span>
                   </div>
                 </td>
               </tr>
             {{else}}
+              <tr>
+                <td class="tot-td-en">Gross Total</td>
+                <td class="tot-td-right">
+                  <div class="tot-right-inner">
+                    <span class="ar-lbl">المجموع الكلي</span>
+                    <span class="amt">{{formatAmount basicdetails.[0].subtotal bcdp}}</span>
+                  </div>
+                </td>
+              </tr>
 
               {{#if (or basicdetails.[0].discount basicdetails.[0].dld)}}
               <tr>
@@ -527,7 +536,7 @@
                 <td class="tot-td-right">
                   <div class="tot-right-inner">
                     <span class="ar-lbl">الإجمالي الواضع للضريبة</span>
-                    <span class="amt">{{formatAmount (divide (subtract basicdetails.[0].subtotal (add basicdetails.[0].discount basicdetails.[0].dld)) ccrate) bcdp}}</span>
+                    <span class="amt">{{formatAmount (subtract basicdetails.[0].subtotal (divide (add basicdetails.[0].discount basicdetails.[0].dld) ccrate)) bcdp}}</span>
                   </div>
                 </td>
               </tr>

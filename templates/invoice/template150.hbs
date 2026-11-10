@@ -413,70 +413,67 @@
                     <colgroup>
                         <col style="width:40%"><col style="width:18%"><col style="width:42%">
                     </colgroup>
-                    {{#with basicdetails.[0]}}
-                    <tr>
-                        <td class="ts">Grand Total Amount (Excl. VAT)</td>
-                        <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount subtotal bcdp}}</td>
-                        <td class="ar arab">المبلغ الإجمالي (بدون ضريبة)</td>
-                    </tr>
-                    {{!-- Discount rows, three cases:
-                         1. zatcadiscount present  -> one row per reason, then After Discount
-                         2. otherwise discount/dld -> Total Discount (discount + dld), then After Discount
-                         3. no discount at all     -> neither row is rendered --}}
-                    {{#if ../zatcadiscount.[0]}}
-                      {{#each ../zatcadiscount}}
-                      <tr>
-                        <td class="ts">{{#if reason_name}}{{reason_name}}{{else}}Total Discount{{/if}}</td>
-                        <td class="amt">{{{currencySymbol ../currency_isocode}}} {{formatAmount (divide dld ../../ccrate) ../../bcdp}}</td>
-                        <td class="ar arab">{{#if reason_name_lang2}}{{reason_name_lang2}}{{else}}إجمالي مبلغ الخصم{{/if}}</td>
-                      </tr>
-                      {{/each}}
-                      <tr>
-                        <td class="ts">Total Amount After Discount</td>
-                        <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount (divide (subtract subtotal (sumProperty ../zatcadiscount 'dld')) ../ccrate) ../bcdp}}</td>
-                        <td class="ar arab">المبلغ الإجمالي بعد الخصم</td>
-                      </tr>
+                    {{#if zatcadiscount.[0]}}
+                        <tr>
+                            <td class="ts">Grand Total Amount (Excl. VAT)</td>
+                            <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount (subtract basicdetails.[0].subtotal (divide basicdetails.[0].discount ccrate)) bcdp}}</td>
+                            <td class="ar arab">المبلغ الإجمالي (بدون ضريبة)</td>
+                        </tr>
+                            {{#each zatcadiscount}}
+                                <tr>
+                                    <td class="ts">{{reason_name}}</td>
+                                    <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount dld ../bcdp}}</td>
+                                    <td class="ar arab">{{reason_name_lang2}}</td>
+                                </tr>
+                            {{/each}}
+                        <tr>
+                            <td class="ts">Total Amount After Discount</td>
+                            <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount (subtract (subtract basicdetails.[0].subtotal (divide basicdetails.[0].discount ccrate)) zatcadiscount.[0].dld) bcdp}}</td>
+                            <td class="ar arab">المبلغ الإجمالي بعد الخصم</td>
+                        </tr>
                     {{else}}
-                      {{#if (gt (add discount dld) 0)}}
-                      <tr>
-                        <td class="ts">Total Discount</td>
-                        <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount (divide (add discount dld) ../ccrate) ../bcdp}}</td>
-                        <td class="ar arab">إجمالي مبلغ الخصم</td>
-                      </tr>
-                      <tr>
-                        <td class="ts">Total Amount After Discount</td>
-                        <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount (divide (subtract subtotal (add discount dld)) ../ccrate) ../bcdp}}</td>
-                        <td class="ar arab">المبلغ الإجمالي بعد الخصم</td>
-                      </tr>
-                      {{/if}}
+                        <tr>
+                            <td class="ts">Grand Total Amount (Excl. VAT)</td>
+                            <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount subtotal bcdp}}</td>
+                            <td class="ar arab">المبلغ الإجمالي (بدون ضريبة)</td>
+                        </tr>
+                            {{#if (or basicdetails.[0].discount basicdetails.[0].dld)}}
+                                <tr>
+                                    <td class="ts">Total Discount</td>
+                                    <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount (divide (add basicdetails.[0].discount basicdetails.[0].dld) ccrate) bcdp}}</td>
+                                    <td class="ar arab">إجمالي مبلغ الخصم</td>
+                                </tr>
+                                <tr>
+                                    <td class="ts">Total Amount After Discount</td>
+                                    <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount (subtract basicdetails.[0].subtotal (divide (add basicdetails.[0].discount basicdetails.[0].dld) ccrate)) bcdp}}</td>
+                                    <td class="ar arab">المبلغ الإجمالي بعد الخصم</td>
+                                </tr>
+                            {{/if}}
                     {{/if}}
-                    {{!-- ZATCA charges, listed above the VAT line; nothing renders
-                         when the array is absent or empty --}}
-                    {{#if ../zatcacharge.[0]}}
-                      {{#each ../zatcacharge}}
-                      <tr>
-                        <td class="ts">{{#if reason_name}}{{reason_name}}{{else}}Charges{{/if}}</td>
-                        <td class="amt">{{{currencySymbol ../currency_isocode}}} {{formatAmount (divide dld ../../ccrate) ../../bcdp}}</td>
-                        <td class="ar arab">{{#if reason_name_lang2}}{{reason_name_lang2}}{{else}}الرسوم{{/if}}</td>
-                      </tr>
-                      {{/each}}
+                    {{#if zatcacharge.[0]}}
+                        {{#each zatcacharge}}
+                            <tr>
+                                <td class="ts">{{reason_name}}</td>
+                                <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount dld ../bcdp}}</td>
+                                <td class="ar arab">{{reason_name_lang2}}</td>
+                            </tr>
+                        {{/each}}
                     {{/if}}
                     <tr>
                         <td class="ts">Total VAT Amount</td>
-                        <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount (divide vatamt ../ccrate) ../bcdp}}</td>
+                        <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount (divide basicdetails.[0].vatamt ccrate) bcdp}}</td>
                         <td class="ar arab">إجمالي مبلغ ضريبة القيمة المضافة</td>
                     </tr>
                     <tr>
                         <td class="ts">Grand Total Amount (Incl. VAT)</td>
-                        <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount (divide grand_total ../ccrate) ../bcdp}}</td>
+                        <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
                         <td class="ar arab">المبلغ الإجمالي (شامل ضريبة)</td>
                     </tr>
                     <tr>
                         <td class="ts">Net Due Amount</td>
-                        <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount (divide balance ../ccrate) ../bcdp}}</td>
+                        <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount (divide basicdetails.[0].balance ccrate) bcdp}}</td>
                         <td class="ar arab">المبلغ المستحق الصافي</td>
                     </tr>
-                    {{/with}}
                     <tr>
                         <td class="words" colspan="3">
                             <div class="lbl">Amount in words :</div>

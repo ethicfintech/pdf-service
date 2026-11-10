@@ -382,12 +382,11 @@
                   <td class="tv">{{formatAmount (subtract (subtract basicdetails.[0].subtotal (divide basicdetails.[0].discount ccrate)) zatcadiscount.[0].dld) bcdp}}</td>
                 </tr>
             {{else}}
-
-              {{#if (or basicdetails.[0].discount basicdetails.[0].dld)}}
               <tr>
                 <td class="tl">Total Amount / <span>المبلغ الإجمالي</span></td>
                 <td class="tv">{{formatAmount basicdetails.[0].subtotal bcdp}}</td>
               </tr>
+              {{#if (or basicdetails.[0].discount basicdetails.[0].dld)}}
               <tr>
                 <td class="tl">Discount / <span>الخصم</span></td>
                 <td class="tv">{{formatAmount (divide (add basicdetails.[0].discount basicdetails.[0].dld) ccrate) bcdp}}</td>

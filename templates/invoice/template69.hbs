@@ -694,7 +694,7 @@
             {{basicdetails.[0].doc_payment_status}} / {{basicdetails.[0].doc_payment_status_lang2}}
             {{/if}}
         </td>
-        <td>{{formatAmount (divide basicdetails.[0].discount ccrate) bcdp}}</td>
+        <td>{{formatAmount (divide (add basicdetails.[0].discount basicdetails.[0].dld) ccrate) bcdp}}</td>
         <td>{{formatAmount (divide basicdetails.[0].balance ccrate) bcdp}}</td>
     </tr>
     <tr>

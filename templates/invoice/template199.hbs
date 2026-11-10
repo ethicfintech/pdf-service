@@ -515,7 +515,7 @@
     <div class="totals-row">
         <span class="t-lbl" style="width:80%;"></span>
         <span class="t-val" style="width:10%;">
-            {{formatAmount basicdetails.[0].vatamt bcdp}}
+          {{formatAmount (divide basicdetails.[0].vatamt ccrate) bcdp}}
         </span>
         <span class="t-val" style="width:10%;">
             {{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}
@@ -537,10 +537,10 @@
             <td></td>
             <td style="border-bottom: 1px solid #000;">{{itemdetails.[0].vat_perc}}%</td>
             <td style="border-bottom: 1px solid #000;">
-                {{formatAmount (subtract basicdetails.[0].grand_total basicdetails.[0].vatamt) bcdp}}
+                {{formatAmount (subtract basicdetails.[0].subtotal (divide (add basicdetails.[0].discount basicdetails.[0].dld) ccrate)) bcdp}}
             </td>
             <td style="border-bottom: 1px solid #000;width: 13.3%;">
-                {{formatAmount (divide basicdetails.[0].vatamt ccrate) bcdp}}
+              {{formatAmount (divide basicdetails.[0].vatamt ccrate) bcdp}}
             </td>
             </tr>
         </table>
