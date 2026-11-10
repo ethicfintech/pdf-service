@@ -639,39 +639,48 @@
     <!-- TOTALS -->
     <table class="totals-table">
       <tbody>
-        <tr>
-          <td rowspan="{{#if (gt basicdetails.[0].received 0)}}6{{else}}4{{/if}}" class="qr-total-cell">
-            <div class="qr-placeholder">{{{qrDataUri qrCodeBase64}}}</div>
-          </td>
-          <td class="tot-lbl-en">Total Excl. VAT ({{basicdetails.[0].base_country_isocode}})</td>
-          <td class="tot-lbl-ar">الإجمالي باستثناء ضريبة القيمة المضافة</td>
-          <td class="tot-val">{{formatAmount basicdetails.[0].subtotal bcdp}}</td>
-        </tr>
+        
         {{#if zatcadiscount.[0]}}
-        {{#each zatcadiscount}}
-        <tr>
-              <td class="tot-lbl-en">{{reason_name}}</td>
-              <td class="tot-lbl-ar">{{reason_name_lang2}}</td>
-              <td class="tot-val">{{formatAmount (divide dld ../ccrate) bcdp}}</td>
+            <tr>
+              <td rowspan="{{#if (gt basicdetails.[0].received 0)}}6{{else}}4{{/if}}" class="qr-total-cell">
+                <div class="qr-placeholder">{{{qrDataUri qrCodeBase64}}}</div>
+              </td>
+              <td class="tot-lbl-en">Total Excl. VAT ({{basicdetails.[0].currency_isocode}})</td>
+              <td class="tot-lbl-ar">الإجمالي باستثناء ضريبة القيمة المضافة</td>
+              <td class="tot-val">{{formatAmount (subtract basicdetails.[0].subtotal (divide basicdetails.[0].discount ccrate)) bcdp}}</td>
             </tr>
-        {{/each}}
+          {{#each zatcadiscount}}
+            <tr>
+                  <td class="tot-lbl-en">{{reason_name}}</td>
+                  <td class="tot-lbl-ar">{{reason_name_lang2}}</td>
+                  <td class="tot-val">{{formatAmount dld ../bcdp}}</td>
+                </tr>
+          {{/each}}
         {{else}}
+          <tr>
+            <td rowspan="{{#if (gt basicdetails.[0].received 0)}}6{{else}}4{{/if}}" class="qr-total-cell">
+              <div class="qr-placeholder">{{{qrDataUri qrCodeBase64}}}</div>
+            </td>
+            <td class="tot-lbl-en">Total Excl. VAT ({{basicdetails.[0].currency_isocode}})</td>
+            <td class="tot-lbl-ar">الإجمالي باستثناء ضريبة القيمة المضافة</td>
+            <td class="tot-val">{{formatAmount basicdetails.[0].subtotal bcdp}}</td>
+          </tr>
 
             {{#if (or basicdetails.[0].discount basicdetails.[0].dld)}}
-            <tr>
-              <td class="tot-lbl-en">Total Discount</td>
-              <td class="tot-lbl-ar">الخصم الإجمالي</td>
-              <td class="tot-val">{{formatAmount (divide (add basicdetails.[0].discount basicdetails.[0].dld) ccrate) bcdp}}</td>
-            </tr>
+                <tr>
+                  <td class="tot-lbl-en">Total Discount</td>
+                  <td class="tot-lbl-ar">الخصم الإجمالي</td>
+                  <td class="tot-val">{{formatAmount (divide (add basicdetails.[0].discount basicdetails.[0].dld) ccrate) bcdp}}</td>
+                </tr>
+            {{/if}}
         {{/if}}
-    {{/if}}
         <tr>
-          <td class="tot-lbl-en">VAT ({{basicdetails.[0].base_country_isocode}})</td>
+          <td class="tot-lbl-en">VAT ({{basicdetails.[0].currency_isocode}})</td>
           <td class="tot-lbl-ar">ضريبة القيمة المضافة </td>
           <td class="tot-val">{{formatAmount (divide basicdetails.[0].vatamt ccrate) bcdp}}</td>
         </tr>
         <tr style="font-weight: bold;">
-          <td class="tot-lbl-en">Amount Incl. VAT ({{basicdetails.[0].base_country_isocode}})</td>
+          <td class="tot-lbl-en">Amount Incl. VAT ({{basicdetails.[0].currency_isocode}})</td>
           <td class="tot-lbl-ar">المبلغ بما في ذلك ضريبة القيمة المضافة </td>
           <td class="tot-val">{{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
         </tr>

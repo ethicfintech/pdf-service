@@ -274,25 +274,30 @@
       </td>
       <td class="totcell">
         <table class="tot">
-          <tr>
-            <td class="t-en">Total Amount</td>
-            <td class="t-ar">المبلغ الإجمالي</td>
-            <td class="t-val">{{formatAmount basicdetails.[0].subtotal bcdp}}</td>
-          </tr>
           {{#if zatcadiscount.[0]}}
+            <tr>
+              <td class="t-en">Total Amount</td>
+              <td class="t-ar">المبلغ الإجمالي</td>
+              <td class="t-val">{{formatAmount (subtract basicdetails.[0].subtotal (divide basicdetails.[0].discount ccrate)) bcdp}}</td>
+            </tr>
             {{#each zatcadiscount}}
               <tr>
                 <td class="t-en">{{reason_name}}</td>
                 <td class="t-ar">{{reason_name_lang2}}</td>
-                <td class="t-val">{{formatAmount (divide dld ../ccrate) bcdp}}</td>
+                <td class="t-val">{{formatAmount dld ../bcdp}}</td>
               </tr>
             {{/each}}
               <tr>
                 <td class="t-en"> Net Amount</td>
                 <td class="t-ar">صافي المجموع</td>
-                <td class="t-val">{{formatAmount (divide (subtract basicdetails.[0].subtotal zatcadiscount.[0].dld) ccrate) bcdp}}</td>
+                <td class="t-val">{{formatAmount (subtract (subtract basicdetails.[0].subtotal (divide basicdetails.[0].discount ccrate)) zatcadiscount.[0].dld) bcdp}}</td>
               </tr>
             {{else}}
+              <tr>
+                <td class="t-en">Total Amount</td>
+                <td class="t-ar">المبلغ الإجمالي</td>
+                <td class="t-val">{{formatAmount basicdetails.[0].subtotal bcdp}}</td>
+              </tr>
 
                 {{#if (or basicdetails.[0].discount basicdetails.[0].dld)}}
                   <tr>
@@ -303,7 +308,7 @@
                   <tr>
                     <td class="t-en">Net Amount</td>
                     <td class="t-ar">صافي المجموع</td>
-                    <td class="t-val">{{formatAmount (divide (subtract basicdetails.[0].subtotal (add basicdetails.[0].discount basicdetails.[0].dld)) ccrate) bcdp}}</td>
+                    <td class="t-val">{{formatAmount (subtract basicdetails.[0].subtotal (divide (add basicdetails.[0].discount basicdetails.[0].dld) ccrate)) bcdp}}</td>
                   </tr>
                 {{/if}}
           {{/if}}
