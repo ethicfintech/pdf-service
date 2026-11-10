@@ -369,7 +369,7 @@
             {{#if zatcadiscount.[0]}}
             <tr>
               <td class="tl">Total Amount / <span>المبلغ الإجمالي</span></td>
-              <td class="tv">{{formatAmount (subtract basicdetails.[0].subtotal basicdetails.[0].discount) bcdp}}</td>
+              <td class="tv">{{formatAmount (subtract basicdetails.[0].subtotal (divide basicdetails.[0].discount ccrate)) bcdp}}</td>
             </tr>
               {{#each zatcadiscount}}
                 <tr>
