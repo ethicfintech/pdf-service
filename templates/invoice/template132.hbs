@@ -379,7 +379,7 @@
                 {{/each}}
                 <tr class="b">
                   <td class="tl">Net Amount / <span>صافي المجموع</span></td>
-                  <td class="tv">{{formatAmount (subtract (divide basicdetails.[0].subtotal ccrate) zatcadiscount.[0].dld) bcdp}}</td>
+                  <td class="tv">{{formatAmount (subtract (subtract basicdetails.[0].subtotal (divide basicdetails.[0].discount ccrate)) zatcadiscount.[0].dld) bcdp}}</td>
                 </tr>
             {{else}}
 
