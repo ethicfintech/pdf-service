@@ -225,14 +225,14 @@
 
     <table class="info-table cust-table">
         <colgroup>
-        <col style="width:12%">
-        <col style="width:16%">
+        <col style="width:11%">
+        <col style="width:17%">
         <col style="width:8%">
         <col style="width:14%">
-        <col style="width:14%">
-        <col style="width:9%">
-        <col style="width:15%">
         <col style="width:12%">
+        <col style="width:11%">
+        <col style="width:16%">
+        <col style="width:10%">
         </colgroup>
         <tr class="sec-row">
             <td colspan="4" style="font-weight:bold;">■ Customer Details</td>
@@ -420,9 +420,11 @@
 
     {{#if basicdetails.[0].terms_and_condition}}
     <div style="margin-top:10px; font-size:10px; line-height:1;">
-        <b>Terms &amp; Conditions:</b><br> {{{nl2br basicdetails.[0].terms_and_condition}}}
+        <b>Terms &amp; Conditions:</b><br><br> {{{nl2br basicdetails.[0].terms_and_condition}}}
     </div>
     {{/if}}
+
+     {{!-- <b>Terms &amp; Conditions:</b><br><br> {{{nl2br basicdetails.[0].terms_and_condition}}} --}}
 
 </div>
 </body>
