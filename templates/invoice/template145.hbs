@@ -5,8 +5,9 @@
   <title>Invoice - {{basicdetails.[0].inv_no}}</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: Arial, sans-serif; font-size: 11px; color: #000; background: #fff; }
-    .page { width: 780px; margin: 0 auto; padding: 12px 16px; }
+    body { font-family: Arial, sans-serif; font-size: 10px; color: #000; background: #fff; }
+    .page { width: 780px; margin: 0 auto; padding: 12px 16px; display: flex; flex-direction: column; min-height: 860px; }
+    .bottom-table, .words-bar, .sig-table { page-break-inside: avoid; }
 
     /* ══ TITLE ══ */
     .main-title {
@@ -23,13 +24,13 @@
       vertical-align: top; padding: 6px 10px;
     }
     .details-table .td-customer {
-      width: 50%; border-right: 1px solid #000;
+      width: 60%; border-right: 1px solid #000;
     }
-    .sec-title { font-weight: bold; font-size: 11px; color: blue; }
-    .info-line { font-size: 11px; line-height: 1.7; }
-    .detail-row { display: flex; font-size: 11px; line-height: 1.7; }
-    .detail-row .d-lbl { min-width: 110px; font-weight: bold; }
-    .detail-row .d-sep { width: 14px; text-align: center; }
+    .sec-title { font-weight: bold; font-size: 10px; color: blue; }
+    .info-line { font-size: 10px; line-height: 1.7; }
+    .detail-row { display: flex; font-size: 10px; line-height: 1.7; }
+    .detail-row .d-lbl { width: 30%; font-weight: bold; }
+    .detail-row .d-sep { width: 4%; text-align: center; }
     .detail-row .d-val { flex: 1; }
 
     /* ══ ITEMS TABLE ══ */
@@ -40,12 +41,12 @@
     .items-table th {
       border: 1px solid #000;
       padding: 4px 4px;
-      font-size: 11px; font-weight: bold;
+      font-size: 10px; font-weight: bold;
       text-align: center; vertical-align: middle; background: #fff;
     }
     .items-table td {
       border: 1px solid #bfbfbf;
-      padding: 4px 6px; font-size: 11px;
+      padding: 4px 6px; font-size: 10px;
       text-align: center; vertical-align: middle;
     }
     .items-table td.td-desc { text-align: left; padding-left: 8px; }
@@ -55,7 +56,7 @@
     /* ══ FILLER (empty bordered area) ══ */
     .filler {
       border-left: 1px solid #000; border-right: 1px solid #000;
-      min-height: 120px;
+      min-height: 120px; flex: 1 0 auto;
     }
 
     /* ══ BOTTOM SECTION ══ */
@@ -65,22 +66,22 @@
     .bottom-table > tbody > tr > td {
       vertical-align: top; border: 1px solid #000; padding: 0;
     }
-    .td-bank { width: 42%; padding: 8px 8px; }
+    .td-bank { width: 46%; padding: 8px 8px; }
     .td-qr { width: 24%; text-align: center; vertical-align: middle !important; padding: 6px; }
     .td-qr .qr-wrap { width: 120px; height: 120px; margin: 0 auto; overflow: hidden; }
     .td-qr .qr-wrap img { width: 100%; height: auto; max-width: 120px; max-height: 120px; }
-    .td-summary { width: 34%; padding: 0; }
+    .td-summary { width: 30%; padding: 0; }
 
     /* Bank Details */
-    .bank-title { font-weight: bold; font-size: 12px; margin-bottom: 2px; padding-left: 5px;}
-    .bank-row { font-size: 11px; line-height: 1.8; display: flex;  padding-left: 5px;}
-    .bank-row .bk-lbl { min-width: 110px; }
-    .bank-row .bk-sep { width: 14px; text-align: center; }
+    .bank-title { font-weight: bold; font-size: 11px; margin-bottom: 2px; padding-left: 5px;}
+    .bank-row { font-size: 10px; line-height: 1.8; display: flex;  padding-left: 5px;}
+    .bank-row .bk-lbl { width: 25%; }
+    .bank-row .bk-sep { width: 4%; text-align: center; }
     .bank-row .bk-val { flex: 1; }
 
     /* Summary Totals */
     .summary-table { width: 100%; border-collapse: collapse; height: 100%; }
-    .summary-table td { padding: 3px 8px; font-size: 11px; }
+    .summary-table td { padding: 3px 8px; font-size: 10px; }
     .summary-table .s-lbl {
       text-align: right; border-right: 1px solid #000; border-bottom: 1px solid #000;
       font-weight: bold;white-space: nowrap;
@@ -94,7 +95,7 @@
     /* ══ AMOUNT IN WORDS ══ */
     .words-bar {
       border: 1px solid #000; border-top: none;
-      padding: 4px 10px; font-size: 11px;
+      padding: 4px 10px; font-size: 10px;
     }
 
     /* ══ SIGNATURE ══ */
@@ -118,15 +119,25 @@
   {{!-- ══ CUSTOMER + INVOICE DETAILS ══ --}}
   <table class="details-table">
     <tr>
-      <td class="td-customer">
+      <td class="td-customer" style="width:{{#if datasettings.d570}}30%{{else}}50%{{/if}};">
         <div class="sec-title">Customer Details</div>
         <div class="info-line">{{billing_address.[0].name}}</div>
-        <div class="info-line">{{billing_address.[0].address_line1}}</div>
-        <div class="info-line">{{billing_address.[0].address_line2}}</div>
-        <div class="info-line">{{billing_address.[0].address_line3}}  {{billing_address.[0].address_line4}}</div>
-        <div class="info-line">{{billing_address.[0].address_code}}  {{billing_address.[0].address_line5}}</div>
-        <div class="info-line">VAT: {{billing_address.[0].vat}}</div>
+        <div class="info-line">{{joinAddress billing_address.[0] '<br>'}}</div>
+        {{#if billing_address.[0].vat}}<div class="info-line">VAT: {{billing_address.[0].vat}}</div>{{/if}}
+        {{#if customer_details.[0].cr_no}}<div class="info-line">CR No: {{customer_details.[0].cr_no}}</div>{{/if}}
+        {{#if basicdetails.[0].contact_name}}<div class="info-line">Kind Attention : {{basicdetails.[0].contact_name}}</div>{{/if}}
+        {{#if customer_details.[0].contact_no1}}<div class="info-line">Phone : {{customer_details.[0].contact_no1}}</div>{{/if}}
+        {{#if customer_details.[0].email}}<div class="info-line">Email : {{customer_details.[0].email}}</div>{{/if}}
       </td>
+      {{#if datasettings.d570}}
+      <td class="td-customer" style="width:30%;">
+        <div class="sec-title">Company Details</div>
+        <div class="info-line">{{branch.[0].name}}</div>
+        <div class="info-line">{{branch.[0].address_line1}}{{#if branch.[0].address_line2}}<br>{{branch.[0].address_line2}}{{/if}}{{#if branch.[0].address_line3}}<br>{{branch.[0].address_line3}}{{/if}}{{#if branch.[0].address_line4}}<br>{{branch.[0].address_line4}}{{/if}}{{#if branch.[0].address_line5}}<br>{{branch.[0].address_line5}}{{/if}}</div>
+       {{#if branch.[0].vat}}<div class="info-line">VAT: {{branch.[0].vat}}</div>{{/if}}
+        {{#if branch.[0].cr_no}}<div class="info-line">CR No: {{branch.[0].cr_no}}</div>{{/if}}
+      </td>
+      {{/if}}
       <td>
         <div class="detail-row">
           <span class="d-lbl">Reference No</span>
@@ -148,11 +159,13 @@
           <span class="d-sep">:</span>
           <span class="d-val">{{basicdetails.[0].inv_date}}</span>
         </div>
+        {{#if datasettings.d61}}
         <div class="detail-row">
           <span class="d-lbl">Due Date</span>
           <span class="d-sep">:</span>
           <span class="d-val">{{basicdetails.[0].due_date}}</span>
         </div>
+        {{/if}}
         <div class="detail-row">
           <span class="d-lbl">Prepared by</span>
           <span class="d-sep">:</span>
@@ -223,7 +236,7 @@
         <table class="summary-table">
           <tr>
             <td class="s-lbl">Gross Total</td>
-            <td class="s-amt">{{formatAmount (divide basicdetails.[0].subtotal ccrate) bcdp}}</td>
+            <td class="s-amt">{{formatAmount basicdetails.[0].subtotal bcdp}}</td>
           </tr>
           {{#if zatcadiscount}}
             {{#each zatcadiscount}}
@@ -272,8 +285,25 @@
     Amount Chargeable in words : {{bcamountinwords}}
   </div>
   <div class="words-bar">
-    VAT Chargeable in words : {{bcvatinwords}}
+    VAT Chargeable in words : {{vatamountinwords}}
   </div>
+
+  {{!-- ══ SIGNATURE ══ --}}
+  <table class="sig-table">
+    <tr>
+      <td class="sig-left">
+        Customer's signature
+      </td>
+      <td class="sig-right">
+        <div>For {{branch.[0].name}}</div>
+        {{#if Signature}}
+          <div style="text-align:center; margin-top:6px;">
+            <img class="Signature" src="{{Signature}}" alt="Signature" style="display:block; margin:0 auto; max-width:{{default datasettings.d459 '120'}}px;" onerror="this.style.display='none'"/>
+          </div>
+        {{/if}}
+      </td>
+    </tr>
+  </table>
 
 </div>
 </body>
