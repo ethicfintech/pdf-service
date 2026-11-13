@@ -136,7 +136,7 @@
         <td>{{item_name}}{{#if name_lang2}}<div class="idesc">{{name_lang2}}</div>{{/if}}{{#if description}}<div class="idesc">{{description}}</div>{{/if}}</td>
         <td class="num">{{unit}}</td>
         <td class="num">{{formatAmount quantity ../bcdp}}</td>
-        <td class="rt"><span style="font-size:11px;">{{currencySymbol ../basicdetails.[0].isocode}}</span> {{formatAmount price ../bcdp}}</td>
+        <td class="rt"><span style="font-size:11px;">{{currencySymbol ../basicdetails.[0].isocode}}</span> {{price}}</td>
         <td class="rt"><span style="font-size:11px;">{{currencySymbol ../basicdetails.[0].isocode}}</span> {{formatAmount tax ../bcdp}}</td>
         <td class="rt"><span style="font-size:11px;">{{currencySymbol ../basicdetails.[0].isocode}}</span> {{formatAmount amount ../bcdp}}</td>
       </tr>
