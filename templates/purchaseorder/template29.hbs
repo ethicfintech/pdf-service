@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Purchase Order - {{basicdetails.[0].inv_no}}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, Helvetica, ibmplexsansarabic, sans-serif;
+      font-size: 11.5px;
+      color: #000;
+      background: #fff;
+      margin: 0 6mm;
+    }
+    table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+
+    .title { text-align: center; font-size: 25.5px; font-weight: 700; text-decoration: underline; padding: 0 0 8px 0; }
+
+    /* ── top boxes ── */
+    .top > tbody > tr > td { vertical-align: top; padding: 0; }
+    .box { font-size: 11.5px; line-height: 1.45; }
+    .top > tbody > tr > td.boxtd { border: 1px solid #000; padding: 8px 10px; }
+    .box .bt { font-weight: 700; margin-bottom: 12px; }
+    .box .bn { font-weight: 700; margin-bottom: 2px; }
+    .mid { padding: 8px 0 0 16px !important; font-weight: 700; line-height: 1; }
+    .mid div { margin-bottom: 14px; }
+    .mid .ref { margin-top: 16px; }
+    .kv td { padding: 0 0 14px 0; font-weight: 700; font-size: 11.5px; vertical-align: top; }
+    .kv td.val { padding-left: 4px; }
+    .kv tr.gap td { padding-top: 2px; }
+    .lnk { color: #0000ee; text-decoration: underline; }
+    .vk td { padding: 0; font-size: 11.5px; line-height: 1.45; vertical-align: top; word-break: break-word; }
+
+    /* ── items ── */
+    .items { margin-top: 50px; }
+    .items th { font-size: 11.5px; font-weight: 700; padding: 4px 4px; text-align: left; }
+    .items th.r, .items td.r { text-align: right; }
+    .items th.c, .items td.c { text-align: center; }
+    .items td { padding: 11px 4px; font-size: 11.5px; vertical-align: middle; border-bottom: 1px solid #ccc; }
+    .items thead th { padding-bottom: 12px; border-bottom: 1px solid #000; }
+    .items thead th small { font-size: 10.5px; font-weight: 400; }
+    .items tr { page-break-inside: avoid; break-inside: avoid; }
+
+    /* ── totals ── */
+    .tot-wrap { width: 100%; margin-top: 14px; }
+    .tot { width: 38%; margin-left: auto; background: #f0f0f0; padding: 12px 12px 8px 14px; }
+    .tot table { table-layout: auto; }
+    .tot td { padding: 4px 0; font-size: 11.5px; font-weight: 700; }
+    .tot td.v { text-align: right; font-weight: 400; }
+    .tot .gt td { font-size: 14.5px; color: #1a73e8; font-weight: 700; padding-top: 6px; }
+    .tot .gt td.v { color: #000; font-weight: 700; font-size: 11.5px; }
+    .tot .words { font-size: 11.5px; color: #888; margin-top: 8px; }
+
+    /* ── terms / delivery / stamp ── */
+    .bottom { break-inside: avoid; page-break-inside: avoid; }
+    .terms { margin-top: 14px; border-left: 2px solid #1a73e8; padding-left: 12px; font-size: 11.5px; line-height: 1.45; }
+    .terms .tt { font-weight: 700; }
+    .deliv { margin: 14px 0 0 14px; font-size: 11.5px; line-height: 1.45; }
+    .deliv .dt { font-weight: 700; margin-bottom: 14px; }
+    .stamp { text-align: right; font-size: 10.5px; padding-right: 30px; margin-top: 4px; }
+  </style>
+</head>
+<body>
+
+  <div class="title">PurchaseOrder</div>
+
+  <!-- TOP: ISSUED BY / PO INFO / ISSUED TO -->
+  <table class="top">
+    <colgroup>
+      <col style="width:32%">
+      <col style="width:30%">
+      <col style="width:38%">
+    </colgroup>
+    <tr>
+      <td class="boxtd">
+        <div class="box">
+          <div class="bt">PO Issued By:</div>
+          <div class="bn">{{branch.[0].name}}</div>
+          <div>{{joinAddress branch.[0] '<br>'}}</div>
+          <table class="vk">
+            <colgroup>
+              <col style="width:24%">
+              <col style="width:4%">
+              <col style="width:72%">
+            </colgroup>
+            {{#if compprof.email}}<tr><td>Contact</td><td>:</td><td>{{compprof.email}}</td></tr>{{/if}}
+            {{#if basicdetails.[0].created_user_contact_no1}}<tr><td>Mob</td><td>:</td><td>{{basicdetails.[0].created_user_contact_no1}}</td></tr>{{/if}}
+          </table>
+        </div>
+      </td>
+      <td class="mid">
+        <table class="kv">
+          <colgroup>
+            <col style="width:44%">
+            <col style="width:5%">
+            <col style="width:51%">
+          </colgroup>
+          <tr><td>PO Number</td><td>:</td><td class="val">{{basicdetails.[0].inv_no}}</td></tr>
+          <tr><td>PO Date</td><td>:</td><td class="val">{{basicdetails.[0].inv_date}}</td></tr>
+          <tr class="gap"><td>Our Reference</td><td>:</td><td class="val">{{basicdetails.[0].reference_no}}</td></tr>
+          <tr><td>Your Reference</td><td>:</td><td class="val">{{basicdetails.[0].enq_reference}}</td></tr>
+        </table>
+      </td>
+      <td class="boxtd">
+        <div class="box">
+          <div class="bt" style="margin-bottom:10px;">PO issued to:</div>
+          <div class="bn">{{billing_address.[0].name}}</div>
+          <div>{{joinAddress billing_address.[0] '<br>'}}</div>
+          <table class="vk">
+            <colgroup>
+              <col style="width:24%">
+              <col style="width:4%">
+              <col style="width:72%">
+            </colgroup>
+            {{#if vendor_details.[0].profile_code}}<tr><td>Vendor No</td><td>:</td><td>{{vendor_details.[0].profile_code}}</td></tr>{{/if}}
+            {{#if vendor_details.[0].cr_no}}<tr><td>CR</td><td>:</td><td>{{vendor_details.[0].cr_no}}</td></tr>{{/if}}
+            {{#if basicdetails.[0].contactname}}<tr><td>Contact</td><td>:</td><td>{{basicdetails.[0].contactname}}</td></tr>{{/if}}
+            {{#if vendor_details.[0].email}}<tr><td>email</td><td>:</td><td><span class="lnk">{{vendor_details.[0].email}}</span></td></tr>{{/if}}
+            {{#if vendor_details.[0].contact_no1}}<tr><td>Mob</td><td>:</td><td>{{vendor_details.[0].contact_no1}}</td></tr>{{/if}}
+          </table>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <!-- ITEMS -->
+  <table class="items">
+    <colgroup>
+      <col style="width:6%">
+      <col style="width:46%">
+      <col style="width:12%">
+      <col style="width:8%">
+      <col style="width:13%">
+      <col style="width:15%">
+    </colgroup>
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th>Description</th>
+        <th class="r">Qty</th>
+        <th class="c">U/M</th>
+        <th class="r">Unit Price</th>
+        <th class="r">Amount <small>({{basicdetails.[0].isocode}})</small></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each itemdetails}}
+      <tr>
+        <td>{{addOne @index}}.</td>
+        <td>{{item_name}}{{#if description}}<br>{{description}}{{/if}}</td>
+        <td class="r">{{formatAmount quantity bcdp}}</td>
+        <td class="c">{{unit}}</td>
+        <td class="r">{{formatAmount price bcdp}}</td>
+        <td class="r">{{formatAmount taxable bcdp}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <!-- TOTALS -->
+  <div class="tot-wrap">
+    <div class="tot">
+      <table>
+        <tr><td>Subtotal:</td><td class="v">{{formatAmount (divide basicdetails.[0].subtotal ccrate) bcdp}}</td></tr>
+        <tr><td>Tax Total{{#if itemdetails.[0].vat_perc}} @{{itemdetails.[0].vat_perc}}%{{/if}}:</td><td class="v">{{formatAmount (divide basicdetails.[0].vatamt ccrate) bcdp}}</td></tr>
+        <tr class="gt"><td>Total <span style="font-size: 11.5px;">({{basicdetails.[0].isocode}}):</span></td><td class="v">{{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td></tr>
+      </table>
+      <div class="words">{{bcamountinwords}}</div>
+    </div>
+  </div>
+
+  <!-- TERMS / DELIVERY ADDRESS / STAMP -->
+  <div class="bottom">
+    <div class="terms">
+      <div class="tt">Terms and Conditions:</div>
+      {{#if basicdetails.[0].terms_and_condition}}<div style="white-space:pre-line;">{{basicdetails.[0].terms_and_condition}}</div>{{/if}}
+      {{#if basicdetails.[0].payment_terms}}<div>Terms of Payment: {{basicdetails.[0].payment_terms}}</div>{{/if}}
+      {{#if basicdetails.[0].delivery_terms}}<div>Terms of delivery: {{basicdetails.[0].delivery_terms}}</div>{{/if}}
+    </div>
+
+    <div class="deliv">
+      <div class="dt">Delivery Address:</div>
+      <div>{{basicdetails.[0].dtoname}}</div>
+      <div>{{#if basicdetails.[0].dtobuilding_no}}Building No. {{basicdetails.[0].dtobuilding_no}}{{/if}}</div>
+      <div>{{basicdetails.[0].dtostreet_name}}{{#if basicdetails.[0].dtodistrict}} {{basicdetails.[0].dtodistrict}}{{/if}}</div>
+      <div>{{basicdetails.[0].dtocity}}{{#if basicdetails.[0].dtoaddress_code}},{{basicdetails.[0].dtoaddress_code}}{{/if}}</div>
+      <div>{{basicdetails.[0].dtocountry}}</div>
+    </div>
+
+    <div class="stamp">Company Stamp</div>
+  </div>
+
+</body>
+</html>
