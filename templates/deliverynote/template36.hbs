@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Delivery Note - {{basicdetails.[0].inv_no}}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: Calibri, Carlito, ibmplexsansarabic, Arial, Helvetica, sans-serif;
+      font-size: 10px;
+      color: #000;
+      background: #fff;
+      margin: 0 8mm;
+    }
+    table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+
+    .title { text-align: center; font-size: 18px; font-weight: 700; text-decoration: underline; padding: 2px 0 6px 0; }
+
+    /* ── header: address left, doc details right ── */
+    .hdr { margin-bottom: 4px; }
+    .hdr > tbody > tr > td { vertical-align: top; padding: 0; }
+    .addr-title { font-weight: 700; font-size: 10px; text-decoration: underline; margin-top: 4px; margin-bottom: 18px; }
+    .addr-text { font-size: 10px; line-height: 1.6; }
+
+    .doc-box { border: 1px solid #000; }
+    .doc-box td { border: 1px solid #000; padding: 5px 6px; font-size: 10px; height: 32px; vertical-align: middle; }
+    .doc-box td.k { font-weight: 700; text-align: center; font-size: 10px; width: 52%; }
+
+    /* ── items ── */
+    .items { border: 1px solid #000; margin-top: 4px; }
+    .items th, .items td { border: 1px solid #000; padding: 3px 4px; font-size: 10px; vertical-align: middle; }
+    .items th { font-weight: 700; text-align: center; font-size: 10px; }
+    .items td.c { text-align: center; }
+    .items td.l { text-align: left; }
+    .items tr { page-break-inside: avoid; break-inside: avoid; }
+
+    /* ── notes + signature ── */
+    .bottom { break-inside: avoid; page-break-inside: avoid; }
+    .notes { margin: 28px 0 0 28px; font-size: 10px; line-height: 1.5; }
+    .notes .nt { font-weight: 700; text-decoration: underline; }
+
+    .sign { width: 83%; margin: 26px auto 0 auto; border: 1px solid #000; }
+    .sign td { border: 1px solid #000; padding: 6px 8px; vertical-align: top; font-size: 10px; line-height: 1.5; }
+    .sign td.sh { text-align: center; font-weight: 700; font-size: 10px; height: 30px; vertical-align: middle; }
+    .sign td.sb { height: 90px; }
+    .sign .fld { width: 100%; table-layout: fixed; }
+    .sign .fld td { border: none; padding: 1px 0; font-size: 10px; }
+    .sign .fld .fk { width: 25%; }
+    .sign .fld .fc { width: 3%; text-align: center; }
+    .sign .fld .fv { width: 72%; }
+    .stamp { display: flex; width: 83%; margin: 28px auto 0 auto; font-size: 10px; }
+    .stamp div { width: 50%; padding-left: 8px; }
+  </style>
+</head>
+<body>
+
+  <div class="title">DELIVERY NOTE</div>
+
+  <!-- HEADER -->
+  <table class="hdr">
+    <colgroup>
+      <col style="width:56%">
+      <col style="width:44%">
+    </colgroup>
+    <tr>
+      <td>
+        <div class="addr-title">DELIVERY ADDRESS:</div>
+        <div class="addr-text">
+          {{#if billing_address.[0].name}}{{billing_address.[0].name}}<br>{{/if}}
+          {{joinAddress billing_address.[0] '<br>'}}
+        </div>
+      </td>
+      <td>
+        <table class="doc-box">
+          <tr>
+            <td class="k">DELIVERY DOC NO.</td>
+            <td>{{basicdetails.[0].inv_no}}</td>
+          </tr>
+          <tr>
+            <td class="k">DELIVERY DOC DATE</td>
+            <td>{{basicdetails.[0].inv_date}}</td>
+          </tr>
+          <tr>
+            <td class="k">CUSTOMER PO/REF</td>
+            <td>{{basicdetails.[0].order_no}}</td>
+          </tr>
+          <tr>
+            <td class="k">CUSTOMER CR</td>
+            <td>{{customer_details.[0].cr_no}}</td>
+          </tr>
+          <tr>
+            <td class="k">CUSTOMER VAT</td>
+            <td>{{default billing_address.[0].vat (default customer_details.[0].VAT_number basicdetails.[0].vatno)}}</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <!-- ITEMS -->
+  <table class="items">
+    <colgroup>
+      <col style="width:5%">
+      <col style="width:52%">
+      <col style="width:9%">
+      <col style="width:8%">
+      <col style="width:26%">
+    </colgroup>
+    <thead>
+      <tr>
+        <th>SN</th>
+        <th>PRODUCT DESCRIPTION</th>
+        <th>QTY</th>
+        <th>UNIT</th>
+        <th>REMARKS</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each itemdetails}}
+      <tr>
+        <td class="c">{{addOne @index}}</td>
+        <td class="l">{{item_name}}{{#if name_lang2}}<br>{{name_lang2}}{{/if}}{{#if description}}<br>{{description}}{{/if}}</td>
+        <td class="c">{{quantity}}</td>
+        <td class="c">{{unit}}</td>
+        <td class="l">{{txtf2}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <!-- NOTES + SIGNATURE -->
+  <div class="bottom">
+    <div class="notes">
+      <div class="nt">DELIVERY NOTES:</div>
+      <div style="white-space:pre-line;">{{basicdetails.[0].terms_and_condition}}</div>
+    </div>
+
+    <table class="sign">
+      <tr>
+        <td class="sh">DISPATCHED BY:</td>
+        <td class="sh">RECEIVED BY:</td>
+      </tr>
+      <tr>
+        <td class="sb">
+          <table class="fld">
+            <tr><td class="fk">Full Name</td><td class="fc">:</td><td class="fv"></td></tr>
+            <tr><td class="fk">Mobile No.</td><td class="fc">:</td><td class="fv"></td></tr>
+            <tr><td class="fk">Date</td><td class="fc">:</td><td class="fv"></td></tr>
+          </table>
+        </td>
+        <td class="sb">
+          <table class="fld">
+            <tr><td class="fk">Full Name</td><td class="fc">:</td><td class="fv"></td></tr>
+            <tr><td class="fk">Emp ID No.</td><td class="fc">:</td><td class="fv"></td></tr>
+            <tr><td class="fk">Mobile No.</td><td class="fc">:</td><td class="fv"></td></tr>
+            <tr><td class="fk">Date</td><td class="fc">:</td><td class="fv"></td></tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div class="stamp">
+      <div>Company Stamp &amp; Signature:</div>
+      <div>Company Stamp &amp; Signature:</div>
+    </div>
+  </div>
+
+</body>
+</html>
