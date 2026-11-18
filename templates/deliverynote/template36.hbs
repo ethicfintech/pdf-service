@@ -161,7 +161,12 @@
     </table>
 
     <div class="stamp">
-      <div>Company Stamp &amp; Signature:</div>
+      <div>
+        Company Stamp &amp; Signature:
+        {{#ifFlag datasettings "d678"}}
+          <img src="{{Seal}}" alt="Seal" style="margin-top:6px; width:{{datasettings.d458}}px;" onerror="this.style.display='none'"/>
+          {{/ifFlag}}
+      </div>
       <div>Company Stamp &amp; Signature:</div>
     </div>
   </div>
