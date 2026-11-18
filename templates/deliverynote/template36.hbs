@@ -49,7 +49,7 @@
     .sign .fld .fk { width: 25%; }
     .sign .fld .fc { width: 3%; text-align: center; }
     .sign .fld .fv { width: 72%; }
-    .stamp { display: flex; align-items: flex-end; width: 83%; margin: 28px auto 0 auto; font-size: 10px; }
+    .stamp { display: flex; align-items: flex-start; width: 83%; margin: 28px auto 0 auto; font-size: 10px; }
     .stamp div { width: 50%; padding-left: 8px; }
   </style>
 </head>
@@ -162,10 +162,10 @@
 
     <div class="stamp">
       <div>
-        {{#ifFlag datasettings "d678"}}
-          <img src="{{Seal}}" alt="Seal" style="display:block; margin-bottom:6px; width:{{datasettings.d458}}px;" onerror="this.style.display='none'"/>
-        {{/ifFlag}}
         Company Stamp &amp; Signature:
+        {{#ifFlag datasettings "d678"}}
+          <img src="{{Seal}}" alt="Seal" style="display:block; margin-top:6px; width:{{datasettings.d458}}px;" onerror="this.style.display='none'"/>
+        {{/ifFlag}}
       </div>
       <div>Company Stamp &amp; Signature:</div>
     </div>
