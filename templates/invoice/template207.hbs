@@ -162,12 +162,12 @@
         <th>Description of Goods</th>
         <th>Qty</th>
         <th>Unit</th>
-        <th>Rate<br> ({{basicdetails.[0].base_country_isocode}})</th>
-        <th>Discount ({{basicdetails.[0].base_country_isocode}})</th>
-        <th>Taxable Amount ({{basicdetails.[0].base_country_isocode}})</th>
+        <th>Rate<br> ({{basicdetails.[0].currency_isocode}})</th>
+        <th>Discount ({{basicdetails.[0].currency_isocode}})</th>
+        <th>Taxable Amount ({{basicdetails.[0].currency_isocode}})</th>
         <th>VAT Rate</th>
-        <th>VAT Amount ({{basicdetails.[0].base_country_isocode}})</th>
-        <th>Total Amount ({{basicdetails.[0].base_country_isocode}})</th>
+        <th>VAT Amount ({{basicdetails.[0].currency_isocode}})</th>
+        <th>Total Amount ({{basicdetails.[0].currency_isocode}})</th>
       </tr>
     </thead>
     <tbody>
@@ -242,7 +242,7 @@
         <td class="tval" style="font-weight: 700;">{{formatAmount (divide basicdetails.[0].vatamt ccrate) bcdp}}</td>
       </tr>
       <tr class="tot-last">
-        <td class="tlbl" colspan="4" style="font-weight: 700;">Total Including VAT ({{basicdetails.[0].base_country_isocode}})</td>
+        <td class="tlbl" colspan="4" style="font-weight: 700;">Total Including VAT ({{basicdetails.[0].currency_isocode}})</td>
         <td class="tval" style="font-weight: 700;">{{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
       </tr>
 
