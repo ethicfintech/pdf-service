@@ -223,8 +223,14 @@
       .items-table .desc-cell .sub {
         font-size: 8.5px;
         color: #555;
-        direction: ltr;
-        text-align: left;
+      }
+
+      /* each line sets its own direction from its text (Arabic -> RTL, English -> LTR),
+         so mixed text and punctuation are no longer shown back to front */
+      .items-table .desc-cell .ln {
+        unicode-bidi: plaintext;
+        {{!-- direction: ltr; --}}
+        text-align: start;
       }
 
       /* ─── TOTALS ─── */
@@ -726,9 +732,9 @@
             <td>{{addOne @index}}</td>
             <td>{{item_code}}</td>
             <td class="desc-cell">
-              {{item_name}}
-              {{#if name_lang2}}<br /><span class="sub">{{name_lang2}}</span>{{/if}}
-              {{#if description}}<br /><span style="font-size:8px;color:#666;">{{description}}</span>{{/if}}
+              <div class="ln">{{item_name}}</div>
+              {{#if name_lang2}}<div class="ln sub">{{name_lang2}}</div>{{/if}}
+              {{#if description}}<div class="ln" style="font-size:8px;color:#666;">{{description}}</div>{{/if}}
             </td>
             <td>{{unit}}</td>
             <td>{{formatAmount quantity ../bcdp}}</td>
