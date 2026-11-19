@@ -10,7 +10,7 @@
 
   body {
     background: #ffffff;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: ibmplexsansarabic;
     font-size: 11px;
     color: #222;
     line-height: 1.4;
@@ -25,7 +25,7 @@
     font-size: 22px;
     font-weight: bold;
     color: #000;
-    margin: 8px 0 16px;
+    margin: 8px 0 8px;
   }
   .main-title .ar {
     direction: rtl;
@@ -37,12 +37,12 @@
   .header-row {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 10px 0;
+    {{!-- border-spacing: 10px 0; --}}
     table-layout: fixed;
   }
   .header-row > tbody > tr > td {
     vertical-align: top;
-    background: #d9d9d9;
+    background: #bababa;
     padding: 12px 14px;
     font-size: 11px;
     width: 50%;
@@ -55,7 +55,6 @@
     border: none;
   }
   .info-list .k {
-    width: 42%;
     white-space: nowrap;
     padding-right: 8px;
   }
@@ -63,26 +62,29 @@
     direction: rtl;
     unicode-bidi: embed;
   }
-  .info-list .sep { width: 10px; }
+  {{!-- .info-list .sep { width: 10px; } --}}
 
   /* ── Items table ───────────────────────────── */
   .items-table {
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
-    border: 1px solid #bfbfbf;
-    margin-top: 16px;
+    border: 1px solid black;
+    margin-top: 10px;
   }
   .items-table th, .items-table td {
-    border: 1px solid #bfbfbf;
-    padding: 6px 6px;
-    font-size: 11px;
+    border: 1px solid black;
+    padding: 4px 4px;
     vertical-align: middle;
   }
   .items-table th {
     text-align: center;
     font-weight: normal;
-      background: #d9d9d9;
+    font-size: 11px;
+    background: #bababa;
+  }
+  .items-table th {
+    font-size: 10px;
   }
   .items-table th .ar {
     display: block;
@@ -107,7 +109,7 @@
     margin-top: 10px;
   }
   .totals-table td {
-    padding: 4px 8px;
+    padding: 2px 4px;
     font-size: 11px;
     vertical-align: middle;
     border: none;
@@ -139,7 +141,7 @@
     border-collapse: collapse;
     table-layout: fixed;
     margin-top: 14px;
-    background: #d9d9d9;
+    background: #bababa;
   }
   .aiw-bar td {
     padding: 8px 12px;
@@ -154,9 +156,14 @@
   }
 
   /* ── Terms & Conditions ────────────────────── */
-  .tc-wrap { margin-top: 10px; }
+  .tc-wrap {
+    margin-top: 10px;
+    /* keep the whole T&C block together: if it doesn't fit, move it to the next page */
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
   .tc-title {
-    background: #d9d9d9;
+    background: #bababa;
     font-weight: bold;
     padding: 6px 12px;
     font-size: 11px;
@@ -190,7 +197,7 @@
     border-collapse: collapse;
   }
   .bank-list td {
-    padding: 3px 0;
+    padding: 2px 0;
     font-size: 11px;
     vertical-align: top;
     border: none;
@@ -204,10 +211,32 @@
     text-align: right;
     vertical-align: middle;
   }
-  .seal-cell img {
-    max-height: 130px;
-    object-fit: contain;
+
+  {{#if UseBGWatermark}}
+  {{#if WatermarkCss}}
+  /* WATERMARK — fixed, so it repeats on every printed page.
+     WatermarkCss is a data URI built by the service from WatermarkUrl. */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('{{{WatermarkCss}}}');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 100% auto;
+    opacity: 0.7;
+    pointer-events: none;
+    z-index: -1;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
+  /* keeps the content above the watermark */
+  .page { position: relative; z-index: 1; }
+  {{/if}}
+  {{/if}}
 </style>
 </head>
 <body>
@@ -226,6 +255,11 @@
     <tr>
       <td>
         <table class="info-list">
+           <colgroup>
+              <col style="width:20%">
+              <col style="width:5%">
+              <col style="width:75%">
+            </colgroup>
           <tr>
             <td class="k">Customer Name / <span class="ar">اسم</span></td>
             <td class="sep">:</td>
@@ -252,6 +286,11 @@
       </td>
       <td>
         <table class="info-list">
+            <colgroup>
+              <col style="width:42%">
+              <col style="width:5%">
+              <col style="width:53%">
+            </colgroup>
           <tr>
             <td class="k">Quotation No/<span class="ar">رقم عرض الأسعار</span></td>
             <td class="sep">:</td>
@@ -268,25 +307,32 @@
             <td>{{basicdetails.[0].employeename}}</td>
           </tr>
           <tr>
-            <td class="k">Contact Email</td>
+            <td class="k">Contact Email / <span class="ar">بريد إلكتروني</span></td>
             <td class="sep">:</td>
             <td>{{basicdetails.[0].employeeemail}}</td>
           </tr>
+          {{#if basicdetails.[0].validity}}
           <tr>
-            <td class="k">Contact Number</td>
+            <td class="k">Validity / <span class="ar">صحة</span></td>
+            <td class="sep">:</td>
+            <td>{{basicdetails.[0].validity}}</td>
+          </tr>
+          {{/if}}
+          <tr>
+            <td class="k">Contact Number / <span class="ar">الاتصال</span></td>
             <td class="sep">:</td>
             <td>{{basicdetails.[0].employeecontactno}}</td>
           </tr>
           {{#if basicdetails.[0].attention}}
           <tr>
-            <td class="k">Attn.</td>
+            <td class="k">Attn. / <span class="ar">انتباه</span></td>
             <td class="sep">:</td>
             <td>{{basicdetails.[0].attention}}</td>
           </tr>
           {{/if}}
           {{#if basicdetails.[0].reference_no}}
           <tr>
-            <td class="k">Ref No.</td>
+            <td class="k">Ref No. / <span class="ar">رقم المرجع</span></td>
             <td class="sep">:</td>
             <td>{{basicdetails.[0].reference_no}}</td>
           </tr>
@@ -300,11 +346,11 @@
   <table class="items-table">
     <colgroup>
       <col style="width:6%">
-      <col style="width:12%">
-      <col style="width:23%">
+      {{#hasItemCode itemdetails}}<col style="width:11%">{{/hasItemCode}}
+      <col style="width:{{#hasItemCode itemdetails}}26{{else}}37{{/hasItemCode}}%">
       <col style="width:7%">
-      <col style="width:7%">
-      <col style="width:11%">
+      <col style="width:6%">
+      <col style="width:10%">
       <col style="width:11%">
       <col style="width:11%">
       <col style="width:12%">
@@ -312,7 +358,7 @@
     <thead>
       <tr>
         <th><span class="ar">رقم</span><span class="en">Sl No</span></th>
-        <th><span class="ar">رمز المنتج</span><span class="en">Product Code</span></th>
+        {{#hasItemCode itemdetails}}<th><span class="ar">رمز المنتج</span><span class="en">Product Code</span></th>{{/hasItemCode}}
         <th><span class="ar">وصف</span><span class="en">Description</span></th>
         <th><span class="ar">الكمية</span><span class="en">Qty</span></th>
         <th><span class="ar">وحدة</span><span class="en">Unit</span></th>
@@ -326,7 +372,7 @@
       {{#each itemdetails}}
       <tr>
         <td class="center">{{addOne @index}}</td>
-        <td class="left">{{item_code}}</td>
+        {{#hasItemCode @root.itemdetails}}<td class="left">{{item_code}}</td>{{/hasItemCode}}
         <td class="left">
           {{item_name}}
           {{#if name_lang2}}<div style="direction:rtl;">{{name_lang2}}</div>{{/if}}
@@ -334,10 +380,10 @@
         </td>
         <td class="center">{{formatAmount quantity ../bcdp}}</td>
         <td class="center">{{unit}}</td>
-        <td class="right"><span class="ryl">{{currencySymbol basicdetails.[0].base_country_isocode}}</span>{{formatAmount price ../bcdp}}</td>
-        <td class="right"><span class="ryl">{{currencySymbol basicdetails.[0].base_country_isocode}}</span>{{formatAmount taxable ../bcdp}}</td>
-        <td class="right"><span class="ryl">{{currencySymbol basicdetails.[0].base_country_isocode}}</span>{{formatAmount vat_amt ../bcdp}}</td>
-        <td class="right"><span class="ryl">{{currencySymbol basicdetails.[0].base_country_isocode}}</span>{{formatAmount amount ../bcdp}}</td>
+        <td class="right"><span class="ryl">{{currencySymbol basicdetails.[0].isocode}}</span>{{formatAmount price ../bcdp}}</td>
+        <td class="right"><span class="ryl">{{currencySymbol basicdetails.[0].isocode}}</span>{{formatAmount taxable ../bcdp}}</td>
+        <td class="right"><span class="ryl">{{currencySymbol basicdetails.[0].isocode}}</span>{{formatAmount vat_amt ../bcdp}}</td>
+        <td class="right"><span class="ryl">{{currencySymbol basicdetails.[0].isocode}}</span>{{formatAmount amount ../bcdp}}</td>
       </tr>
       {{/each}}
     </tbody>
@@ -355,31 +401,33 @@
       <td></td>
       <td class="t-lbl"> Total Amount / <span class="ar">المبلغ الإجمالي</span></td>
       <td class="t-sep">:</td>
-      <td class="t-val"><span class="ryl">{{currencySymbol basicdetails.[0].base_country_isocode}}</span>{{formatAmount (divide basicdetails.[0].subtotal ccrate) bcdp}}</td>
+      <td class="t-val"><span class="ryl">{{currencySymbol basicdetails.[0].isocode}}</span>{{formatAmount (divide basicdetails.[0].subtotal ccrate) bcdp}}</td>
     </tr>
+    {{#if (gt (subtract basicdetails.[0].discount (subtract 0 basicdetails.[0].dld)) 0)}}
     <tr>
       <td></td>
-      <td class="t-lbl"> Discount / <span class="ar">الخصم</span></td>
+      <td class="t-lbl"> Discount /<span class="ar">الخصم</span></td>
       <td class="t-sep">:</td>
-      <td class="t-val"><span class="ryl">{{currencySymbol basicdetails.[0].base_country_isocode}}</span>{{formatAmount (divide basicdetails.[0].discount ccrate) bcdp}}</td>
+      <td class="t-val"><span class="ryl">{{currencySymbol basicdetails.[0].isocode}}</span>{{formatAmount (divide (add basicdetails.[0].discount basicdetails.[0].dld) ccrate) bcdp}}</td>
     </tr>
     <tr>
       <td></td>
       <td class="t-lbl"> After Discount / <span class="ar"> بعد الخصم</span></td>
       <td class="t-sep">:</td>
-      <td class="t-val"><span class="ryl">{{currencySymbol basicdetails.[0].base_country_isocode}}</span>{{formatAmount (divide (subtract basicdetails.[0].subtotal basicdetails.[0].discount) ccrate) bcdp}}</td>
+      <td class="t-val"><span class="ryl">{{currencySymbol basicdetails.[0].isocode}}</span>{{formatAmount (divide (subtract basicdetails.[0].subtotal basicdetails.[0].discount) ccrate) bcdp}}</td>
     </tr>
+    {{/if}}
     <tr>
       <td></td>
-      <td class="t-lbl"> VAT (15%) / <span class="ar">ضريبة القيمة المضافة </span></td>
+      <td class="t-lbl"> VAT ({{#if (eq basicdetails.[0].base_country_isocode "AED")}}5{{else if (eq basicdetails.[0].base_country_isocode "BHD")}}10{{else}}15{{/if}}%) / <span class="ar">ضريبة القيمة المضافة </span></td>
       <td class="t-sep">:</td>
-      <td class="t-val"><span class="ryl">{{currencySymbol basicdetails.[0].base_country_isocode}}</span>{{formatAmount (divide basicdetails.[0].vatamt ccrate) bcdp}}</td>
+      <td class="t-val"><span class="ryl">{{currencySymbol basicdetails.[0].isocode}}</span>{{formatAmount (divide basicdetails.[0].vatamt ccrate) bcdp}}</td>
     </tr>
     <tr class="grand">
       <td></td>
-      <td class="t-lbl" style="background-color:#d9d9d9;"> Grand Total / <span class="ar"> المجموع الإجمالي</span></td>
-      <td class="t-sep" style="background-color:#d9d9d9;">:</td>
-      <td class="t-val" style="background-color:#d9d9d9;"><span class="ryl">{{currencySymbol basicdetails.[0].base_country_isocode}}</span>{{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
+      <td class="t-lbl" style="background-color:#bababa;"> Grand Total / <span class="ar"> المجموع الإجمالي</span></td>
+      <td class="t-sep" style="background-color:#bababa;">:</td>
+      <td class="t-val" style="background-color:#bababa;"><span class="ryl">{{currencySymbol basicdetails.[0].isocode}}</span>{{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
     </tr>
   </table>
 
@@ -445,7 +493,7 @@
       </td>
       <td class="seal-cell">
         {{#if seal}}
-          <img src="{{Seal}}" alt="Seal" style="max-height:{{default datasettings.d459 '40'}}px; max-width:{{default datasettings.d459 '60'}}px;" onerror="this.style.display='none'"/> 
+          <img src="{{seal}}" alt="Seal" style="max-width:{{default datasettings.d459 '180'}}px;" onerror="this.style.display='none'"/>
         {{/if}}
       </td>
     </tr>
