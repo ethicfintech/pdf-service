@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Delivery Note - {{basicdetails.[0].inv_no}}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: ibmplexsansarabic;
+      font-size: 11px;
+      color: #000;
+      background: #fff;
+      margin: 0 5mm;
+    }
+
+    table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+    td, th { vertical-align: top; word-wrap: break-word; }
+
+    /* ── Title ─────────────────────────────────────────── */
+    .title {
+      text-align: center;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 22px;
+      padding: 0 0 10px;
+    }
+    .title .en { color: #b72031; }
+    .title .sl { color: #606261; }
+    .title .ar { color: #606261; direction: rtl; unicode-bidi: isolate; }
+
+    /* ── Customer / document boxes ─────────────────────── */
+    .top-wrap > tbody > tr > td { border: none; padding: 0; }
+    .box-tbl td { border: 1px solid #bfbfbf; padding: 7px 8px; vertical-align: middle; }
+    .box-tbl td.k { font-weight: 700; }
+    .box-tbl td.tall { vertical-align: middle; }
+
+    /* ── Items ─────────────────────────────────────────── */
+    .items { margin-top: 12px; }
+    .items th {
+      background-color: #ccc;
+      border: 1px solid #bfbfbf;
+      font-weight: 700;
+      text-align: center;
+      vertical-align: middle;
+      padding: 4px 4px;
+      line-height: 15px;
+    }
+    .items th .ar { display: block; direction: rtl; unicode-bidi: isolate; }
+    .items th .en { display: block; }
+    .items td {
+      border: 1px solid #bfbfbf;
+      padding: 8px 6px;
+      line-height: 15px;
+      vertical-align: middle;
+    }
+    .items .c { text-align: center; }
+    .items .desc-ar { direction: rtl; unicode-bidi: isolate; }
+
+    /* ── Footer ────────────────────────────────────────── */
+    .bottom { break-inside: avoid; page-break-inside: avoid; margin-top: 22px; }
+    .terms { margin-bottom: 14px; }
+    .terms-title { font-weight: 700; padding: 0 0 4px; }
+    .terms-body { line-height: 1.5; }
+    .foot td { border: none; border-top: 1px solid #bfbfbf; padding: 14px 4px 4px; text-align: center; line-height: 23px; }
+    .foot td .h { font-weight: 700; }
+
+    {{#if UseBGWatermark}}
+    {{#if WatermarkCss}}
+    /* WATERMARK — fixed, so it repeats on every printed page (WatermarkCss = data URI built from WatermarkUrl) */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-image: url('{{{WatermarkCss}}}');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 100% auto;
+      opacity: 0.7;
+      /* watermark images differ per company (white / coloured background, and the
+         service dims non-PNG ones): multiply drops a white background, brightness
+         undoes the service's 0.7 dimming, so no grey wash covers the page */
+      mix-blend-mode: multiply;
+      filter: brightness(1.6);
+      pointer-events: none;
+      z-index: -1;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    {{/if}}
+    {{/if}}
+  </style>
+</head>
+<body>
+
+  <div class="title"><span class="en">Delivery Note</span> <span class="sl">/</span> <span class="ar">مذكرة تسليم</span></div>
+
+  <!-- CUSTOMER + DOCUMENT DETAILS -->
+  <table class="top-wrap">
+    <colgroup>
+      <col style="width:58%">
+      <col style="width:2%">
+      <col style="width:40%">
+    </colgroup>
+    <tr>
+      <td>
+        <table class="box-tbl">
+          <colgroup><col style="width:33%"><col style="width:67%"></colgroup>
+          <tr>
+            <td class="k tall">Customer Name</td>
+            <td class="tall">
+              {{basicdetails.[0].customer_name}}
+              {{#with billing_address.[0]}}
+              {{#if address_line1}}<br>{{address_line1}}{{/if}}
+              {{#if address_line2}}<br>{{address_line2}}{{/if}}
+              {{#if address_line3}}<br>{{address_line3}}{{/if}}
+              {{#if address_line4}}<br>{{address_line4}}{{/if}}
+              {{#if address_line5}}<br>{{address_line5}}{{/if}}
+              {{#if address_code}}<br>{{address_code}}{{/if}}
+              {{#if vat}}<br>VAT: {{vat}}{{/if}}
+              {{/with}}
+            </td>
+          </tr>
+          {{#if customer_details.[0].profile_code}}<tr><td class="k">Customer Code</td><td>{{customer_details.[0].profile_code}}</td></tr>{{/if}}
+          <tr><td class="k">Attention</td><td>{{basicdetails.[0].attention}}</td></tr>
+          <tr><td class="k">Date</td><td>{{basicdetails.[0].inv_date}}</td></tr>
+        </table>
+      </td>
+      <td></td>
+      <td>
+        <table class="box-tbl">
+          <colgroup><col style="width:42%"><col style="width:58%"></colgroup>
+          <tr><td class="k">DN Number</td><td>{{basicdetails.[0].inv_no}}</td></tr>
+          <tr><td class="k">Invoice No</td><td>{{basicdetails.[0].invoice_no}}</td></tr>
+          <tr><td class="k">PO No</td><td>{{basicdetails.[0].order_no}}</td></tr>
+          <tr><td class="k">Reference No</td><td>{{basicdetails.[0].reference_no}}</td></tr>
+          <tr><td class="k">Location</td><td>{{basicdetails.[0].destination}}</td></tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <!-- ITEMS -->
+  <table class="items">
+    <colgroup>
+      <col style="width:5%">
+      <col style="width:75%">
+      <col style="width:10%">
+      <col style="width:10%">
+    </colgroup>
+    <thead>
+      <tr>
+        <th><span class="ar">م</span><span class="en">S.N</span></th>
+        <th><span class="ar">الوصف</span><span class="en">Description</span></th>
+        <th><span class="ar">الكمية</span><span class="en">QTY</span></th>
+        <th><span class="ar">الوحدة</span><span class="en">UOM</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each itemdetails}}
+      <tr>
+        <td class="c">{{addOne @index}}</td>
+        <td>{{item_name}}{{#if name_lang2}} <span class="desc-ar">{{name_lang2}}</span>{{/if}}{{#if description}} {{description}}{{/if}}</td>
+        <td class="c">{{quantity}}</td>
+        <td class="c">{{unit}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <!-- DELIVERED BY / RECEIVED BY — kept together: moves to the next page if it doesn't fit -->
+  <div class="bottom">
+  {{#if basicdetails.[0].terms_and_condition}}
+  <div class="terms">
+    <div class="terms-title">Terms &amp; Conditions</div>
+    <div class="terms-body">{{{nl2br basicdetails.[0].terms_and_condition}}}</div>
+  </div>
+  {{/if}}
+  <table class="foot">
+    <colgroup>
+      <col style="width:50%">
+      <col style="width:50%">
+    </colgroup>
+    <tr>
+      <td>
+        <div class="h">DELIVERED BY</div>
+        <div>Name:</div>
+        <div>Date:</div>
+        <div>Signature:</div>
+        {{#ifFlag datasettings "d679"}}
+        <img src="{{Signature}}" alt="Signature" style="width:{{datasettings.d459}}px;" onerror="this.style.display='none'"/>
+        {{/ifFlag}}
+        {{#ifFlag datasettings "d678"}}
+        <img src="{{Seal}}" alt="Seal" style="width:{{datasettings.d458}}px;" onerror="this.style.display='none'"/>
+        {{/ifFlag}}
+      </td>
+      <td>
+        <div class="h">RECEIVED BY</div>
+        <div>Name:</div>
+        <div>Date:</div>
+        <div>Signature:</div>
+        <div>Stamp:</div>
+      </td>
+    </tr>
+  </table>
+  </div>
+
+</body>
+</html>
