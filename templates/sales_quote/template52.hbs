@@ -401,7 +401,7 @@
       <td></td>
       <td class="t-lbl"> Total Amount / <span class="ar">المبلغ الإجمالي</span></td>
       <td class="t-sep">:</td>
-      <td class="t-val"><span class="ryl">{{currencySymbol basicdetails.[0].isocode}}</span>{{formatAmount (divide basicdetails.[0].subtotal ccrate) bcdp}}</td>
+      <td class="t-val"><span class="ryl">{{currencySymbol basicdetails.[0].isocode}}</span>{{formatAmount basicdetails.[0].subtotal bcdp}}</td>
     </tr>
     {{#if (gt (subtract basicdetails.[0].discount (subtract 0 basicdetails.[0].dld)) 0)}}
     <tr>
