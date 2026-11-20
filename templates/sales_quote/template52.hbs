@@ -380,10 +380,10 @@
         </td>
         <td class="center">{{formatAmount quantity ../bcdp}}</td>
         <td class="center">{{unit}}</td>
-        <td class="right"><span class="ryl">{{currencySymbol basicdetails.[0].isocode}}</span>{{formatAmount price ../bcdp}}</td>
-        <td class="right"><span class="ryl">{{currencySymbol basicdetails.[0].isocode}}</span>{{formatAmount taxable ../bcdp}}</td>
-        <td class="right"><span class="ryl">{{currencySymbol basicdetails.[0].isocode}}</span>{{formatAmount vat_amt ../bcdp}}</td>
-        <td class="right"><span class="ryl">{{currencySymbol basicdetails.[0].isocode}}</span>{{formatAmount amount ../bcdp}}</td>
+        <td class="right"><span class="ryl">{{currencySymbol @root.basicdetails.[0].isocode}}</span>{{formatAmount price ../bcdp}}</td>
+        <td class="right"><span class="ryl">{{currencySymbol @root.basicdetails.[0].isocode}}</span>{{formatAmount taxable ../bcdp}}</td>
+        <td class="right"><span class="ryl">{{currencySymbol @root.basicdetails.[0].isocode}}</span>{{formatAmount vat_amt ../bcdp}}</td>
+        <td class="right"><span class="ryl">{{currencySymbol @root.basicdetails.[0].isocode}}</span>{{formatAmount amount ../bcdp}}</td>
       </tr>
       {{/each}}
     </tbody>
