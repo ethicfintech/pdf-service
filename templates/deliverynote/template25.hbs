@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Delivery Note - {{basicdetails.[0].inv_no}}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: ibmplexsansarabic;
+      font-size: 10.5px;
+      color: #000;
+      background: #fff;
+      margin: 0 5mm;
+    }
+
+    table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+    td, th { vertical-align: top; word-wrap: break-word; }
+
+    /* ── Title ─────────────────────────────────────────── */
+    .title {
+      text-align: center;
+      color: #c0272d;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 18px;
+      padding: 0 0 8px;
+    }
+    .title .en { color: #b72031; }
+    .title .sl { color: #606261; }
+    .title .ar { color: #606261; direction: rtl; unicode-bidi: isolate; }
+
+    /* ── Customer / document boxes ─────────────────────── */
+    .top-wrap > tbody > tr > td { border: none; padding: 0; }
+    .box-tbl td { border: 1px solid #aaa; padding: 6px 5px; vertical-align: middle}
+    .box-tbl td.addr { vertical-align: top;}
+    .box-tbl td.c { text-align: center; }
+    .gap-col { width: 14px; }
+
+    /* ── Items ─────────────────────────────────────────── */
+    .items { margin-top: 8px; }
+    .items th {
+      background-color: #99ccf5;
+      border: 1px solid #aaa;
+      font-weight: 400;
+      text-align: center;
+      vertical-align: middle;
+      padding: 5px 4px;
+    }
+    .items td {
+      border-left: 1px solid #aaa;
+      border-right: 1px solid #aaa;
+      padding: 4px 4px;
+      line-height: 14px;
+    }
+    .items .c { text-align: center; }
+    .items .r { text-align: right; }
+    .items .desc-ar { direction: rtl; unicode-bidi: isolate; }
+    .items tbody tr:last-child td { border-bottom: 1px solid #aaa; }
+    /* blank ruled row the script appends to run the grid down to the page foot */
+    .items tr.filler td { height: inherit; padding: 0; }
+
+    /* page wrapper: thead repeats the title + header boxes on every printed page */
+    .pagewrap > thead { display: table-header-group; }
+    .pagewrap > tbody { display: table-row-group; }
+    .pagewrap > thead > tr > td,
+    .pagewrap > tbody > tr > td { border: none; padding: 0; vertical-align: top; }
+
+    /* ── Footer ────────────────────────────────────────── */
+    .bottom { break-inside: avoid; page-break-inside: avoid; }
+    .foot { break-inside: avoid; page-break-inside: avoid; margin-top: 4px; }
+    .foot { margin-top: 0; }
+    .foot td { border: none; padding: 4px 4px; text-align: center; font-size: 10.5px; text-transform: uppercase; }
+    .foot .stamp-img { height: 100px; padding-top: 2px; }
+    .foot .stamp-img img { max-height: 95px; max-width: 100%; object-fit: contain; }
+
+    {{#if UseBGWatermark}}
+    {{#if WatermarkCss}}
+    /* WATERMARK — fixed, so it repeats on every printed page (WatermarkCss = data URI built from WatermarkUrl) */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-image: url('{{{WatermarkCss}}}');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 100% auto;
+      opacity: 0.7;
+      /* watermark images differ per company (white / coloured background, and the
+         service dims non-PNG ones): multiply drops a white background, brightness
+         undoes the service's 0.7 dimming, so no grey wash covers the page */
+      mix-blend-mode: multiply;
+      filter: brightness(1.6);
+      pointer-events: none;
+      z-index: -1;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    {{/if}}
+    {{/if}}
+  </style>
+</head>
+<body>
+
+  <table class="pagewrap">
+  <thead><tr><td>
+
+  <div class="title"><span class="en">Delivery Note</span> <span class="sl">/</span> <span class="ar">مذكرة تسليم</span></div>
+
+  <!-- CUSTOMER + DOCUMENT DETAILS -->
+  <table class="top-wrap">
+    <colgroup>
+      <col style="width:58%">
+      <col style="width:2%">
+      <col style="width:40%">
+    </colgroup>
+    <tr>
+      <td>
+        <table class="box-tbl">
+          <colgroup><col style="width:25%"><col style="width:75%"></colgroup>
+          <tr><td>Customer Name</td><td>{{basicdetails.[0].customer_name}}</td></tr>
+          <tr><td>Customer ID</td><td>{{customer_details.[0].profile_code}}</td></tr>
+          <tr>
+            <td class="addr">Address</td>
+            <td class="addr">
+              {{#with billing_address.[0]}}
+              {{#if address_line1}}<div>{{address_line1}}</div>{{/if}}
+              {{#if address_line2}}<div>{{address_line2}}</div>{{/if}}
+              {{#if address_line3}}<div>{{address_line3}}</div>{{/if}}
+              {{#if address_line4}}<div>{{address_line4}}</div>{{/if}}
+              {{#if address_line5}}<div>{{address_line5}}</div>{{/if}}
+              {{#if address_code}}<div>{{address_code}}</div>{{/if}}
+              {{/with}}
+            </td>
+          </tr>
+          <tr><td>VAT</td><td>{{billing_address.[0].vat}}</td></tr>
+        </table>
+      </td>
+      <td></td>
+      <td>
+        <table class="box-tbl">
+          <colgroup><col style="width:38%"><col style="width:62%"></colgroup>
+          <tr><td>DN Number</td><td class="c">{{basicdetails.[0].inv_no}}</td></tr>
+          <tr><td>Date No</td><td class="c">{{basicdetails.[0].inv_date}}</td></tr>
+          <tr><td>PO No</td><td class="c">{{basicdetails.[0].order_no}}</td></tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  </td></tr></thead>
+  <tbody>
+  <tr><td>
+
+  <!-- ITEMS -->
+  <table class="items">
+    <colgroup>
+      <col style="width:5%">
+      <col style="width:75%">
+      <col style="width:10%">
+      <col style="width:10%">
+    </colgroup>
+    <thead>
+      <tr>
+        <th>SI</th>
+        <th>Description</th>
+        <th>Qty</th>
+        <th>Unit</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each itemdetails}}
+      <tr>
+        <td class="c">{{addOne @index}}</td>
+        <td>{{item_name}}{{#if name_lang2}} <span class="desc-ar">{{name_lang2}}</span>{{/if}}{{#if description}} {{description}}{{/if}}</td>
+        <td class="c">{{quantity}}</td>
+        <td class="c">{{unit}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  </td></tr>
+  <tr><td>
+
+  <!-- RECEIVED BY / SIGNATURE — kept together: moves to the next page if it doesn't fit -->
+  <div class="bottom">
+  <table class="foot">
+    <colgroup>
+      <col style="width:34%">
+      <col style="width:33%">
+      <col style="width:33%">
+    </colgroup>
+    <tr>
+      <td>Delivered</td>
+      <td>Stamp</td>
+      <td>Received By</td>
+    </tr>
+    <tr>
+      <td class="stamp-img"></td>
+      <td class="stamp-img">{{#if Seal}}<img src="{{Seal}}" alt="Stamp" style="max-width:{{default datasettings.d458 '120'}}px;" onerror="this.style.display='none'"/>{{/if}}</td>
+      <td class="stamp-img"></td>
+    </tr>
+  </table>
+  </div>
+
+  </td></tr>
+  </tbody>
+  </table>
+
+  <script>
+  /* Runs the item table down to the foot of the page with an empty ruled row, so the
+     Received By / signature block sits at the page foot. Works out the free height
+     from the real content, so it adapts to 1 item or many, and to every page.
+     Page height = A4 minus the PDF margins (datasettings.d803 / d810). */
+  (function () {
+    var SLACK = 45;   // Chrome's usable height runs under A4-minus-margins
+    function run() {
+      var mt = parseFloat('{{#if UseHeaderFooter}}{{datasettings.d803}}{{else}}10{{/if}}') || 0;
+      var mb = parseFloat('{{#if UseHeaderFooter}}{{datasettings.d810}}{{else}}10{{/if}}') || 0;
+      var page = 1122.5 - mt - mb;
+      var h = function (sel) { var e = typeof sel === 'string' ? document.querySelector(sel) : sel;
+                               return e ? e.getBoundingClientRect().height : 0; };
+
+      // measure at the printed width, or rows wrap differently here than on paper
+      document.documentElement.style.width =
+        (794.5 - {{#if UseHeaderFooter}}0{{else}}20{{/if}}) + 'px';
+
+      var body = document.querySelector('.items > tbody');
+      if (!body) return;
+
+      var old = body.querySelectorAll('tr.filler');
+      for (var k = 0; k < old.length; k++) body.removeChild(old[k]);
+
+      function fill(px) {
+        if (px < 4) return;
+        var tr = document.createElement('tr');
+        tr.className = 'filler';
+        tr.style.height = px + 'px';
+        for (var c = 0; c < 4; c++) tr.appendChild(document.createElement('td'));
+        body.appendChild(tr);
+      }
+
+      var cap  = page - SLACK;
+      var head = h('.pagewrap > thead') + h('.items > thead');   // repeated on every page
+      var used = head + 8;                                       // 8px = items table margin-top
+      var rows = body.querySelectorAll('tr');
+      for (var i = 0; i < rows.length; i++) {
+        var rh = h(rows[i]);
+        if (used + rh > cap) used = head;     // row does not fit: starts a new page
+        used += rh;
+      }
+
+      var block = h('.bottom');
+      var free = cap - used;
+      if (block <= free) {
+        fill(free - block);                   // bottom block stays on this page
+      } else {
+        fill(free);                           // run this page out ...
+        var next = cap - head;                // ... and continue on the next one
+        if (block <= next) fill(next - block);
+      }
+    }
+    run();
+    window.addEventListener('load', run);     // re-run once the signature image / fonts are in
+  })();
+  </script>
+
+</body>
+</html>
