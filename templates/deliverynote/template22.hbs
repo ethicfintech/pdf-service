@@ -83,6 +83,11 @@
       background-position: center center;
       background-size: 100% auto;
       opacity: 0.7;
+      /* watermark images differ per company (white / coloured background, and the
+         service dims non-PNG ones): multiply drops a white background, brightness
+         undoes the service's 0.7 dimming, so no grey wash covers the page */
+      mix-blend-mode: multiply;
+      filter: brightness(1.4286);
       pointer-events: none;
       z-index: -1;
       -webkit-print-color-adjust: exact;
