@@ -629,6 +629,11 @@ class TemplateService {
         return hasItemCode ? options.fn(this) : options.inverse(this);
     });
 
+    Handlebars.registerHelper("hasUnit", function (items, options) {
+      const has = (items || []).some((i) => i.unit && String(i.unit).trim() !== "");
+      return has ? options.fn(this) : options.inverse(this);
+    });
+
     // ✅ ADDED: Register Handlebars helpers (lines 2-14)
     Handlebars.registerHelper('if_gt', function (a, b, options) {
       return parseFloat(a) > parseFloat(b) ? options.fn(this) : options.inverse(this);
