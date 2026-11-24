@@ -198,8 +198,9 @@
         <div class="cust-name-block">
           <div class="cust-name">{{billing_address.[0].name}}</div>
           {{#if billing_address_lang2.[0].name}}<div class="cust-name2">{{billing_address_lang2.[0].name}}</div>{{/if}}
-          {{#if basicdetails.[0].contactname}}<div class="">Name : {{basicdetails.[0].contactname}}<br>
-          No : {{basicdetails.[0].contactno}}<br>Email : {{basicdetails.[0].contactemail}}</div>{{/if}}
+          {{#if basicdetails.[0].contactname}}<div class="">Name : {{basicdetails.[0].contactname}}
+          {{#if basicdetails.[0].contactno}}<br>No : {{basicdetails.[0].contactno}}{{/if}}
+          {{#if basicdetails.[0].contactemail}}<br>Email : {{basicdetails.[0].contactemail}}{{/if}}</div>{{/if}}
           {{#if billing_address.[0].vat}}VAT : {{billing_address.[0].vat}}{{/if}}
         </div>
       </td>
@@ -215,9 +216,9 @@
             <td class="v-sep">{{basicdetails.[0].inv_no}}</td>
             <td>{{basicdetails.[0].inv_date}}</td>
           </tr>
-          <tr>
+          {{!-- <tr>
             <td colspan="3" style="height:24px; border-bottom:none;"></td>
-          </tr>
+          </tr> --}}
         </table>
       </td>
     </tr>
@@ -318,14 +319,18 @@
           <tr class="sign-imgs">
             <td class="sign-col"></td>
             <td class="sign-col sig-img-cell">
-              {{#if Signature}}<img class="sig-img" src="{{Signature}}" alt="signature"/>{{/if}}
+              {{#ifFlag datasettings "d249"}}{{#if Signature}}
+              <img class="sig-img" src="{{Signature}}" alt="signature" style="width:{{datasettings.d459}}px;" onerror="this.style.display='none'"/>
+              {{/if}}{{/ifFlag}}
             </td>
             <td class="sign-col seal-img-cell">
-              {{#if Seal}}<img class="seal-img" src="{{Seal}}" alt="Seal" style="max-height:{{default datasettings.d459 '100'}}px; max-width:{{default datasettings.d459 '180'}}px;" onerror="this.style.display='none'"/>{{/if}}
+              {{#ifFlag datasettings "d250"}}{{#if Seal}}
+              <img class="seal-img" src="{{Seal}}" alt="Seal" style="width:{{datasettings.d458}}px;" onerror="this.style.display='none'"/>
+              {{/if}}{{/ifFlag}}
             </td>
           </tr>
           <tr class="sign-labels">
-            <td class="sign-col"><span class="sig-label">Approved by</span></td>
+            <td class="sign-col">{{#ifFlag datasettings "d226"}}<span class="sig-label">Approved by</span>{{/ifFlag}}</td>
             <td class="sign-col"><span class="sig-label">Authorised Signatory</span></td>
             <td class="sign-col"><span class="seal-label">For {{#if compprof.name}}{{compprof.name}}{{else}}{{basicdetails.[0].branchname}}{{/if}}</span></td>
           </tr>
