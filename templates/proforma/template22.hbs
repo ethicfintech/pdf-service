@@ -428,7 +428,7 @@
       {{#each itemdetails}}
       <tr>
         <td class="sl">{{addOne @index}}</td>
-        <td class="desc">{{item_name}}{{#if name_lang2}}<div style="direction:rtl;text-align:left;font-size:9px;color:#555;">{{name_lang2}}</div>{{/if}}{{#if description}}<div style="direction:rtl;text-align:left;font-size:9px;color:#555;">{{description}}</div>{{/if}}</td>
+        <td class="desc">{{item_name}}{{#if name_lang2}}<div dir="auto" style="unicode-bidi:plaintext;text-align:left;font-size:9px;color:#555;">{{name_lang2}}</div>{{/if}}{{#if description}}<div dir="auto" style="unicode-bidi:plaintext;text-align:left;font-size:9px;color:#555;">{{description}}</div>{{/if}}</td>
         <td style="text-align: center;">{{formatAmount quantity ../bcdp}}</td>
         <td style="text-align: center;">{{unit}}</td>
         <td style="text-align: right;">{{{currencySymbol ../basicdetails.[0].currency_isocode}}} {{formatAmount price ../bcdp}}</td>
