@@ -212,8 +212,10 @@
   (function () {
     var SLACK = 45;   // Chrome's usable height runs under A4-minus-margins
     function run() {
-      var mt = parseFloat('{{#if UseHeaderFooter}}{{datasettings.d803}}{{else}}10{{/if}}') || 0;
-      var mb = parseFloat('{{#if UseHeaderFooter}}{{datasettings.d810}}{{else}}10{{/if}}') || 0;
+      // the controller applies d803 / d810 as the page margins with or without header artwork
+      // (fallback 120px top / 5px bottom when unset), so use them in both cases
+      var mt = parseFloat('{{datasettings.d803}}'); if (isNaN(mt)) mt = 120;
+      var mb = parseFloat('{{datasettings.d810}}'); if (isNaN(mb)) mb = 5;
       var page = 1122.5 - mt - mb;
       var h = function (sel) { var e = typeof sel === 'string' ? document.querySelector(sel) : sel;
                                return e ? e.getBoundingClientRect().height : 0; };
