@@ -434,10 +434,10 @@
                     {{else}}
                         <tr>
                             <td class="ts">Grand Total Amount (Excl. VAT)</td>
-                            <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount subtotal bcdp}}</td>
+                            <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount basicdetails.[0].subtotal bcdp}}</td>
                             <td class="ar arab">المبلغ الإجمالي (بدون ضريبة)</td>
                         </tr>
-                            {{#if (or basicdetails.[0].discount basicdetails.[0].dld)}}
+                            {{#if (gt (subtract basicdetails.[0].discount (subtract 0 basicdetails.[0].dld)) 0)}}
                                 <tr>
                                     <td class="ts">Total Discount</td>
                                     <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount (divide (add basicdetails.[0].discount basicdetails.[0].dld) ccrate) bcdp}}</td>
