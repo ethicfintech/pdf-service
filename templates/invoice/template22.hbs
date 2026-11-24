@@ -358,11 +358,13 @@
             <td class="m-ar">ضريبة القيمة المضافة</td>
           </tr>
           {{/ifFlag}}
+          {{#ifFlag datasettings "d584"}}
           <tr>
             <td class="m-label">Invoice Time</td>
             <td class="m-value">{{basicdetails.[0].inv_time}}</td>
             <td class="m-ar">وقت الفاتورة</td>
           </tr>
+          {{/ifFlag}}
           <tr>
             <td class="m-label">P O Number</td>
             <td class="m-value">{{basicdetails.[0].order_no}}</td>
