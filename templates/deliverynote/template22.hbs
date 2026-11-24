@@ -99,8 +99,7 @@
 </head>
 <body>
 
-  <table class="pagewrap">
-  <thead><tr><td>
+  <div class="hdr">
 
   <div class="title">Delivery Note</div>
 
@@ -146,7 +145,9 @@
     </tr>
   </table>
 
-  </td></tr></thead>
+  </div>
+
+  <table class="pagewrap">
   <tbody>
   <tr><td>
 
@@ -237,8 +238,8 @@
       }
 
       var cap  = page - SLACK;
-      var head = h('.pagewrap > thead') + h('.items > thead');   // repeated on every page
-      var used = head + 8;                                       // 8px = items table margin-top
+      var head = h('.items > thead');                            // only the item header repeats
+      var used = h('.hdr') + head + 8;                           // page 1 also has the top section; 8px = items margin-top
       var rows = body.querySelectorAll('tr');
       for (var i = 0; i < rows.length; i++) {
         var rh = h(rows[i]);
