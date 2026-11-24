@@ -416,36 +416,36 @@
                     {{#if zatcadiscount.[0]}}
                         <tr>
                             <td class="ts">Grand Total Amount (Excl. VAT)</td>
-                            <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount (subtract basicdetails.[0].subtotal (divide basicdetails.[0].discount ccrate)) bcdp}}</td>
+                            <td class="amt">{{{currencySymbol @root.basicdetails.[0].currency_isocode}}} {{formatAmount (subtract basicdetails.[0].subtotal (divide basicdetails.[0].discount ccrate)) bcdp}}</td>
                             <td class="ar arab">المبلغ الإجمالي (بدون ضريبة)</td>
                         </tr>
                             {{#each zatcadiscount}}
                                 <tr>
                                     <td class="ts">{{reason_name}}</td>
-                                    <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount dld ../bcdp}}</td>
+                                    <td class="amt">{{{currencySymbol @root.basicdetails.[0].currency_isocode}}} {{formatAmount dld ../bcdp}}</td>
                                     <td class="ar arab">{{reason_name_lang2}}</td>
                                 </tr>
                             {{/each}}
                         <tr>
                             <td class="ts">Total Amount After Discount</td>
-                            <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount (subtract (subtract basicdetails.[0].subtotal (divide basicdetails.[0].discount ccrate)) zatcadiscount.[0].dld) bcdp}}</td>
+                            <td class="amt">{{{currencySymbol @root.basicdetails.[0].currency_isocode}}} {{formatAmount (subtract (subtract basicdetails.[0].subtotal (divide basicdetails.[0].discount ccrate)) zatcadiscount.[0].dld) bcdp}}</td>
                             <td class="ar arab">المبلغ الإجمالي بعد الخصم</td>
                         </tr>
                     {{else}}
                         <tr>
                             <td class="ts">Grand Total Amount (Excl. VAT)</td>
-                            <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount basicdetails.[0].subtotal bcdp}}</td>
+                            <td class="amt">{{{currencySymbol @root.basicdetails.[0].currency_isocode}}} {{formatAmount basicdetails.[0].subtotal bcdp}}</td>
                             <td class="ar arab">المبلغ الإجمالي (بدون ضريبة)</td>
                         </tr>
                             {{#if (gt (subtract basicdetails.[0].discount (subtract 0 basicdetails.[0].dld)) 0)}}
                                 <tr>
                                     <td class="ts">Total Discount</td>
-                                    <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount (divide (add basicdetails.[0].discount basicdetails.[0].dld) ccrate) bcdp}}</td>
+                                    <td class="amt">{{{currencySymbol @root.basicdetails.[0].currency_isocode}}} {{formatAmount (divide (add basicdetails.[0].discount basicdetails.[0].dld) ccrate) bcdp}}</td>
                                     <td class="ar arab">إجمالي مبلغ الخصم</td>
                                 </tr>
                                 <tr>
                                     <td class="ts">Total Amount After Discount</td>
-                                    <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount (subtract basicdetails.[0].subtotal (divide (add basicdetails.[0].discount basicdetails.[0].dld) ccrate)) bcdp}}</td>
+                                    <td class="amt">{{{currencySymbol @root.basicdetails.[0].currency_isocode}}} {{formatAmount (subtract basicdetails.[0].subtotal (divide (add basicdetails.[0].discount basicdetails.[0].dld) ccrate)) bcdp}}</td>
                                     <td class="ar arab">المبلغ الإجمالي بعد الخصم</td>
                                 </tr>
                             {{/if}}
@@ -454,24 +454,24 @@
                         {{#each zatcacharge}}
                             <tr>
                                 <td class="ts">{{reason_name}}</td>
-                                <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount dld ../bcdp}}</td>
+                                <td class="amt">{{{currencySymbol @root.basicdetails.[0].currency_isocode}}} {{formatAmount dld ../bcdp}}</td>
                                 <td class="ar arab">{{reason_name_lang2}}</td>
                             </tr>
                         {{/each}}
                     {{/if}}
                     <tr>
                         <td class="ts">Total VAT Amount</td>
-                        <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount (divide basicdetails.[0].vatamt ccrate) bcdp}}</td>
+                        <td class="amt">{{{currencySymbol @root.basicdetails.[0].currency_isocode}}} {{formatAmount (divide basicdetails.[0].vatamt ccrate) bcdp}}</td>
                         <td class="ar arab">إجمالي مبلغ ضريبة القيمة المضافة</td>
                     </tr>
                     <tr>
                         <td class="ts">Grand Total Amount (Incl. VAT)</td>
-                        <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
+                        <td class="amt">{{{currencySymbol @root.basicdetails.[0].currency_isocode}}} {{formatAmount (divide basicdetails.[0].grand_total ccrate) bcdp}}</td>
                         <td class="ar arab">المبلغ الإجمالي (شامل ضريبة)</td>
                     </tr>
                     <tr>
                         <td class="ts">Net Due Amount</td>
-                        <td class="amt">{{{currencySymbol currency_isocode}}} {{formatAmount (divide basicdetails.[0].balance ccrate) bcdp}}</td>
+                        <td class="amt">{{{currencySymbol @root.basicdetails.[0].currency_isocode}}} {{formatAmount (divide basicdetails.[0].balance ccrate) bcdp}}</td>
                         <td class="ar arab">المبلغ المستحق الصافي</td>
                     </tr>
                     <tr>
