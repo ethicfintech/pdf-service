@@ -147,6 +147,7 @@
       <col style="width:3%">
       {{!-- Description: no width, it takes the space left by the other columns --}}
       <col>
+      {{#hasUnit itemdetails}}<col style="width:6%">{{/hasUnit}}
       <col style="width:11%">
       {{#if (gt (sumProperty @root.itemdetails "length") 0)}}<col style="width:5%">{{/if}}
       {{#if (gt (sumProperty @root.itemdetails "width") 0)}}<col style="width:5%">{{/if}}
@@ -161,6 +162,7 @@
       <tr>
         <th><span class="en">#</span></th>
         <th><span class="en">Description</span><span class="ar">وصف</span></th>
+        {{#hasUnit itemdetails}}<th><span class="en">Unit</span><span class="ar">وحدة</span></th>{{/hasUnit}}
         <th><span class="en">Rate</span><span class="ar">معدل</span></th>
         {{#if (gt (sumProperty @root.itemdetails "length") 0)}}<th><span class="en">Length</span><span class="ar">الطول</span></th>{{/if}}
         {{#if (gt (sumProperty @root.itemdetails "width") 0)}}<th><span class="en">Width</span><span class="ar">العرض</span></th>{{/if}}
@@ -177,13 +179,14 @@
       <tr>
         <td class="num">{{addOne @index}}</td>
         <td class="idesc">{{item_name}}{{#if name_lang2}}<div>{{name_lang2}}</div>{{/if}}{{#if description}}<div>{{description}}</div>{{/if}}</td>
+        {{#hasUnit ../itemdetails}}<td class="num">{{unit}}</td>{{/hasUnit}}
         <td class="rt"><span style="font-size:12px">{{{currencySymbol ../basicdetails.[0].isocode}}}</span> {{formatAmount price ../bcdp}}</td>
         {{#if (gt (add (sumProperty @root.itemdetails "length") (sumProperty @root.itemdetails "width")) 0)}}
         <td class="num">{{#if (gt length 0)}}{{this.length}}{{/if}}</td>
         <td class="num">{{#if (gt width 0)}}{{width}}{{/if}}</td>
         {{/if}}
         {{!-- length × width when length or width > 0, else the normal qty --}}
-        <td class="num">{{#if (or (gt length 0) (gt width 0))}}{{formatAmount (multiply length width) ../bcdp}}{{else}}{{quantity}}{{/if}}</td>
+        <td class="num">{{#if (or (gt length 0) (gt width 0))}}{{formatAmount (multiply length width) ../bcdp}}{{else}}{{formatAmount quantity ../bcdp}}{{/if}}</td>
         {{#hasDiscount ../itemdetails}}<td class="rt"><span style="font-size:12px">{{{currencySymbol ../basicdetails.[0].isocode}}}</span> {{formatAmount disc_amt ../bcdp}}</td>{{/hasDiscount}}
         <td class="rt"><span style="font-size:12px">{{{currencySymbol ../basicdetails.[0].isocode}}}</span> {{formatAmount taxable ../bcdp}}</td>
         <td class="num">{{vat_perc}}%</td>
