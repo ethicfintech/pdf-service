@@ -196,8 +196,7 @@
     <tr>
       <td class="left-cell cust-cell">
         <div class="cust-name-block">
-           <div class="cust-name">Customer :-</div>
-          <div class="cust-name">{{billing_address.[0].name}}</div>
+          <div class="cust-name">Customer :-{{billing_address.[0].name}}</div>
           {{#if billing_address_lang2.[0].name}}<div class="cust-name2">{{billing_address_lang2.[0].name}}</div>{{/if}}
           {{#if basicdetails.[0].contactname}}<div class="">Name : {{basicdetails.[0].contactname}}
           {{#if basicdetails.[0].contactno}}<br>No : {{basicdetails.[0].contactno}}{{/if}}
